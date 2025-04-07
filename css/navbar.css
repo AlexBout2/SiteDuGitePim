@@ -1,19 +1,36 @@
 nav {
-    background: linear-gradient(90deg, #09012B, #605BF1);
+  background: linear-gradient(90deg, #09012b, #605bf1);
 }
 
-
-@media (max-width: 992px) {  /* S'applique à la version mobile */
-  .navbar-nav {
-    width: 100%; /* S'assurer que les liens prennent toute la largeur */
-    text-align: right;  /* Aligner les liens à droite */
-    padding-right: 2vw;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 1.5rem;  /* Augmenter la taille du texte des liens */
-  }
+.navbar-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  list-style-type: none;
 }
+
+.nav-item {
+  margin: 0 0.5vw;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
 .navbar-nav .nav-link:hover {
-  color: #FE8A24 !important; /* Couleur des liens au survol */
+  color: #fe8a24 !important;
+}
+
+@media (max-width: 992px) {
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0;
+    width: 100%;
+  }
+
+  .nav-item {
+    width: 100%;
+    text-align: right;
+  }
 }
