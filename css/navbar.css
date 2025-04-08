@@ -13,7 +13,7 @@ nav {
 .nav-item {
   margin: 0 0.5vw;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .navbar-nav .nav-link:hover {
@@ -33,4 +33,16 @@ nav {
     width: 100%;
     text-align: right;
   }
+
+  .navbar-nav .nav-link:hover {
+    color: #fe8a24 !important;
+  }
+}
+
+.navbar img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbar img:hover {
+  transform: scale(1.1);
 }

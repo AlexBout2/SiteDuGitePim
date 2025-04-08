@@ -1,5 +1,5 @@
 .footer {
-  background: linear-gradient(90deg, #09012B, #605BF1); /* Dégradé */
+  background: linear-gradient(90deg, #09012b, #605bf1); /* Dégradé */
   color: white;
   font-family: Arial, sans-serif;
 }
@@ -43,5 +43,5 @@
 }
 
 .footer img:hover {
-  transform: scale(1.1); /* Zoom léger au survol */
+  transform: scale(1.1);
 }
