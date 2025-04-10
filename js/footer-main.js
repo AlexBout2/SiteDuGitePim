@@ -9,8 +9,10 @@ class Footer extends HTMLElement {
                 <div class="container">
                     <div class="row">
                         <!-- Colonne 1 : Logo et description -->
-                        <div class="col-md-3 mb-4">
-                            <img src="./public/logo-gite-BLANC.png" alt="Logo Gîte Pim" width="200" class="mb-3">
+                        <div class="col-md-4 col-sm-6 mb-4">
+                        <a href="#" id="backToTop" aria-label="Retour en haut de page">
+                            <img src="./public/logo-gite-BLANC.png" alt="Logo Gîte Pim" class="img-fluid mb-3 align-self-start" style="max-width: 50%;">
+                        </a>
                              <h6 class="text-uppercase fw-bold text-white mb-3">Contact</h6>
                             <p class="text-white"><i class="bi bi-geo-alt-fill me-2"></i> Îlot Pam, Poum</p>
                             <p class="text-white"><i class="bi bi-telephone-fill me-2"></i> +687 12 34 56</p>
@@ -18,8 +20,8 @@ class Footer extends HTMLElement {
                             
                         </div>
                         <!-- Colonne 2 : Navigation principale -->
-                        <div class="col-md-3 mb-4">
-                            <h6 class="text-uppercase fw-bold text-white mb-3">Navigation</h6>
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <h6 class="text-uppercase fw-bold text-white mb-3 mt-3">Navigation</h6>
                             <ul class="list-unstyled">
                                 <li><a href="./index.html" class="text-white text-decoration-none">Accueil</a></li>
                                 <li><a href="./modules/chambre/chambre-index.html" class="text-white text-decoration-none">Nos chambres</a></li>
@@ -27,8 +29,6 @@ class Footer extends HTMLElement {
                                 
                                 <li><a href="./modules/garderie/garderie-index.html" class="text-white text-decoration-none">La garderie</a></li></br></br>
                             </ul>
-                       
-                      
                             <h6 class="text-uppercase fw-bold text-white mb-3">Activité</h6>
                             <ul class="list-unstyled">
                                 <li><a href="./modules/cheval/cheval-index.html" class="text-white text-decoration-none">Randonnée équestre</a></li>
@@ -37,7 +37,7 @@ class Footer extends HTMLElement {
                             </ul>
                         </div>
                         <!-- Colonne 3 : Contact et réseaux sociaux -->
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-4 col-12 mb-4">
                         <img src="./public/cartepim.png" alt="lieux Gîte Pim" width="300" class="mb-3">
                            <h6 class="text-uppercase fw-bold text-white mt-4">Suivez-nous</h6>
                             <div>
@@ -48,9 +48,19 @@ class Footer extends HTMLElement {
                         </div>
                     </div>
                 </div>
+                
             </footer>
+            <script>
+                document.getElementById('backToTop').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            </script>
         `;
     }
 }
 
-customElements.define('pied-de-page', Footer);
+customElements.define("pied-de-page", Footer);

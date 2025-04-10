@@ -12,404 +12,415 @@
 </head>
 
 <body>
-  <menu-top></menu-top>
-  <!-- Contenu principal -->
-
-  <div class="main-hero p-5 text-center bg-image">
-    <div class="d-flex flex-column justify-content-center align-items-start h-100">
-      <div class="text-white text-start">
-        <h1 class="mb-3 text-shadow text-white">Bienvenue au gîte Pim</h1>
-        <h4 class="mb-3 text-shadow text-white">
-          Venez vous ressourcer dans un cadre idyllique.
-        </h4>
-        <button type="button" class="btn-main btn-lg fs-5"
-          onclick="window.location.href='modules/chambre/chambre-index.html';">
-          En savoir +
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bungalows -->
-  <div>
-    <div class="container-fluid mt-5">
-      <h1>Nos bungalows</h1>
-
-      <!-- Conteneur des spécialités avec espacement -->
-      <div class="row mt-4 mb-5 d-flex flex-column flex-md-row justify-content-around g-3">
-        <!-- Bungalows jardin -->
-        <div class="main-item bungjar-main col-12 col-md-5 rounded">
-          <h1 class="ms-5 mb-3 mt-5 text-white text-shadow">
-            Bungalow Jardin
-          </h1>
-          <h4 class="ms-5 me-5 text-white text-shadow">
-            Spacieux et confortables dans un cadre de verdoyant !
-          </h4>
-          <button type="button" class="ms-5 btn-main btn-lg fs-5"
-            onclick="window.location.href='modules/chambre/chambre-index.html';">
-            En savoir +
-          </button>
-        </div>
-
-        <!-- Section Côté Mer -->
-        <div class="main-item bungsea-main col-12 col-md-5 rounded">
-          <h1 class="ms-5 mb-3 mt-5 text-white text-shadow">
-            Bungalow Vue Mer
-          </h1>
-          <h4 class="ms-5 me-5 text-white text-shadow">
-            Laissez vous bercer par le son des vagues sur la terrasse
-          </h4>
-          <button type="button" class="ms-5 btn-main btn-lg fs-5"
-            onclick="window.location.href='modules/chambre/chambre-index.html';">
-            En savoir +
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <section id="activites">
-    <div class="container">
-      <div class="row mx-auto">
-        <div class="col">
-          <h3>Nos activités</h3>
-        </div>
-        <div class="row mx-auto d-none d-sm-block">
-          <div id="carouselActivite" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel">
-            <div class="carousel-inner">
-
-              <!-- Groupe de carte 1 Carousel desk/tab -->
-              <div class="carousel-item active">
-                <div class="row">
-                  <div class="col-12 col-sm-4">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Visite du bagne" src="public/carou-bagne.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Visite du bagne</h4>
-                        <p class="card-text flex-grow-1">Replongez avec notre guide dans l'histoire du pays sur l'île de
-                          Pam.</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/bagne/bagne-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-sm-4 d-none d-sm-block">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Randonnée équestre" src="public/carou-cheval.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Randonnée équestre</h4>
-                        <p class="card-text flex-grow-1">De belles balades dans la nature avec notre guide. À ne pas
-                          manquer !</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/cheval/cheval-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-sm-4 d-none d-sm-block">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Notre garderie" src="public/carou-gard.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Notre garderie</h4>
-                        <p class="card-text flex-grow-1">Nous garderons vos enfants si ils sont trop petits pour
-                          certaines activités.</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/garderie/garderie-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Groupe de carte 2 Carousel desk/tab -->
-              <div class="carousel-item">
-                <div class="row">
-                  <div class="col-12 col-sm-4">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Sortie kayak" src="public/carou-kayak.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Sortie kayak</h4>
-                        <p class="card-text flex-grow-1">Balades détente ou sportive en kayak sur le lagon. Vivez notre
-                          lagon!</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/kayak/kayak-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-sm-4 d-none d-sm-block">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Restaurant Pim" src="public/carou-repas.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Restaurant Pim</h4>
-                        <p class="card-text flex-grow-1">Pour les gourmets et les gourmands, notre carte saura vous
-                          ravir
-                          !</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/repas/repas-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-sm-4 d-none d-sm-block">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Nos bungalows" src="public/carou-bung.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Nos bungalows</h4>
-                        <p class="card-text flex-grow-1">Jardin ou vue mer, choisissez votre bungalow idéal pour votre
-                          séjour.</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/chambre/chambre-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselActivite" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Précédent</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselActivite" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Suivant</span>
+  <main>
+    <menu-top></menu-top>
+    <!-- Contenu principal -->
+    <section id="hero">
+      <div class="main-hero p-5 text-center bg-image">
+        <div class="d-flex flex-column justify-content-center align-items-start h-100">
+          <div class="text-white text-start">
+            <h1 class="mb-3 text-shadow text-white">Bienvenue au gîte Pim</h1>
+            <h4 class="mb-3 text-shadow text-white">
+              Venez vous ressourcer dans un cadre idyllique.
+            </h4>
+            <button type="button" class="btn-main btn-lg fs-5"
+              onclick="window.location.href='modules/chambre/chambre-index.html';">
+              En savoir +
             </button>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Carousel Mobile -->
-        <div class="row mx-auto d-sm-none">
-          <div id="carouselActiviteMobile" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel">
-            <div class="carousel-inner">
+    <!-- Bungalows -->
+    <section id="Bungalows">
+      <div>
+        <div class="container-fluid mt-5">
+          <h1>Nos bungalows</h1>
 
-              <div class="carousel-item active d-sm-none">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Visite du bagne" src="public/carou-bagne.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Visite du bagne</h4>
-                        <p class="card-text flex-grow-1">Replongez avec notre guide dans l'histoire du pays sur l'île de
-                          Pam.</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/bagne/bagne-index.html';">
-                          En savoir +
-                        </button>
+          <!-- Conteneur des spécialités avec espacement -->
+          <div class="row mt-4 mb-5 d-flex flex-column flex-md-row justify-content-around g-3">
+            <!-- Bungalows jardin -->
+            <div class="main-item bungjar-main col-12 col-md-5 rounded">
+              <h1 class="ms-5 mb-3 mt-5 text-white text-shadow">
+                Bungalow Jardin
+              </h1>
+              <h4 class="ms-5 me-5 text-white text-shadow">
+                Spacieux et confortables dans un cadre de verdoyant !
+              </h4>
+              <button type="button" class="ms-5 btn-main btn-lg fs-5"
+                onclick="window.location.href='modules/chambre/chambre-index.html';">
+                En savoir +
+              </button>
+            </div>
+
+            <!-- Section Côté Mer -->
+            <div class="main-item bungsea-main col-12 col-md-5 rounded">
+              <h1 class="ms-5 mb-3 mt-5 text-white text-shadow">
+                Bungalow Vue Mer
+              </h1>
+              <h4 class="ms-5 me-5 text-white text-shadow">
+                Laissez vous bercer par le son des vagues sur la terrasse
+              </h4>
+              <button type="button" class="ms-5 btn-main btn-lg fs-5"
+                onclick="window.location.href='modules/chambre/chambre-index.html';">
+                En savoir +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="activites">
+      <div class="container">
+        <div class="row mx-auto">
+          <div class="col">
+            <h1>Nos activités</h1>
+          </div>
+          <div class="row mx-auto d-none d-sm-block">
+            <div id="carouselActivite" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel">
+              <div class="carousel-inner">
+
+                <!-- Groupe de carte 1 Carousel desk/tab -->
+                <div class="carousel-item active">
+                  <div class="row">
+                    <div class="col-12 col-sm-4">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Visite du bagne" src="public/carou-bagne.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Visite du bagne</h4>
+                          <p class="card-text flex-grow-1">Replongez avec notre guide dans l'histoire du pays sur l'île
+                            de
+                            Pam.</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/bagne/bagne-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 d-none d-sm-block">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Randonnée équestre" src="public/carou-cheval.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Randonnée équestre</h4>
+                          <p class="card-text flex-grow-1">De belles balades dans la nature avec notre guide. À ne pas
+                            manquer !</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/cheval/cheval-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 d-none d-sm-block">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Notre garderie" src="public/carou-gard.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Notre garderie</h4>
+                          <p class="card-text flex-grow-1">Nous garderons vos enfants si ils sont trop petits pour
+                            certaines activités.</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/garderie/garderie-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Groupe de carte 2 Carousel desk/tab -->
+                <div class="carousel-item">
+                  <div class="row">
+                    <div class="col-12 col-sm-4">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Sortie kayak" src="public/carou-kayak.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Sortie kayak</h4>
+                          <p class="card-text flex-grow-1">Balades détente ou sportive en kayak sur le lagon. Vivez
+                            notre
+                            lagon!</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/kayak/kayak-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 d-none d-sm-block">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Restaurant Pim" src="public/carou-repas.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Restaurant Pim</h4>
+                          <p class="card-text flex-grow-1">Pour les gourmets et les gourmands, notre carte saura vous
+                            ravir
+                            !</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/repas/repas-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 d-none d-sm-block">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Nos bungalows" src="public/carou-bung.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Nos bungalows</h4>
+                          <p class="card-text flex-grow-1">Jardin ou vue mer, choisissez votre bungalow idéal pour votre
+                            séjour.</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/chambre/chambre-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div class="carousel-item d-sm-none">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Randonnée équestre" src="public/carou-cheval.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Randonnée équestre</h4>
-                        <p class="card-text flex-grow-1">De belles balades dans la nature avec notre guide. À ne pas
-                          manquer !</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/cheval/cheval-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="carousel-item d-sm-none">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Sortie kayak" src="public/carou-kayak.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Sortie kayak</h4>
-                        <p class="card-text flex-grow-1">Balades détente ou sportive en kayak sur le lagon. Vivez
-                          notre
-                          lagon!</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/kayak/kayak-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="carousel-item d-sm-none">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Notre garderie" src="public/carou-gard.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Notre garderie</h4>
-                        <p class="card-text flex-grow-1">Vous souhaitez réaliser les activités entre adultes,
-                          confiez-nous
-                          vos trésors.</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/garderie/garderie-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="carousel-item d-sm-none">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Restaurant Pim" src="public/carou-repas.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Restaurant Pim</h4>
-                        <p class="card-text flex-grow-1">Pour les gourmets et les gourmands, notre carte saura vous
-                          ravir
-                          !</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/repas/repas-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="carousel-item d-sm-none">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card h-100 shadow-sm">
-                      <img class="img-fluid" alt="Nos bungalows" src="public/carou-bung.jpg" />
-                      <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">Nos bungalows</h4>
-                        <p class="card-text flex-grow-1">Jardin ou vue mer, choisissez votre bungalow idéal pour votre
-                          séjour.</p>
-                        <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
-                          onclick="window.location.href='modules/chambre/chambre-index.html';">
-                          En savoir +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Contrôles -->
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselActiviteMobile"
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselActivite"
                 data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Précédent</span>
               </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselActiviteMobile"
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselActivite"
                 data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Suivant</span>
               </button>
             </div>
           </div>
+
+          <!-- Carousel Mobile -->
+          <div class="row mx-auto d-sm-none">
+            <div id="carouselActiviteMobile" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel">
+              <div class="carousel-inner">
+
+                <div class="carousel-item active d-sm-none">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Visite du bagne" src="public/carou-bagne.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Visite du bagne</h4>
+                          <p class="card-text flex-grow-1">Replongez avec notre guide dans l'histoire du pays sur l'île
+                            de
+                            Pam.</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/bagne/bagne-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="carousel-item d-sm-none">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Randonnée équestre" src="public/carou-cheval.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Randonnée équestre</h4>
+                          <p class="card-text flex-grow-1">De belles balades dans la nature avec notre guide. À ne pas
+                            manquer !</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/cheval/cheval-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="carousel-item d-sm-none">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Sortie kayak" src="public/carou-kayak.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Sortie kayak</h4>
+                          <p class="card-text flex-grow-1">Balades détente ou sportive en kayak sur le lagon. Vivez
+                            notre
+                            lagon!</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/kayak/kayak-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="carousel-item d-sm-none">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Notre garderie" src="public/carou-gard.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Notre garderie</h4>
+                          <p class="card-text flex-grow-1">Vous souhaitez réaliser les activités entre adultes,
+                            confiez-nous
+                            vos trésors.</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/garderie/garderie-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="carousel-item d-sm-none">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Restaurant Pim" src="public/carou-repas.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Restaurant Pim</h4>
+                          <p class="card-text flex-grow-1">Pour les gourmets et les gourmands, notre carte saura vous
+                            ravir
+                            !</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/repas/repas-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="carousel-item d-sm-none">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card h-100 shadow-sm">
+                        <img class="img-fluid" alt="Nos bungalows" src="public/carou-bung.jpg" />
+                        <div class="card-body d-flex flex-column">
+                          <h4 class="card-title">Nos bungalows</h4>
+                          <p class="card-text flex-grow-1">Jardin ou vue mer, choisissez votre bungalow idéal pour votre
+                            séjour.</p>
+                          <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
+                            onclick="window.location.href='modules/chambre/chambre-index.html';">
+                            En savoir +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Contrôles -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselActiviteMobile"
+                  data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Précédent</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselActiviteMobile"
+                  data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Suivant</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
 
+    </section>
+
+
+    <!-- Séparation-->
+    <div class="sep-main p-5 bg-image rounded-3 my-5">
+      <div class="d-flex flex-column justify-content-center align-items-center h-100">
+        <div class="text-white text-center"></div>
+      </div>
     </div>
 
-  </section>
-
-
-  <!-- Séparation-->
-  <div class="sep-main p-5 text-center bg-image rounded-3 my-5">
-    <div class="d-flex flex-column justify-content-center align-items-start h-100">
-      <div class="text-white text-start"></div>
-    </div>
-  </div>
-
-  <!-- témoignages-->
-  <section class="testimonial py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-5">Nos clients ont adoré</h2>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <div class="card-body text-center">
-              <img src="modules/repas/img-resto/avatar1.png" class="rounded-circle mb-3" alt="Client Avatar" />
-              <h5 class="card-title">Billy Gaytes</h5>
-              <p class="card-text text-muted">USA, Chicago</p>
-              <p class="card-text">
-                Notre séjour était fantastique ! Wonderful ! I'll be back,
-                c'est certain !"
-              </p>
-              <div class="text-warning">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
+    <!-- témoignages-->
+    <section class="testimonial py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center mb-5">Nos clients ont adoré</h2>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <img src="modules/repas/img-resto/avatar1.png" class="rounded-circle mb-3" alt="Client Avatar" />
+                <h5 class="card-title">Billy Gaytes</h5>
+                <p class="card-text text-muted">USA, Chicago</p>
+                <p class="card-text">
+                  Notre séjour était fantastique ! Wonderful ! I'll be back,
+                  c'est certain !"
+                </p>
+                <div class="text-warning">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <div class="card-body text-center">
-              <img src="modules/repas/img-resto/avatar2.png" class="rounded-circle mb-3" alt="Client Avatar" />
-              <h5 class="card-title">Elsa Gorithme</h5>
-              <p class="card-text text-muted">France, Nice</p>
-              <p class="card-text">
-                "Le personnel du gîte était au top et la qualité de la literie
-                est exceptionnelle !"
-              </p>
-              <div class="text-warning">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <img src="modules/repas/img-resto/avatar2.png" class="rounded-circle mb-3" alt="Client Avatar" />
+                <h5 class="card-title">Elsa Gorithme</h5>
+                <p class="card-text text-muted">France, Nice</p>
+                <p class="card-text">
+                  "Le personnel du gîte était au top et la qualité de la literie
+                  est exceptionnelle !"
+                </p>
+                <div class="text-warning">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <div class="card-body text-center">
-              <img src="modules/repas/img-resto/avatar3.png" class="rounded-circle mb-3" alt="Client Avatar" />
-              <h5 class="card-title">Olivia Jax</h5>
-              <p class="card-text text-muted">Vanuatu, Port-Vila</p>
-              <p class="card-text">
-                "Incroyable site et le personnel était merveilleux. Je
-                reviendrai !"
-              </p>
-              <div class="text-warning">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star"></i>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <img src="modules/repas/img-resto/avatar3.png" class="rounded-circle mb-3" alt="Client Avatar" />
+                <h5 class="card-title">Olivia Jax</h5>
+                <p class="card-text text-muted">Vanuatu, Port-Vila</p>
+                <p class="card-text">
+                  "Incroyable site et le personnel était merveilleux. Je
+                  reviendrai !"
+                </p>
+                <div class="text-warning">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
+  <pied-de-page>
+  </pied-de-page>
 
-  <pied-de-page></pied-de-page>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./js/navbar-main.js" defer></script>
   <script src="./js/navbar.js" defer></script>

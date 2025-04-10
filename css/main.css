@@ -11,6 +11,7 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
+  font-size: 1em;
 }
 
 h1,
@@ -38,12 +39,7 @@ button:hover {
 }
 
 /* Image de la page d'accueil */
-main {
-  margin-top: var(--hauteur-menu);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .img-accueil {
   max-height: 100%;
@@ -125,26 +121,17 @@ header {
 }
 
 /* BUNGALOWS */
-
-
 .bungjar-main {
   background-image: url('../modules/chambre/galerie/Bungalow-Jardin-01.png');
   background-size: cover;
-  /* Affiche l'image en entier */
-  background-repeat: no-repeat;
-  /* Évite la répétition de l'image */
-  background-position: center;
-  /* Centre l'image dans le bloc */
+  background-repeat: no-repeat;/ background-position: center;
 }
 
 .bungsea-main {
   background-image: url('../modules/chambre/galerie/Bungalow-Mer-01.png');
   background-size: cover;
-  /* Affiche l'image en entier */
   background-repeat: no-repeat;
-  /* Évite la répétition de l'image */
   background-position: center;
-  /* Centre l'image dans le bloc */
 }
 
 .main-item {

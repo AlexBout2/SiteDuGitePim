@@ -10,7 +10,9 @@ class Footer extends HTMLElement {
                     <div class="row">
                         <!-- Colonne 1 : Logo et description -->
                         <div class="col-md-3 mb-4">
-                            <img src="../../public/logo-gite-BLANC.png" alt="Logo Gîte Pim" width="200" class="mb-3">
+                        <a href="#" id="backToTop" aria-label="Retour en haut de page">
+                            <img src="../../public/logo-gite-BLANC.png" alt="Logo Gîte Pim" class="img-fluid mb-3 align-self-start" style="max-width: 50%;">
+                        </a>
                              <h6 class="text-uppercase fw-bold text-white mb-3">Contact</h6>
                             <p class="text-white"><i class="bi bi-geo-alt-fill me-2"></i> Îlot Pam, Poum</p>
                             <p class="text-white"><i class="bi bi-telephone-fill me-2"></i> +687 12 34 56</p>
@@ -49,8 +51,18 @@ class Footer extends HTMLElement {
                     </div>
                 </div>
             </footer>
+            <script>
+                document.getElementById('backToTop').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            </script>
+            
         `;
     }
 }
 
-customElements.define('pied-de-page', Footer);
+customElements.define('footer', Footer);

@@ -1,7 +1,9 @@
 .footer {
-  background: linear-gradient(90deg, #09012b, #605bf1); /* Dégradé */
+  background: linear-gradient(90deg, #09012b, #605bf1);
+  /* Dégradé */
   color: white;
   font-family: Arial, sans-serif;
+  font-size: 1em;
 }
 
 .footer h6 {
@@ -17,19 +19,22 @@
 }
 
 .footer a {
-  color: white; /* Couleur par défaut */
+  color: white;
+  /* Couleur par défaut */
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.3s ease-in-out;
 }
 
 .footer a:hover {
-  color: #ffc107; /* Jaune au survol */
+  color: #ffc107;
+  /* Jaune au survol */
   text-decoration: underline;
 }
 
 .footer p:hover {
-  color: #ffc107; /* Le texte interactif devient jaune au survol */
+  color: #ffc107;
+  /* Le texte interactif devient jaune au survol */
 }
 
 .footer .list-unstyled {
