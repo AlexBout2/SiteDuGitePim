@@ -9,7 +9,7 @@ class Footer extends HTMLElement {
                 <div class="container">
                     <div class="row">
                         <!-- Colonne 1 : Logo et description -->
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-4 col-sm-6 mb-4">
                         <a href="#" id="backToTop" aria-label="Retour en haut de page">
                             <img src="../../public/logo-gite-BLANC.png" alt="Logo Gîte Pim" class="img-fluid mb-3 align-self-start" style="max-width: 50%;">
                         </a>
@@ -20,7 +20,7 @@ class Footer extends HTMLElement {
                             
                         </div>
                         <!-- Colonne 2 : Navigation principale -->
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-4 col-sm-6 mb-4">
                             <h6 class="text-uppercase fw-bold text-white mb-3">Navigation</h6>
                             <ul class="list-unstyled">
                                 <li><a href="../../index.html" class="text-white text-decoration-none">Accueil</a></li>
@@ -39,7 +39,7 @@ class Footer extends HTMLElement {
                             </ul>
                         </div>
                         <!-- Colonne 3 : Contact et réseaux sociaux -->
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-4 col-12 mb-4">
                         <img src="../../public/cartepim.png" alt="lieux Gîte Pim" width="300" class="mb-3">
                            <h6 class="text-uppercase fw-bold text-white mt-4">Suivez-nous</h6>
                             <div>
@@ -65,4 +65,4 @@ class Footer extends HTMLElement {
     }
 }
 
-customElements.define('footer', Footer);
+customElements.define('pied-de-page', Footer);

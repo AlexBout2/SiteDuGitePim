@@ -10,27 +10,11 @@
     font-size: 0.9rem;
 }
 
-.btn-chambre-2 {
-    background-color: #605bf1;
-    color: white;
-    border: none;
-    border-radius: 80px;
-    padding: 10px 30px;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-size: 0.9rem;
-}
 
 /* Bouton Recherche */
 #btn-recherche {
     margin-top: 30px;
-    background-color:#fe8a24;
+    background-color: #fe8a24;
     color: white;
     border: none;
 }
-
-  
-  
-  
-  
-  
