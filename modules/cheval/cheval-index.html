@@ -18,8 +18,8 @@
     <section class="hero">
       <div class="container-fluid">
         <div class="row text-white">
-          <div class="col-4">
-            <h1 class="glass-effect ms-5 p-1 text-start"> Vivez la nature autrement:<br> à dos de cheval. </h1>
+          <div class=" col-md-4 col-12">
+            <h1 class="text-start glass-effect ms-5 mt-4 p-1"> Vivez la nature autrement:<br> à dos de cheval. </h1>
             <button type="button" class="btn-main" onclick="window.location.href='reservationCheval.html'">
               <a class="btn-reservation">Réserver</a>
             </button>
@@ -28,11 +28,11 @@
       </div>
     </section>
     <section class="presentation">
+      <h1 class="align-self-start m-3 col-12">
+        Vivez une aventure équestre inoubliable !
+      </h1>
       <div class="row">
         <div class="container-fluid">
-          <h1 class="align-self-start m-3 col-12">
-            Vivez une aventure équestre inoubliable !
-          </h1>
           <div class="presentation-content">
             <p class="fs-4 ms-3">
               Partez à la découverte de la faune et de la flore locales lors
@@ -49,36 +49,36 @@
     </section>
 
     <section class="guides">
-      <div class="container-fluid">
-        <div class="guide-row">
-          <div class="guide-img">
-            <img src="./Emma.jpg" alt="Emma et Nidguep" />
-          </div>
-          <div class="guide-content">
-            <h3>Emma et Nidguep (Matin)</h3>
-            <p>
-              Passionnée d'équitation et certifiée en randonnée, Emma guide les
-              groupes le matin avec son cheval Nidguepe, un compagnon calme et
-              réactif. Avec son expérience, elle assure une randonnée sereine et
-              enrichissante à travers des paysages magnifiques.
-            </p>
-          </div>
-        </div>
+      <div class="container-fluid mt-5">
+        <h1>Nos guides</h1>
+        <div class="text-white mt-4 mb-5 d-flex flex-column flex-md-row justify-content-around g-3">
 
-        <!-- Guide Lucas -->
-        <div class="guide-row reverse">
-          <div class="guide-img">
-            <img src="./Lucas.jpg" alt="Lucas et Papyrus" />
+          <!-- Guide Emma -->
+          <div class="guide-item emma col-12 col-md-5 rounded d-flex flex-column">
+            <div class="mb-3 mt-5 ms-md-4 ms-3 glass-effect text-bottom">
+              <h1 class="ms-5 text-shadow">Emma et Nidguep</h1>
+              <p class="p-2 rounded-3 fs-5">
+                Passionnée d'équitation et certifiée en randonnée, Emma guide les
+                groupes le matin avec son cheval Nidguep, un compagnon calme et
+                réactif. Avec son expérience, elle assure une randonnée sereine et
+                enrichissante à travers des paysages magnifiques.
+              </p>
+            </div>
           </div>
-          <div class="guide-content">
-            <h3>Lucas et Papyrus (Après-midi)</h3>
-            <p>
-              Lucas, certifié en gestion de randonnées, prend le relais
-              l'après-midi avec son cheval Papyrus, vif et élégant. Ensemble,
-              ils offrent une expérience immersive et conviviale, où chaque
-              randonneur profite pleinement de l'aventure.
-            </p>
+
+          <!-- Guide Lucas -->
+          <div class="guide-item lucas col-12 col-md-5 rounded">
+            <div class="mb-3 mt-5 ms-md-4 ms-3 glass-effect">
+              <h1 class="ms-5 text-shadow">Lucas et Papyrus</h1>
+              <p class="p-2 rounded-3 fs-5">
+                Lucas, certifié en gestion de randonnées, prend le relais
+                l'après-midi avec son cheval Papyrus, vif et élégant. Ensemble,
+                ils offrent une expérience immersive et conviviale, où chaque
+                randonneur profite pleinement de l'aventure.
+              </p>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -103,7 +103,9 @@
     </section>
 
     <section class="hero2">
-      <a href="./reservationCheval.html" class="btnCheval btn-secondary-custom btn-lg">Réserver</a>
+      <button type="button" class="btn-main mb-1" onclick="window.location.href='reservationCheval.html'">
+        <a href="./reservationCheval.html" class="btn-reservation">Réserver</a>
+      </button>
     </section>
   </main>
   <pied-de-page></pied-de-page>
