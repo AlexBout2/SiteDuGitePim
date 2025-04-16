@@ -114,6 +114,8 @@ header {
   height: 30vh;
 }
 
+
+/* button ****************/
 .btn-main {
   background-color: #FE8A24;
   padding: 20px 40px;
@@ -131,15 +133,33 @@ header {
 }
 
 .btn-reservation {
-  background-color: #fe8a24;
-  color: white;
-  border: none;
+  display: inline-block;
+  background-color: #FE8A24;
   border-radius: 80px;
-  padding: 10px 30px;
-  text-transform: uppercase;
+  padding: 15px 25px;
   text-decoration: none;
-  font-size: 0.9rem;
+  transition: all 0.3s ease-in-out;
 }
+
+.btn-reservation:hover {
+  background-color: #09012B;
+  transform: scale(1);
+  padding: 20px 30px;
+}
+
+.btn-text {
+  color: white;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.btn-reservation:hover .btn-text {
+  background-color: #FE8A24;
+  padding: 10px 30px;
+  border-radius: 80px;
+  display: inline-block;
+}
+
 
 /* BUNGALOWS */
 .bungjar-main {
