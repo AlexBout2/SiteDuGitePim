@@ -15,20 +15,20 @@
   <menu-top></menu-top>
   <main>
     <!-- Contenu principal -->
-    <section id="hero">
-      <div class="main-hero p-5 text-center bg-image">
-        <div class="d-flex flex-column justify-content-center align-items-start h-100">
-          <div class="text-white text-start">
-            <h1 class="mb-3 text-shadow text-white">Bienvenue au gîte Pim</h1>
-            <p class="mb-3 text-shadow text-white">
-              Venez vous ressourcer dans un cadre idyllique.
-            </p>
-            <button type="button" class="btn-main btn-lg fs-5"
-              onclick="window.location.href='modules/chambre/chambre-index.html';">
-              En savoir +
-            </button>
-          </div>
+    <section class="hero">
+      <div class="hero-container-bg align-content-center">
+        <div class="hero-text-box glass-effect col-6 ms-5">
+          <h1 class="text-shadow text-white">Bienvenue au gîte Pim</h1>
+          <h2 class="text-shadow text-white">
+            Nous chambres offres confort et calme
+          </h2>
         </div>
+        <button type="button" class="ms-3 btn-main fs-5"
+          onclick="window.location.href='modules/chambre/chambre-index.html';">
+          En savoir +
+        </button>
+      </div>
+
       </div>
     </section>
 
@@ -41,29 +41,33 @@
           <!-- Conteneur des spécialités avec espacement -->
           <div class="row mt-4 mb-5 d-flex flex-column flex-md-row justify-content-around g-3">
             <!-- Bungalows jardin -->
-            <div class="main-item bungjar-main col-12 col-md-5 rounded">
-              <h1 class="ms-5 mb-3 mt-5 text-white text-shadow">
-                Bungalow Jardin
-              </h1>
-              <p class="ms-5 me-5 text-white text-shadow fs-3">
-                Spacieux et confortables dans un cadre de verdoyant !
-              </p>
 
-              <button type="button" class="ms-5 btn-main btn-lg fs-5"
+            <div class="main-item bungjar-main col-12 col-md-5 rounded align-content-center">
+              <div class="glass-effect p-1">
+                <h1 class="ms-5 text-white text-shadow">
+                  Bungalow Jardin
+                </h1>
+                <p class="text-white text-shadow fs-3">
+                  Spacieux et confortables dans un cadre de verdoyant !
+                </p>
+              </div>
+              <button type="button" class="btn-main btn-lg fs-5"
                 onclick="window.location.href='modules/chambre/chambre-index.html';">
                 En savoir +
               </button>
             </div>
 
             <!-- Section Côté Mer -->
-            <div class="main-item bungsea-main col-12 col-md-5 rounded">
-              <h1 class="ms-5 mb-3 mt-5 text-white text-shadow">
-                Bungalow Vue Mer
-              </h1>
-              <h2 class="ms-5 me-5 text-white text-shadow fs-3">
-                Laissez vous bercer par le son des vagues sur la terrasse
-              </h2>
-              <button type="button" class="ms-5 btn-main btn-lg fs-5"
+            <div class="main-item bungsea-main col-12 col-md-5 rounded align-content-center">
+              <div class="glass-effect p-1">
+                <h1 class="ms-5 text-white text-shadow">
+                  Bungalow Vue Mer
+                </h1>
+                <h2 class="text-white text-shadow fs-3">
+                  Laissez vous bercer par le son des vagues sur la terrasse
+                </h2>
+              </div>
+              <button type="button" class="btn-main btn-lg fs-5"
                 onclick="window.location.href='modules/chambre/chambre-index.html';">
                 En savoir +
               </button>

@@ -93,6 +93,15 @@ header {
   align-items: flex-start;
 }
 
+.hero .hero-container-bg {
+  background-image: url('../public/hero-main.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 70vh;
+}
+
+
+
 /* Styles du texte hero */
 .hero-text-box {
   padding: 0.5rem;
@@ -109,12 +118,7 @@ header {
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 1);
 }
 
-.main-hero {
-  background-image: url('../public/hero-main.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 70vh;
-}
+
 
 .sep-main {
   background-image: url('../public/cta.png');
