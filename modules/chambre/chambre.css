@@ -18,3 +18,10 @@
     color: white;
     border: none;
 }
+
+
+.hero .hero-container {
+    background-image: url("./galerie/Hero-01.jpg");
+    background-position: 50% 50%;
+    height: 70vh;
+}

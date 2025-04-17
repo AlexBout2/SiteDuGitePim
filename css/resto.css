@@ -3,179 +3,181 @@
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 1);
 }
 
-.resto-hero {
-    background-image: url('../modules/repas/img-resto/pim-resto-hero.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    height: 70vh;
+.hero .hero-container {
+  background-image: url('../modules/repas/img-resto/pim-resto-hero.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 70vh;
 }
 
 .resto-resa-hero {
-  background-image: url('../modules/repas/img-resto/resa-hero.jpg'); 
-  background-size: cover; 
-  background-position: center; 
+  background-image: url('../modules/repas/img-resto/resa-hero.jpg');
+  background-size: cover;
+  background-position: center;
   height: 70vh;
 }
 
 .resto-bar {
-    background-image: url('../modules/repas/img-resto/bar.webp'); 
-    background-size: cover; 
-    background-position: center; 
-    height: 70vh;
+  background-image: url('../modules/repas/img-resto/bar.webp');
+  background-size: cover;
+  background-position: center;
+  height: 70vh;
 }
 
 .btn-resto {
-    background-color: #FE8A24; 
-    padding: 20px 40px; 
-    border-radius: 80px; 
-    color: white; 
-    font-size: 1rem; 
-    border: none; 
-    transition: all 0.3s ease-in-out; 
-  }
-  
-  .btn-resto:hover {
-    background-color: #09012B; 
-    color: white; 
-    transform: scale(1.1); 
-  }
-
-  .image-container {
-    position: relative; 
-    width: 100%; 
+  background-color: #FE8A24;
+  padding: 20px 40px;
+  border-radius: 80px;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  transition: all 0.3s ease-in-out;
 }
-  
-  .barimage {
-    display: block;
-    width: 95%; 
-    height: 50vh;
-    object-fit: cover;
-  }
-  
+
+.btn-resto:hover {
+  background-color: #09012B;
+  color: white;
+  transform: scale(1.1);
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+}
+
+.barimage {
+  display: block;
+  width: 95%;
+  height: 50vh;
+  object-fit: cover;
+}
+
 /* Image du cocktail */
 .cocktail-image {
-  position: absolute; 
-  top: 50%; 
-  right: 5%; 
-  transform: translateY(-50%); 
-  width: 35%; 
-  object-fit: contain; 
-  height: auto; 
-  z-index: 10; 
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: 35%;
+  object-fit: contain;
+  height: auto;
+  z-index: 10;
 }
-  
-   /* Repas */
+
+/* Repas */
 .steakimage {
   display: block;
-  width: 95%; 
+  width: 95%;
   height: 50vh;
   object-fit: cover;
 }
 
 .meat {
-  background-image: url('../modules/repas/img-resto/meat.jpg'); 
+  background-image: url('../modules/repas/img-resto/meat.jpg');
 }
 
 .seafood {
-  background-image: url('../modules/repas/img-resto/fruits-de-mer-pim.jpeg'); 
+  background-image: url('../modules/repas/img-resto/fruits-de-mer-pim.jpeg');
 }
+
 .specialite-item {
-height: 60vh;
+  height: 60vh;
 }
 
 #meteo {
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  
+
+
   width: 100vw;
   height: 30vh;
 
-  
-  background-color: #020111; 
-  
+
+  background-color: #020111;
+
   padding-top: 40px;
   margin-top: 0;
 }
 
 #form {
-  background-image: url('../modules/repas/img-resto/fond-resa.jpg'); 
-  background-size: cover; 
-  background-position: center; 
+  background-image: url('../modules/repas/img-resto/fond-resa.jpg');
+  background-size: cover;
+  background-position: center;
   height: 100vh;
 
 }
 
-        /* Style pour le calendrier */
-        #calendar {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr); /* 7 colonnes pour chaque jour de la semaine */
-          gap: 10px;
-          margin-top: 20px;
-      }
+/* Style pour le calendrier */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* 7 colonnes pour chaque jour de la semaine */
+  gap: 10px;
+  margin-top: 20px;
+}
 
-      .calendar-day {
-          padding: 10px;
-          text-align: center;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          background-color: #f8f9fa;
-          cursor: pointer;
-      }
+.calendar-day {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
 
-      .calendar-day.selected {
-          background-color: #007bff;
-          color: white;
-      }
+.calendar-day.selected {
+  background-color: #007bff;
+  color: white;
+}
 
-      .calendar-day.reserved {
-          background-color: #dc3545;
-          color: white;
-      }
+.calendar-day.reserved {
+  background-color: #dc3545;
+  color: white;
+}
 
-      .calendar-day:hover {
-          background-color: #e9ecef;
-      }
+.calendar-day:hover {
+  background-color: #e9ecef;
+}
 
-      .calendar-header {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          text-align: center;
-          font-weight: bold;
-          margin-bottom: 10px;
-      }
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-      .calendar-column {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-      }
+.calendar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-      .service {
-          margin-top: 5px;
-          font-size: 0.8rem;
-      }
+.service {
+  margin-top: 5px;
+  font-size: 0.8rem;
+}
 
-      .service.midi {
-          background-color: #28a745;
-          color: white;
-      }
+.service.midi {
+  background-color: #28a745;
+  color: white;
+}
 
-      .service.soir {
-          background-color: #dc3545;
-          color: white;
-      }
+.service.soir {
+  background-color: #dc3545;
+  color: white;
+}
 
-      .calendar-navigation {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 20px;
-      }
+.calendar-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
 
 @media (max-width: 1024px) {
   .cocktail-image {
-      display:none;
+    display: none;
   }
 }

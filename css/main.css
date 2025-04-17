@@ -39,7 +39,6 @@ button:hover {
 }
 
 .glass-effect {
-  color: white;
   background: rgba(75, 74, 74, 0.3);
   backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -74,27 +73,37 @@ header {
   background-color: var(--primary-t);
 }
 
-/* Sections */
 .hero {
-  margin-top: var(--hauteur-menu);
-  background-color: transparent;
-
-  h1 {
-    text-align: center;
-  }
+  min-height: 70vh;
+  margin: 0;
+  position: relative;
 }
 
-.activite {
-  background-color: transparent;
-}
-
-.resa {
+.hero-container {
+  padding: 3rem;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
   text-align: center;
-  background-color: transparent;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Styles du texte hero */
+.hero-text-box {
+  padding: 0.5rem;
+  text-align: left;
+  margin-bottom: 1rem;
+  color: white;
 }
 
 
-/* HERO */
+
+/* HERO ***/
 
 .text-shadow {
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 1);

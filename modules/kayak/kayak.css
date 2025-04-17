@@ -5,6 +5,7 @@
 body {
     background-color: transparent;
 }
+
 h4 {
     text-align: center;
     color: var(--primary);
@@ -16,49 +17,30 @@ h4 {
     border-radius: 200px;
 }
 
-/* Bannière HERO */
-.hero {
-    background-image: url("./banniere.png");
-    min-height: 20vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: transparent;
-    margin-top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    h1 {
-        font-weight: bold;
-        padding-left: 20%;
-        width: fit-content;
-        margin: auto;
-        margin-bottom: 0;
-        color: var(--primary);
-    }
-    span {
-        padding-left: 20%;
-        margin-bottom: 30px;
-    }
+
+.hero .hero-container {
+    background-image: url("./HeroKayak.webp");
+    background-position: 40% 80%;
+    height: 70vh;
+
 }
 
-/* Section activité */
-.activite {
-    width: calc(100% - 40px);
-    margin: auto;
-    background-color: transparent;
-}
 
 /* Présentation de l'activité */
 #presentation {
     height: fit-content;
-    * { color: var(--primary); }
+
+    * {
+        color: var(--primary);
+    }
+
     ul {
         width: fit-content;
         margin: auto;
         font-weight: bold;
         font-style: italic;
     }
+
     div {
         margin-top: 20px;
         background-color: rgba(0, 0, 0, 0.1);
@@ -75,12 +57,14 @@ h4 {
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
     }
+
     .carousel {
         background: transparent;
         text-align: center;
         height: 50vh;
         margin: 15px 0 35px;
     }
+
     .panneau {
         text-align: center;
         width: 100%;
@@ -89,14 +73,21 @@ h4 {
         counter-increment: panneau;
         border-radius: 20px;
     }
-    img { height: 100%; }
-    .carousel.is-fullscreen .panneau { height: 100%; }
+
+    img {
+        height: 100%;
+    }
+
+    .carousel.is-fullscreen .panneau {
+        height: 100%;
+    }
 }
 
 /* Consigne de sécurité */
 #securite {
     height: fit-content;
 }
+
 #securite img {
     width: 90%;
 }
@@ -111,22 +102,32 @@ h4 {
 }
 
 /* Bouton "call to action" */
-.hero, .resa {
+.hero,
+.resa {
     .btn {
         background-color: var(--event);
         color: var(--primary);
     }
+
     .btn:hover {
         background-color: var(--primary);
         color: white;
     }
 }
-.btn-danger, .btn-success {
+
+.btn-danger,
+.btn-success {
     font-weight: bold;
     border-width: 2px;
 }
-.btn-danger { color: red !important; }
-.btn-success { color: green !important; }
+
+.btn-danger {
+    color: red !important;
+}
+
+.btn-success {
+    color: green !important;
+}
 
 .formulaire {
     background-color: rgba(0, 0, 0, 0.1);
@@ -134,6 +135,7 @@ h4 {
     padding: 30px;
     width: fit-content;
     margin: auto;
+
     div {
         margin: 10px;
     }

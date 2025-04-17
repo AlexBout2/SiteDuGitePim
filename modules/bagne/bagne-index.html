@@ -12,59 +12,23 @@
   <link rel="icon" type="image/x-icon" href="../../public/logo.ico" />
   <!-- Custom Components -->
   <style>
-    /* Correction pour supprimer l'espace entre la navbar et le hero */
-    body {
-      margin: 0;
-      padding: 0;
+    .hero .hero-container {
+      background: url('./photo/feu.png');
+      background-position: 50% 50%;
+      height: 70vh;
     }
 
-    .hero {
-      margin-top: 0;
-      padding-top: 70px;
-      /* Ajustement si la navbar est fixe */
+    .resa {
+      background: url('./photo/feu.png');
+      background-position: 50% 50%;
+      height: 50vh;
     }
 
-    /* Section de défilement */
-    .scrolling-text-section {
-      position: relative;
-      overflow: hidden;
-      height: 150px;
-      /* Ajuste la hauteur selon tes besoins */
-    }
+    .cta-footer {
+      background: url('./photo/feu.png');
+      height: 40vh;
+      background-position: 50% 40%;
 
-    /* Conteneur du texte défilant */
-    .scrolling-text-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-
-    /* Texte défilant */
-    .scrolling-text {
-      display: inline-flex;
-      animation: scrollText 10s linear infinite;
-    }
-
-    .scrolling-text span {
-      font-size: 2.5rem;
-      /* Taille du texte */
-      font-weight: bold;
-      color: #ffffff;
-    }
-
-    /* Animation du texte */
-    @keyframes scrollText {
-      0% {
-        transform: translateX(100%);
-      }
-
-      100% {
-        transform: translateX(-100%);
-      }
     }
   </style>
 </head>
@@ -74,43 +38,28 @@
   <menu-top></menu-top>
 
   <!-- Section Hero -->
-  <section class="hero text-white py-5" style="
-        background: url('./photo/feu.png') no-repeat center center;
-        background-size: cover;
-        height: 400px;
-        display: flex;
-        align-items: center;
-      ">
-    <div class="container">
-      <div class="p-4" style="max-width: 600px">
-        <h1 class="display-5 fw-bold mb-4 text-white text-start glass-effect ps-2">
-          Découvrez les secrets du passé, là où l'histoire ne dort jamais.
-        </h1>
-        <a href="bagne-form.html" class="btn-reservation">
-          <span class="btn-text">RÉSERVEZ</span>
-        </a>
+
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-text-box glass-effect">
+        <h1 class="text-shadow text-white">Découvrez les secrets du passé.</h1>
+        <h2 class="text-shadow text-white">
+          Là où l'histoire ne dort jamais.
+        </h2>
       </div>
+      <a href='./bagne-form.html' class="btn-reservation">
+        <span class="btn-text">RÉSERVEZ</span>
+      </a>
     </div>
   </section>
 
-  <!-- Section Défilement de Texte avec fond noir -->
-  <!-- <section class="scrolling-text-section" style="background: #000; color: #ffffff">
-    <div class="scrolling-text-wrapper">
-      <div class="scrolling-text">
-        <span>Plongez dans l'histoire </span>
-        <span>Découvrez les vestiges du bagne, </span>
-        <span>Des guides passionnés </span>
-        <span>Réservez dès aujourd'hui </span>
-      </div>
-    </div>
-  </section> -->
 
   <!-- Introduction Section -->
   <section class="container py-5">
     <div class="row align-items-center">
       <div class="col-md-6">
         <h2 class="fw-bold mb-4">Plongez dans l'Histoire</h2>
-        <p>
+        <p class="fs-4">
           Avant de commencer la visite, laissez-vous transporter par
           l'atmosphère unique de ces vestiges du passé. Chaque pierre raconte
           une histoire qui ne demande qu'à être entendue.
@@ -131,13 +80,13 @@
         </div>
         <div class="col-md-6">
           <h2 class="fw-bold mb-4">Une expérience unique</h2>
-          <p>
+          <p class="fs-4">
             Explorez les ruines et découvrez les récits poignants des anciens
             détenus. La visite du bagne est bien plus qu'un simple voyage dans
             le passé : c'est une immersion dans une histoire riche en
             émotions.
           </p>
-          <ul class="list-group list-group-flush">
+          <ul class="list-group list-group-flush fs-5">
             <li class="list-group-item">
               ⏳ Durée de la visite : 90 minutes
             </li>
@@ -149,38 +98,21 @@
     </div>
   </section>
 
-  <!-- Réservation Section -->
-  <section class="text-center py-5" style="background: linear-gradient(90deg, #ffee88, #ffa500); color: #333">
-    <div class="container">
-      <h2 class="fw-bold mb-4">Réservez votre visite</h2>
-      <div id="textCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <p class="fs-5">
-              "Découvrez une histoire émouvante au cœur du bagne."
-            </p>
-          </div>
-          <div class="carousel-item">
-            <p class="fs-5">
-              "Une expérience unique qui restera gravée dans votre mémoire."
-            </p>
-          </div>
-          <div class="carousel-item">
-            <p class="fs-5">
-              "Plongez dans les récits poignants des anciens détenus."
-            </p>
-          </div>
-          <div class="carousel-item">
-            <p class="fs-5">
-              "Un guide expérimenté pour vous accompagner dans ce voyage dans
-              le passé."
-            </p>
-          </div>
+
+
+  <section class="cta-footer d-flex align-items-center">
+    <div class="container-fluid text-shadow">
+      <div class="text-white col-12 col-md-8 align-self-center mx-auto glass-effect text-center">
+        <h1 class="text-shadow text-white">Réservez votre visite</h1>
+        <h2 class="text-shadow text-white">
+          Découvrez une histoire émouvante au cœur du bagne.
+        </h2>
+        <div class="d-flex justify-content-center mb-3">
+          <a href='./bagne-form.html' class="btn-reservation">
+            <span class="btn-text">RÉSERVEZ</span>
+          </a>
         </div>
       </div>
-      <a href="bagne-form.html" class="btn-reservation">
-        <span class="btn-text">RÉSERVEZ</span>
-      </a>
     </div>
   </section>
 
