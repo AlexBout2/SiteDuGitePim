@@ -1,64 +1,68 @@
-.bg-primary {
-    background: linear-gradient(90deg, #09012bf8, #6460da);
-    color:azure;
-    padding-block: 0.5em;
-    text-align: center;
+.hero .hero-container {
+    background-image: url('../../public/children-1547261_1920.jpg');
+    background-position: 50% 50%;
+    height: 70vh;
 }
 
-.card-img-top {
-    width: 100%; 
-    height: 200px; 
-    object-fit: cover; 
-}
- 
-.btn-primary {
-    background-color: #605BF1;
-    border-color: #605BF1; 
-    color: white;
+/* activite *****/
+
+.activite {
+    min-height: 70vh;
+    margin: 0;
+    position: relative;
+
 }
 
-.btn-primary:hover {
-    background-color: #FE8A24;
-    border-color: #FE8A24; 
-    color: whitesmoke;
-}
-
-.btn-warning {
-    background-color: #d85619;
-    border-color: #d85619; 
-    color: white;
-}
-
-.btn-warning:hover {
-    background-color: #09012bf8;
-    border-color: #09012bf8; 
-    color: whitesmoke;
-}
-
-.resa {
-    background: white
-}
-
-.hero {
-    height: 40ch;
-    background-image: url('../../public/children-1547261_1920.jpg'); 
-    background-size: cover; 
-    background-position: center;
-    margin-block-start: 0vh;
-}
-.hero-resa {
-    height: 35vh;
-    background-position: center;
-    background-repeat: no-repeat;
+.activite .activite-container {
+    background-image: url('../../public/1280px-Fallujah_sack_race.jpg');
+    padding: 3rem;
+    height: 100%;
+    width: 100%;
     background-size: cover;
-    background-color: transparent;
+    background-position: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-.been-race {
-    height: 30vh;
-    background-position: center;
-    background-repeat: no-repeat;
+/* Styles du texte hero */
+.activite-text-box {
+    padding: 0.5rem;
+    text-align: left;
+    margin-bottom: 1rem;
+    color: white;
 }
-.border-info-subtle {
-    border-color : linear-gradient(90deg, #09012bf8, #6460da);
+
+.julie {
+    background-image: url('../../public/woman-showing-colored-picture.jpg');
+    background-size: cover;
+    background-position: center;
+    background-position: 35% 50%;
+    height: 60vh;
+}
+
+.emilie {
+    background-image: url('../../public/old-teacher.jpg');
+    background-size: cover;
+    background-position: center;
+    background-position: 35% 50%;
+    height: 60vh;
+
+}
+
+.reservations {
+    min-height: 50vh;
+    margin: 0;
+    position: relative;
+
+}
+
+.reservations .garderie-container {
+    background-image: url('../../public/AfterSchool.webp');
+    background-size: cover;
+    background-position: center;
+    background-position: 35% 50%;
+    height: 30h;
 }
