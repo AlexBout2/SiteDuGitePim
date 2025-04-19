@@ -76,7 +76,7 @@ header {
 .hero {
   min-height: 70vh;
   margin: 0;
-  position: relative;
+  position: flex;
 }
 
 .hero-container {
@@ -94,6 +94,16 @@ header {
 }
 
 .hero .hero-container-bg {
+  padding: 3rem;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   background-image: url('../public/hero-main.jpg');
   background-size: cover;
   background-position: center;
@@ -121,18 +131,19 @@ header {
 
 
 .sep-main {
-  background-image: url('../public/cta.png');
+  background-image: url('../public/blue-kayak-sandy-sea-shore.webp');
   background-size: cover;
-  background-position: center;
+  background-position: 100% 50%;
   height: 30vh;
 }
 
 
 /* button ****************/
 .btn-main {
+  display: inline-block;
   background-color: #FE8A24;
-  padding: 20px 40px;
   border-radius: 80px;
+  padding: 15px 25px;
   color: white;
   font-size: 1rem;
   border: none;
@@ -141,9 +152,11 @@ header {
 
 .btn-main:hover {
   background-color: #09012B;
+  transform: scale(1);
+  padding: 20px 30px;
   color: white;
-  transform: scale(1.1);
 }
+
 
 .btn-reservation {
   display: inline-block;
@@ -178,7 +191,8 @@ header {
 .bungjar-main {
   background-image: url('../modules/chambre/galerie/Bungalow-Jardin-01.png');
   background-size: cover;
-  background-repeat: no-repeat;/ background-position: center;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .bungsea-main {
