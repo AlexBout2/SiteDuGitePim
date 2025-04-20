@@ -115,6 +115,13 @@ h4 {
     }
 }
 
+
+.img-resa-kayak {
+    background-image: url("./empty-kayak-boat-ship-tropical-beach-sea.webp");
+    background-position: 40% 80%;
+    height: 40vh;
+}
+
 .btn-danger,
 .btn-success {
     font-weight: bold;
