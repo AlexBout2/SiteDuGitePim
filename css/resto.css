@@ -25,19 +25,22 @@
 }
 
 .btn-resto {
+  display: inline-block;
   background-color: #FE8A24;
-  padding: 20px 40px;
+  padding: 15px 25px;
   border-radius: 80px;
-  color: white;
-  font-size: 1rem;
   border: none;
+  text-decoration: none;
+  font-size: 1rem;
+  color: white;
   transition: all 0.3s ease-in-out;
 }
 
 .btn-resto:hover {
   background-color: #09012B;
   color: white;
-  transform: scale(1.1);
+  transform: scale(1);
+
 }
 
 .image-container {
@@ -47,22 +50,36 @@
 
 .barimage {
   display: block;
-  width: 95%;
+  position: relative;
+  background-image: url('../modules/repas/img-resto/bar.webp');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
   height: 50vh;
-  object-fit: cover;
+}
+
+.cocktail-image {
+  position: absolute;
+  background-image: url('../modules/repas/img-resto/cocktail.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: 50%;
+  right: 5%;
+  width: 35%;
+  height: 150%;
+  object-fit: contain;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .cocktail-image {
+    width: 40%;
+    z-index: 2;
+  }
 }
 
 /* Image du cocktail */
-.cocktail-image {
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  transform: translateY(-50%);
-  width: 35%;
-  object-fit: contain;
-  height: auto;
-  z-index: 10;
-}
 
 /* Repas */
 .steakimage {
