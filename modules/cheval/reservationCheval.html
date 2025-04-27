@@ -1,162 +1,139 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <title>Réservation Randonnée Équestre - Gîte Pim</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" media="screen" href="./reservationCheval.css">
-        <link rel="stylesheet" media="screen" href="../../css/main.css">
-        <link rel="icon" type="image/x-icon" href="../../public/logo.ico">
-        <!-- Bootstrap 5 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-        <script src="../../js/navbar.js" type="text/javascript" defer></script>
-        <script src="../../js/footer.js" type="text/javascript" defer></script>
-    </head>
-    <body>
-        <menu-top></menu-top>
-        <section class="hero2">
-        </section>
-        
-        <section class="reservation">
-            <div class="container">
-                <div class="row">
-                    <!-- Formulaire de réservation -->
-                    <div class="col-md-8">
-                        <h2>Réservation de randonnée équestre</h2>
-                        <form class="reservation-form">
-                            <!-- Numéro de réservation -->
-                            <div class="form-group mb-3">
-                                <label for="reservation-number">Numéro de réservation du gîte</label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="reservation-number" 
-                                       placeholder="Entrez votre numéro de réservation"
-                                       required>
-                            </div>
 
-                            <!-- Sélection du cheval -->
-                            <div class="form-group mb-3">
-                                <label for="selected-horse">Cheval sélectionné</label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="selected-horse" 
-                                       readonly 
-                                       placeholder="Cliquez sur un cheval ci-dessous">
-                            </div>
+<head>
+    <meta charset="utf-8">
+    <title>Réservation Randonnée Équestre - Gîte Pim</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" media="screen" href="./reservationCheval.css">
+    <link rel="stylesheet" media="screen" href="../../css/main.css">
+    <link rel="icon" type="image/x-icon" href="../../public/logo.ico">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
 
-                            <div class="form-group mb-3">
-                                <label for="date">Date de la randonnée</label>
-                                <input type="date" class="form-control" id="date" required>
-                            </div>
+<body>
+    <menu-top></menu-top>
+    <section class="hero2">
+    </section>
 
-                            <div class="form-group mb-3">
-                                <label for="periode">Période</label>
-                                <select class="form-control" id="periode" required>
-                                    <option value="">Sélectionnez une période</option>
-                                    <option value="matin">Matin de 9h à 11h avec Emma</option>
-                                    <option value="aprem">Après-midi  de 14h à 16h avec Lucas</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="btn btn-secondary-custom">Réserver</button>
-                        </form>
-
-                        <!-- Calendrier des disponibilités -->
-                        <div class="calendar-container mt-4">
-                            <!-- Le calendrier sera inséré ici via JavaScript -->
+    <section class="reservation">
+        <div class="container-fluid">
+            <h1 class="mb-5 text-center">Réservation de randonnée équestre</h1>
+            <div class="row">
+                <div class="col-6 mx-auto reservation-form">
+                    <!-- Numéro de réservation -->
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" id="reservation-number"
+                            placeholder="Entrez votre numéro de séjour exemple: SE2411001" required>
+                    </div>
+                    <div class="d-flex justify-content-center mb-3">
+                        <div class="btn-reservation sejour-validation">
+                            <span class="btn-text">
+                                Confirmer votre numéro de séjour
+                            </span>
                         </div>
-                    </div>
-
-                    <!-- Toast Météo -->
-                    <div class="toast-container position-fixed top-50 end-0 translate-middle-y p-3">
-                        <div class="toast" role="alert" id="meteoToast">
-                            <div class="toast-header">
-                                <strong class="me-auto">Météo</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                            </div>
-                            <div class="toast-body">
-                                <!-- Contenu météo -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section chevaux -->
-                <h3 class="text-center mt-5 mb-4">Sélectionnez votre compagnon de route</h3>
-                <div class="horses-grid">
-                    <div class="horse-card">
-                        <img src="./Apache.jpg" alt="Apache">
-                        <p>Apache</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Mustang.jpg" alt="Mustang">
-                        <p>Mustang</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Sahara.jpg" alt="Sahara">
-                        <p>Sahara</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Comete.jpg" alt="Comète">
-                        <p>Comète</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Eclair.jpg" alt="Eclair">
-                        <p>Eclair</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Paillette.jpg" alt="Paillette">
-                        <p>Paillette</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Kone.jpg" alt="Koné">
-                        <p>Koné</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Confiture.jpg" alt="Confiture">
-                        <p>Confiture</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Foster.jpg" alt="Foster">
-                        <p>Foster</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Iananoui.jpg" alt="Inanouï">
-                        <p>Inanouï</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Prince.jpg" alt="Prince">
-                        <p>Prince</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Buster.jpg" alt="Buster">
-                        <p>Buster</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Charly.jpg" alt="Charly">
-                        <p>Charly</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Sao.jpg" alt="Sao">
-                        <p>Sao</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Tim.jpg" alt="Tim">
-                        <p>Tim</p>
-                    </div>
-                    <div class="horse-card">
-                        <img src="./Tam.jpg" alt="Tam">
-                        <p>Tam</p>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="row">
+                <div class="fullForm"></div>
+            </div>
 
-        <pied-de-page></pied-de-page>
 
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="./reservation.js"></script>
-    </body>
+            <!-- Toast Météo -->
+            <div class="toast-container position-fixed top-50 end-0 translate-middle-y p-3">
+                <div class="toast" role="alert" id="meteoToast">
+                    <div class="toast-header">
+                        <strong class="me-auto">Météo</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        <!-- Contenu météo -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section chevaux -->
+        <h1 class="text-center">Sélectionnez votre compagnon de route</h1>
+        <div class="horses-grid col-7 mx-auto">
+            <div class="horse-card">
+                <img src="./media/Apache.jpg" alt="Apache">
+                <p>Apache</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Mustang.jpg" alt="Mustang">
+                <p>Mustang</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Sahara.jpg" alt="Sahara">
+                <p>Sahara</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Comete.jpg" alt="Comète">
+                <p>Comète</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Eclair.jpg" alt="Eclair">
+                <p>Eclair</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Paillette.jpg" alt="Paillette">
+                <p>Paillette</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Kone.jpg" alt="Koné">
+                <p>Koné</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Confiture.jpg" alt="Confiture">
+                <p>Confiture</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Foster.jpg" alt="Foster">
+                <p>Foster</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Iananoui.jpg" alt="Inanouï">
+                <p>Inanouï</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Prince.jpg" alt="Prince">
+                <p>Prince</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Buster.jpg" alt="Buster">
+                <p>Buster</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Charly.jpg" alt="Charly">
+                <p>Charly</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Sao.jpg" alt="Sao">
+                <p>Sao</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Tim.jpg" alt="Tim">
+                <p>Tim</p>
+            </div>
+            <div class="horse-card">
+                <img src="./media/Tam.jpg" alt="Tam">
+                <p>Tam</p>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <pied-de-page></pied-de-page>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/navbar.js" type="text/javascript" defer></script>
+    <script src="../../js/footer.js" type="text/javascript" defer></script>
+    <script src="./cheval-form-resa.js"></script>
+</body>
+
 </html>
