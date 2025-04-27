@@ -142,7 +142,7 @@ header {
 .btn-main {
   display: inline-block;
   background-color: #FE8A24;
-  border-radius: 80px;
+  border-radius: 5px;
   padding: 15px 25px;
   color: white;
   font-size: 1rem;
@@ -161,7 +161,7 @@ header {
 .btn-reservation {
   display: inline-block;
   background-color: #FE8A24;
-  border-radius: 80px;
+  border-radius: 5px;
   padding: 15px 25px;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
@@ -170,7 +170,7 @@ header {
 .btn-reservation:hover {
   background-color: #09012B;
   transform: scale(1);
-  padding: 20px 30px;
+  padding: 15px 20px;
 }
 
 .btn-text {
@@ -182,7 +182,7 @@ header {
 .btn-reservation:hover .btn-text {
   background-color: #FE8A24;
   padding: 10px 30px;
-  border-radius: 80px;
+  border-radius: 5px;
   display: inline-block;
 }
 
@@ -209,8 +209,8 @@ header {
 /* CAROUSEL */
 .btn-main-small {
   background-color: #FE8A24;
-  padding: 4px 15px;
-  border-radius: 80px;
+  padding: 4px 5px;
+  border-radius: 5px;
   color: white;
   font-size: 0.3rem;
   border: none;
@@ -220,13 +220,13 @@ header {
 .btn-main-small:hover {
   background-color: #09012B;
   color: white;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   background-color: #FE8A24;
-  border-radius: 50%;
+  border-radius: 30%;
   padding: 15px;
   opacity: 1 !important;
   transition: all 0.3s ease-in-out;
