@@ -251,3 +251,24 @@ header {
   background-color: #09012B;
   transform: scale(1.1);
 }
+
+/* Réservation  ***********/
+
+
+
+.hero-resa {
+  min-height: 30vh;
+  margin: 0;
+  position: flex;
+}
+
+.hero-resa-container-bg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
