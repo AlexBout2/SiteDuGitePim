@@ -43,12 +43,12 @@ class Footer extends HTMLElement {
                 </ul>
             </div>
             <!-- Colonne 3 : Contact et réseaux sociaux -->
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 mt-5 mx-auto text-center"">
                 <img src="../../public/cartepim.png" alt="lieux Gîte Pim" width="300" class="mb-3">
-                <h6 class="text-uppercase fw-bold text-white mt-4">Suivez-nous</h6>
+                <h6 class="text-uppercase fw-bold text-white">Suivez-nous</h6>
                 <div>
-                    <a href="#" class="text-white me-3"><img src="../../public/facebook.png" alt="Facebook" width="24"></a>
-                    <a href="#" class="text-white me-3"><img src="../../public/instagram.png" alt="Instagram" width="24"></a>
+                    <a href="#" class="text-white"><img src="../../public/facebook.png" alt="Facebook" width="24"></a>
+                    <a href="#" class="text-white"><img src="../../public/instagram.png" alt="Instagram" width="24"></a>
                     <a href="#" class="text-white"><img src="../../public/twitter.png" alt="Twitter" width="24"></a>
                 </div>
             </div>

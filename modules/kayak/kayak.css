@@ -27,29 +27,6 @@ h4 {
 
 
 /* Présentation de l'activité */
-#presentation {
-    height: fit-content;
-
-    * {
-        color: var(--primary);
-    }
-
-    ul {
-        width: fit-content;
-        margin: auto;
-        font-weight: bold;
-        font-style: italic;
-    }
-
-    div {
-        margin-top: 20px;
-        background-color: rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        border-radius: 20px;
-        max-height: 30vh;
-        overflow-y: auto;
-    }
-}
 
 /* Carousel */
 #galerie-kayak {
@@ -62,26 +39,112 @@ h4 {
         background: transparent;
         text-align: center;
         height: 50vh;
-        margin: 15px 0 35px;
+
     }
 
     .panneau {
+        position: relative;
         text-align: center;
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.1);
         counter-increment: panneau;
         border-radius: 20px;
+        overflow: hidden;
     }
 
-    img {
+    .panneau img {
         height: 100%;
+    }
+
+    .panneau-texte {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        color: white;
+        text-align: left;
     }
 
     .carousel.is-fullscreen .panneau {
         height: 100%;
     }
+
 }
+
+/* Styles spécifiques pour le carousel mobile */
+#galerie-kayak-mobile {
+    margin: 0 auto;
+    padding: 0;
+}
+
+#galerie-kayak-mobile .carousel {
+    height: auto;
+    margin-bottom: 20px;
+}
+
+#galerie-kayak-mobile .panneau {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 0 5px;
+    overflow: hidden;
+}
+
+#galerie-kayak-mobile .panneau img {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: cover;
+    display: block;
+}
+
+#galerie-kayak-mobile .panneau-texte {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    font-size: 0.85rem;
+}
+
+#galerie-kayak-mobile .mobile-text {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0;
+    margin: 0;
+}
+
+/* Assurez-vous que le texte est lisible */
+#galerie-kayak-mobile .mobile-text p {
+    margin: 0;
+    line-height: 1.3;
+    font-size: 0.9rem;
+}
+
+/* Styles pour les classes de visibilité responsive */
+@media (max-width: 767px) {
+    .not-mobile {
+        display: none !important;
+    }
+
+    .mobile {
+        display: block !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .not-mobile {
+        display: block !important;
+    }
+
+    .mobile {
+        display: none !important;
+    }
+}
+
+
 
 /* Consigne de sécurité */
 #securite {
@@ -119,7 +182,7 @@ h4 {
 .img-resa-kayak {
     background-image: url("./empty-kayak-boat-ship-tropical-beach-sea.webp");
     background-position: 40% 80%;
-    height: 40vh;
+    height: 50vh;
 }
 
 .btn-danger,
