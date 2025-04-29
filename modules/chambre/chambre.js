@@ -1,102 +1,101 @@
-let chambres = [];
+document.addEventListener('DOMContentLoaded', function () {
+  // Éléments du DOM
+  const confirmButton = document.querySelector('.sejour-validation');
+  const confirmationDiv = document.querySelector('.confirm-reas'); // Correction du sélecteur
+  const startDateInput = document.getElementById('date-start');
+  const endDateInput = document.getElementById('date-end');
+  const personSelect = document.getElementById('personCount');
 
-// Charger les chambres depuis le fichier JSON
-fetch('./liste-chambre.json')
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Erreur lors du chargement du fichier JSON');
+  // Définir la date minimale (aujourd'hui) pour les champs de date
+  const today = new Date().toISOString().split('T')[0];
+  startDateInput.min = today;
+  endDateInput.min = today;
+
+  // Événement lorsqu'on change la date de début
+  startDateInput.addEventListener('change', function () {
+    // La date de fin minimum doit être au moins égale à la date de début
+    endDateInput.min = startDateInput.value;
+
+    // Si la date de fin est antérieure à la date de début, on la réinitialise
+    if (endDateInput.value && endDateInput.value < startDateInput.value) {
+      endDateInput.value = startDateInput.value;
     }
-    return response.json();
-  })
-  .then((data) => {
-    chambres = data; // Stocker les chambres dans la variable globale
-    console.log('Chambres chargées :', chambres);
-  })
-  .catch((error) => {
-    console.error('Erreur :', error);
   });
 
-// Réservations simulées
-const reservations = [
-    { chambre: "ME01", date_entree: "2024-11-25", date_sortie: "2024-11-27" },
-    { chambre: "ME02", date_entree: "2024-11-26", date_sortie: "2024-11-28" },
-    { chambre: "ME03", date_entree: "2024-11-30", date_sortie: "2024-12-02" },
-    { chambre: "ME04", date_entree: "2024-12-01", date_sortie: "2024-12-03" },
-    { chambre: "ME05", date_entree: "2024-11-30", date_sortie: "2024-12-01" },
-    { chambre: "ME01", date_entree: "2024-12-03", date_sortie: "2024-12-07" },
-    { chambre: "ME02", date_entree: "2024-12-05", date_sortie: "2024-12-08" },
-    { chambre: "ME03", date_entree: "2024-12-08", date_sortie: "2024-12-10" },
-    { chambre: "ME04", date_entree: "2024-12-09", date_sortie: "2024-12-12" },
-    { chambre: "ME05", date_entree: "2024-12-10", date_sortie: "2024-12-15" },
-    { chambre: "ME01", date_entree: "2024-12-15", date_sortie: "2024-12-20" },
-    { chambre: "ME02", date_entree: "2024-12-16", date_sortie: "2024-12-18" },
-    { chambre: "ME03", date_entree: "2024-12-20", date_sortie: "2024-12-26" },
-    { chambre: "ME04", date_entree: "2024-12-23", date_sortie: "2024-12-27" },
-    { chambre: "ME05", date_entree: "2024-12-24", date_sortie: "2024-12-28" },
-    { chambre: "JA01", date_entree: "2024-11-25", date_sortie: "2024-11-28" },
-    { chambre: "JA02", date_entree: "2024-11-30", date_sortie: "2024-12-01" },
-    { chambre: "JA03", date_entree: "2024-11-26", date_sortie: "2024-11-29" },
-    { chambre: "JA04", date_entree: "2024-11-27", date_sortie: "2024-11-30" },
-    { chambre: "JA05", date_entree: "2024-12-01", date_sortie: "2024-12-05" },
-    { chambre: "JA06", date_entree: "2024-12-02", date_sortie: "2024-12-07" },
-    { chambre: "JA07", date_entree: "2024-12-03", date_sortie: "2024-12-06" },
-    { chambre: "JA08", date_entree: "2024-12-06", date_sortie: "2024-12-10" },
-    { chambre: "JA09", date_entree: "2024-12-08", date_sortie: "2024-12-12" },
-    { chambre: "JA10", date_entree: "2024-12-09", date_sortie: "2024-12-13" },
-    { chambre: "JA01", date_entree: "2024-12-10", date_sortie: "2024-12-15" },
-    { chambre: "JA02", date_entree: "2024-12-12", date_sortie: "2024-12-16" },
-    { chambre: "JA03", date_entree: "2024-12-15", date_sortie: "2024-12-20" },
-    { chambre: "JA04", date_entree: "2024-12-16", date_sortie: "2024-12-21" },
-    { chambre: "JA05", date_entree: "2024-12-20", date_sortie: "2024-12-26" },
-    { chambre: "JA06", date_entree: "2024-12-22", date_sortie: "2024-12-27" },
-    { chambre: "JA07", date_entree: "2024-12-23", date_sortie: "2024-12-28" },
-    { chambre: "JA08", date_entree: "2024-12-26", date_sortie: "2024-12-30" },
-    { chambre: "JA09", date_entree: "2024-12-27", date_sortie: "2024-12-31" },
-    { chambre: "JA10", date_entree: "2024-12-28", date_sortie: "2025-01-02" },
-  ];
-  
+  // Événement au clic sur le bouton de confirmation
+  confirmButton.addEventListener('click', function () {
+    // Récupération des données
+    const dateStart = startDateInput.value;
+    const dateEnd = endDateInput.value;
+    const personCount = personSelect.value;
+    const typeBungalow = document.querySelector('input[name="typeBungalow"]:checked').value;
 
-// Fonction pour vérifier la disponibilité des chambres
-function isAvailable(chambre, checkin, checkout) {
-  return !reservations.some((resa) => {
-    return (
-      resa.chambre === chambre &&
-      !(new Date(resa.date_sortie) <= new Date(checkin) || new Date(resa.date_entree) >= new Date(checkout))
-    );
+    // Vérification des dates
+    if (!dateStart || !dateEnd) {
+      alert('Veuillez sélectionner les dates de votre séjour.');
+      return;
+    }
+
+    // Création d'un numéro de réservation simplifié
+    const typePart = typeBungalow === 'mer' ? 'M' : 'T';
+    const randomPart = Math.floor(1000 + Math.random() * 9000); // Nombre à 4 chiffres (1000-9999)
+    const reservationNumber = `PIM-${typePart}${randomPart}`;
+
+    // Afficher la confirmation
+    confirmationDiv.innerHTML = `
+      <div class="reservation-confirmation p-4 my-3 text-center border rounded">
+        <h2 class="mb-3">Réservation confirmée !</h2>
+        <div class="reservation-details text-start bg-light p-3 rounded mx-auto" style="max-width: 400px;">
+          <p><strong>Type :</strong> Bungalow ${typeBungalow === 'mer' ? 'mer' : 'Terre'}</p>
+          <p><strong>Dates :</strong> Du ${formatDate(dateStart)} au ${formatDate(dateEnd)}</p>
+          <p><strong>Personnes :</strong> ${personCount}</p>
+          <p class="mb-0"><strong>Durée :</strong> ${calculateDays(dateStart, dateEnd)} jour(s)</p>
+        </div>
+        <p class="mt-3 fs-3 fw-semibold">Conservez votre numéro de réservation. Vous en aurez besoin pour réserver des activités.</p>
+        <div class="row justify-content-center">
+          <p class="fw-bold col-5 fs-4 p-2">Numéro de réservation :</p>
+          <p class="reservation-number fs-4 bg-light p-2 rounded col-5">${reservationNumber}</p>
+        </div>
+      </div>
+    `;
+
+    // Scroller vers la confirmation
+    confirmationDiv.scrollIntoView({ behavior: 'smooth' });
   });
-}
 
-// Écouter le bouton Rechercher
-document.getElementById("btn-recherche").addEventListener("click", () => {
-  const checkin = document.getElementById("checkin-date").value;
-  const checkout = document.getElementById("checkout-date").value;
-  const guests = parseInt(document.getElementById("invités").value);
-
-  if (!checkin || !checkout) {
-    alert("Veuillez sélectionner des dates valides !");
-    return;
+  // Fonction pour formater les dates
+  function formatDate(dateString) {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('fr-FR', options);
   }
 
+  // Calculer le nombre de jours
+  function calculateDays(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
 
-  // Filtrer les chambres disponibles
-  const results = chambres.filter(
-    (chambre) =>
-      chambre.capacite >= guests && isAvailable(chambre.id, checkin, checkout)
-  );
+  // Fonction pour l'affichage dynamique du nombre de personnes
+  function updatePersonCount() {
+    const isTerre = document.getElementById('bungalowTerre').checked;
+    const terreOptions = document.querySelectorAll('.terre-option');
 
-  // Afficher les résultats
-  const resultDiv = document.getElementById("result");
-  resultDiv.innerHTML = results.length
-    ? results
-        .map(
-          (chambre) =>
-            `<div class="card my-2">
-              <div class="card-body">
-                <h5 class="card-title">Chambre ${chambre.id} - Vue ${chambre.vue}</h5>
-                <p class="card-text">Capacité : ${chambre.capacite} personnes</p>
-              </div>
-            </div>`
-        )
-        .join("")
-    : "<p>Aucune chambre disponible pour cette période.</p>";
+    terreOptions.forEach(option => {
+      option.style.display = isTerre ? 'block' : 'none';
+    });
+
+    if (!isTerre && personSelect.value > 2) {
+      personSelect.value = '2';
+    }
+  }
+
+  // Ajouter les écouteurs d'événements pour le changement de type de bungalow
+  document.getElementById('bungalowMer').addEventListener('change', updatePersonCount);
+  document.getElementById('bungalowTerre').addEventListener('change', updatePersonCount);
+
+  // Initialiser l'état d'affichage
+  updatePersonCount();
 });

@@ -24,42 +24,6 @@ body {
     align-items: flex-end;
 }
 
-/* Section réservation */
-.reservation {
-    padding: 3rem 0;
-}
-
-.reservation h2 {
-    color: var(--primary);
-    margin-bottom: 2rem;
-    font-weight: 500;
-}
-
-/* Formulaire */
-.reservation-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(9, 1, 43, 0.1);
-    margin-bottom: 2rem;
-}
-
-.form-group label {
-    color: var(--primary);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.form-control {
-    border: 1px solid #ddd;
-    padding: 0.75rem;
-    border-radius: 8px;
-}
-
-.form-control:focus {
-    border-color: var(--secondary);
-    box-shadow: 0 0 0 0.2rem rgba(96, 91, 241, 0.25);
-}
 
 /* Style pour le champ de cheval sélectionné */
 #selected-horse {

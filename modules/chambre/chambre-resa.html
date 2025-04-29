@@ -6,77 +6,105 @@
     <title>Réservation - Chambre - Gîte Pim</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" media="screen" href="../../css/main.css">
+    <link rel="stylesheet" media="screen" href="../../css/resa.css">
     <link rel="icon" type="image/x-icon" href="../../public/logo.ico">
     <link rel="stylesheet" href="./chambre.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="../../js/navbar.js" type="text/javascript" defer></script>
-    <script src="../../js/footer.js" type="text/javascript" defer></script>
+
 </head>
 
-<body>
-    <!-- Menu TOP -->
-    <menu-top></menu-top>
+<!-- Menu TOP -->
+<menu-top></menu-top>()
 
-    <!-- Hero Section -->
-    <section class="hero bg-image p-5 mt-0"
-        style="background-image: url('./galerie/Hero-02.jpg'); background-size: cover; background-position: center;">
-        <div class="container py-4 mt-5">
-            <div class="row align-items-center justify-content-between bg-secondary p-3 rounded">
-                <!-- Sélection des dates -->
-                <div class="col-lg-6 col-md-7">
-                    <label class="form-label fw-bold d-block">Sélectionner vos Dates</label>
-                    <div class="d-flex align-items-center gap-2">
-                        <input type="date" id="checkin-date" class="form-control" placeholder="Date début" />
-                        <input type="date" id="checkout-date" class="form-control" placeholder="Date fin" />
+<body>
+    <main>
+        <!-- Hero Section -->
+        <section class="reservation">
+            <div class="container-fluid">
+                <h1 class="mb-5 text-center">Réserver une chambre dans notre gîte dès maintenant</h1>
+                <div class="row">
+                    <div class="col-6 mx-auto reservation-form">
+                        <div class="form-group mb-4">
+                            <h2 class="mb-5 text-center">A quelle date voulez vous réserver ?</h2>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="date-start">Début du séjour</label>
+                                    <input type="date" class="form-control" id="date-start" required />
+                                </div>
+                                <div class="col-6">
+                                    <label for="date-end">Date fin</label>
+                                    <input type="date" class="form-control" id="date-end" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meteo">
+                            <meteo-widget></meteo-widget>
+                        </div>
+
+                        <!-- Ligne de séparation -->
+                        <hr class="my-4" style="opacity: 0.3;">
+
+                        <!-- Menu radio pour le choix du bungalow -->
+                        <div class="form-group mb-3">
+                            <label class="mb-3 d-block text-center">Type d'hébergement</label>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-check mx-4">
+                                    <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowMer"
+                                        value="mer" checked onchange="updatePersonCount()">
+                                    <label class="form-check-label" for="bungalowMer">
+                                        Bungalow mer
+                                    </label>
+                                </div>
+                                <div class="form-check mx-4">
+                                    <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowTerre"
+                                        value="terre" onchange="updatePersonCount()">
+                                    <label class="form-check-label" for="bungalowTerre">
+                                        Bungalow Terre
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ligne de séparation -->
+                        <hr class="my-4" style="opacity: 0.3;">
+
+                        <!-- Section nombre de personnes -->
+                        <div class="form-group mb-4">
+                            <label for="personCount" class="mb-3 d-block text-center">Nombre de personnes</label>
+                            <div class="d-flex justify-content-center">
+                                <select class="form-select w-50" id="personCount" required>
+                                    <option value="1">1 personne</option>
+                                    <option value="2" selected>2 personnes</option>
+                                    <!-- Options additionnelles pour bungalow Terre, masquées par défaut -->
+                                    <option value="3" class="terre-option" style="display:none">3 personnes</option>
+                                    <option value="4" class="terre-option" style="display:none">4 personnes</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr class="my-4" style="opacity: 0.3;">
+                        <div class="d-flex justify-content-center mb-3">
+                            <div class="btn-reservation sejour-validation">
+                                <span class="btn-text">
+                                    Confirmer votre numéro de séjour
+                                </span>
+                            </div>
+                        </div>
+                        <div class="confirm-reas"></div>
                     </div>
                 </div>
-                <!-- Sélection des invitées -->
-                <div class="col-lg-3 col-md-4">
-                    <label for="invités" class="form-label fw-bold d-block">Nombre d'invités</label>
-                    <select id="invités" class="form-select mt-1">
-                        <option value="1">1 Personne</option>
-                        <option value="2">2 Personnes</option>
-                        <option value="3">3 Personnes</option>
-                        <option value="4">4 Personnes</option>
-                    </select>
-                </div>
-
-                <!-- Bouton de Recherche -->
-                <div class="col-lg-3 col-md-12 d-flex align-items-center mt-md-3 mt-lg-0">
-                    <button id="btn-recherche" class="btn btn-primary btn-lg px-4 w-100">Rechercher</button>
-                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Liste des chambre dispos -->
-    <section>
-        <div id="result" class="result">
-            <!-- Les chambres disponibles seront affichées ici -->
-        </div>
-    </section>
-
-    <!-- Option -->
-    <section></section>
-
-    <!-- Réservation -->
-    <section class="resa bg-image p-5 mt-0"
-        style="background-image: url('./galerie/Footer-02.jpg'); background-size: cover; background-position: center;">
-        <div class="text-center text-white">
-            <h1>“Découvrez nos activités”</h1>
-            <a href="./../../index.html" role="button" class="btn-chambre-2 btn-lg">Accueil</a>
-        </div>
-    </section>
-
-    <!-- Pied de page -->
-    <pied-de-page></pied-de-page>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script src="chambre.js"></script>
-
+        </section>
+    </main>
+</body>
+<pied-de-page></pied-de-page>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="chambre.js"></script>
+<script src="../../js/navbar.js" type="text/javascript" defer></script>
+<script src="../../js/footer.js" type="text/javascript" defer></script>
+<script src="../../js/meteo.js" type="text/javascript" defer></script>
 </body>
 
 </html>
