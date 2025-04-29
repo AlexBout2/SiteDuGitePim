@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Afficher la confirmation
     confirmationDiv.innerHTML = `
       <div class="reservation-confirmation p-4 my-3 text-center border rounded">
-        <h2 class="mb-3">Réservation confirmée !</h2>
+        <h1 class="mb-3">Réservation confirmée !</h1>
         <div class="reservation-details text-start bg-light p-3 rounded mx-auto" style="max-width: 400px;">
           <p><strong>Type :</strong> Bungalow ${typeBungalow === 'mer' ? 'mer' : 'Terre'}</p>
           <p><strong>Dates :</strong> Du ${formatDate(dateStart)} au ${formatDate(dateEnd)}</p>
