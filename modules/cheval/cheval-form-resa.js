@@ -9,12 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Container trouvé et vide");
         const formHTML = `
               <div class="col-md-8 mx-auto text-center col-">
-                  <h2>Réservation de randonnée équestre</h2>
-                  <hr class="separator my-3">
                   <form class="reservation-form">
                       <!-- Sélection du cheval -->
                       <div class="form-group mb-3">
-                          <label for="selected-horse">Cheval sélectionné</label>
+                          <label for="selected-horse" class="fs-4">Cheval sélectionné</label>
                           <input
                               type="text"
                               class="form-control"
@@ -27,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       <hr class="separator my-3">
 
                       <div class="form-group mb-3">
-                          <label for="date">Date de la randonnée</label>
+                          <label for="date" class="fs-4">Date de la randonnée</label>
                           <input type="date" class="form-control" id="date" required />
                       </div>
                       
@@ -35,19 +33,29 @@ document.addEventListener('DOMContentLoaded', function () {
                       <div class="mb-3 mt-3">
                           <meteo-widget id="meteoComponent"></meteo-widget>
                       </div>
+
+                      <!-- Message d'alerte pour conditions météo -->
+                      <div id="meteo-warning" class="alert alert-danger d-none">
+                          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                          <span>Les randonnées équestres ne sont pas autorisées en cas de pluie ou d'orage par mesure de sécurité.</span>
+                      </div>
                       
                       <hr class="separator my-3">
 
                       <div class="form-group mb-3">
-                          <label for="periode">Période</label>
+                          <label for="periode" class="fs-4">Matinée ou Après-midi</label>
                           <select class="form-control" id="periode" required>
-                              <option value="">Sélectionnez une période</option>
                               <option value="matin">Matin de 9h à 11h avec Emma</option>
                               <option value="aprem">Après-midi de 14h à 16h avec Lucas</option>
                           </select>
                       </div>
-
-                      <button type="submit" class="btn btn-secondary-custom">Réserver</button>
+                      <div class="d-flex justify-content-center mb-3">
+                            <div class="btn-reservation">
+                                <span class="btn-text">
+                                    Réserver
+                                </span>
+                            </div>
+                        </div>
                   </form>
               </div>
               `;
@@ -59,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   } else {
-    console.log("Bouton non trouvé");
   }
 
   // CODE #2: Fonction pour initialiser les fonctionnalités du formulaire
@@ -71,6 +78,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('date');
     const reservationNumber = document.getElementById('reservation-number');
     const periodeSelect = document.getElementById('periode');
+    const submitButton = document.getElementById('submit-reservation');
+    const meteoWarning = document.getElementById('meteo-warning');
+
+    // Variable pour stocker l'état météo actuel
+    let isWeatherSafe = true;
 
     // Configuration de la date minimum (aujourd'hui)
     const today = new Date().toISOString().split('T')[0];
@@ -79,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Ajouter un gestionnaire pour mettre à jour la météo quand la date change
       dateInput.addEventListener('change', function () {
+        // Réinitialiser l'alerte météo à chaque changement de date
+        hideMeteoWarning();
+
         // Déclencher manuellement la mise à jour météo
         const meteoWidget = document.getElementById('meteoComponent');
         if (meteoWidget) {
@@ -91,6 +106,81 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
+
+    // Observer les changements dans le composant météo pour détecter les mauvaises conditions
+    function observeMeteoChanges() {
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          if (mutation.type === 'childList') {
+            // Vérifier si les conditions météo sont mauvaises
+            checkWeatherConditions();
+          }
+        });
+      });
+
+      const meteoWidget = document.getElementById('meteoComponent');
+      if (meteoWidget) {
+        observer.observe(meteoWidget, { childList: true, subtree: true });
+      }
+    }
+
+    // Vérifier les conditions météo
+    function checkWeatherConditions() {
+      const meteoWidget = document.getElementById('meteoComponent');
+      if (!meteoWidget) return;
+
+      // Chercher le texte de description météo
+      const descriptionElement = meteoWidget.querySelector('.card-text');
+      if (!descriptionElement) return;
+
+      const weatherDescription = descriptionElement.textContent.toLowerCase();
+
+      // Liste des conditions météo défavorables
+      const badWeatherConditions = [
+        'pluie', 'pluvieux', 'averse',
+        'orage', 'orageux',
+        'grêle', 'grêlons',
+        'neige', 'neigeux',
+        'tempête'
+      ];
+
+      // Vérifier si une des conditions défavorables est présente
+      isWeatherSafe = !badWeatherConditions.some(condition =>
+        weatherDescription.includes(condition)
+      );
+
+      // Afficher l'alerte si les conditions sont mauvaises
+      if (!isWeatherSafe) {
+        showMeteoWarning();
+      } else {
+        hideMeteoWarning();
+      }
+    }
+
+    function showMeteoWarning() {
+      if (meteoWarning) {
+        meteoWarning.classList.remove('d-none');
+        // Désactiver le bouton de soumission
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.title = "Réservation impossible en raison des conditions météorologiques";
+        }
+      }
+    }
+
+    function hideMeteoWarning() {
+      if (meteoWarning) {
+        meteoWarning.classList.add('d-none');
+        // Réactiver le bouton de soumission
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.title = "";
+        }
+      }
+    }
+
+    // Démarrer l'observation du composant météo après un court délai
+    setTimeout(observeMeteoChanges, 1000);
 
     // Gestion de la sélection des chevaux
     if (horseCards && horseCards.length > 0) {
@@ -112,6 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (reservationForm) {
       reservationForm.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // Vérifier d'abord les conditions météo
+        if (!isWeatherSafe) {
+          alert('Désolé, les randonnées équestres ne sont pas autorisées en cas de pluie ou d\'orage par mesure de sécurité.');
+          return;
+        }
 
         if (reservationNumber && !reservationNumber.value) {
           alert('Veuillez entrer votre numéro de réservation du gîte');
