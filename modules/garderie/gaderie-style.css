@@ -54,12 +54,12 @@
 
 /* Hero reservation ***************/
 
-.hero-resa-container-bg {
-    background-image: url('../../public/children-1547261_1920.jpg');
-    background-position: 100% 0.5%;
+.hero-resa .hero-container-resa {
+    background-image: url("../../public/children-1547261_1920.jpg");
+    background-position: 50% 70%;
     height: 30vh;
-
 }
+
 
 .reservations {
     min-height: 50vh;

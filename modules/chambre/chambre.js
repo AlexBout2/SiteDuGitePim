@@ -1,15 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Éléments du DOM
   const confirmButton = document.querySelector('.sejour-validation');
-  const confirmationDiv = document.querySelector('.confirm-reas'); // Correction du sélecteur
+  const confirmationDiv = document.querySelector('.confirm-reas');
   const startDateInput = document.getElementById('date-start');
   const endDateInput = document.getElementById('date-end');
   const personSelect = document.getElementById('personCount');
+  const meteoWidget = document.querySelector('meteo-widget');
 
   // Définir la date minimale (aujourd'hui) pour les champs de date
   const today = new Date().toISOString().split('T')[0];
   startDateInput.min = today;
   endDateInput.min = today;
+
+  // Fonction pour mettre à jour les prévisions météo
+  function updateMeteoForecasts() {
+    if (!startDateInput.value || !endDateInput.value || !meteoWidget) return;
+
+    // Calcul des dates du séjour
+    const start = new Date(startDateInput.value);
+    const end = new Date(endDateInput.value);
+
+    // Nettoyer les prévisions actuelles
+    const forecastContainer = meteoWidget.querySelector('#meteo-forecast-container');
+    if (forecastContainer) {
+      forecastContainer.innerHTML = '';
+    }
+
+    // Informer le composant météo de la date de début
+    meteoWidget.setAttribute('date', startDateInput.value);
+
+    // Ajouter un attribut data pour la date de fin
+    meteoWidget.setAttribute('end-date', endDateInput.value);
+  }
 
   // Événement lorsqu'on change la date de début
   startDateInput.addEventListener('change', function () {
@@ -20,6 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (endDateInput.value && endDateInput.value < startDateInput.value) {
       endDateInput.value = startDateInput.value;
     }
+
+    updateMeteoForecasts();
+  });
+
+  // Événement lorsqu'on change la date de fin
+  endDateInput.addEventListener('change', function () {
+    updateMeteoForecasts();
   });
 
   // Événement au clic sur le bouton de confirmation
@@ -63,39 +92,36 @@ document.addEventListener('DOMContentLoaded', function () {
     confirmationDiv.scrollIntoView({ behavior: 'smooth' });
   });
 
-  // Fonction pour formater les dates
-  function formatDate(dateString) {
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('fr-FR', options);
-  }
-
-  // Calculer le nombre de jours
-  function calculateDays(startDate, endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
-  // Fonction pour l'affichage dynamique du nombre de personnes
-  function updatePersonCount() {
-    const isTerre = document.getElementById('bungalowTerre').checked;
-    const terreOptions = document.querySelectorAll('.terre-option');
-
-    terreOptions.forEach(option => {
-      option.style.display = isTerre ? 'block' : 'none';
-    });
-
-    if (!isTerre && personSelect.value > 2) {
-      personSelect.value = '2';
-    }
-  }
-
-  // Ajouter les écouteurs d'événements pour le changement de type de bungalow
-  document.getElementById('bungalowMer').addEventListener('change', updatePersonCount);
-  document.getElementById('bungalowTerre').addEventListener('change', updatePersonCount);
-
   // Initialiser l'état d'affichage
   updatePersonCount();
 });
+
+// Fonction pour formater les dates
+function formatDate(dateString) {
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  return new Date(dateString).toLocaleDateString('fr-FR', options);
+}
+
+// Calculer le nombre de jours
+function calculateDays(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffTime = Math.abs(end - start);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+}
+
+// Fonction pour l'affichage dynamique du nombre de personnes
+function updatePersonCount() {
+  const isTerre = document.getElementById('bungalowTerre').checked;
+  const terreOptions = document.querySelectorAll('.terre-option');
+
+  terreOptions.forEach(option => {
+    option.style.display = isTerre ? 'block' : 'none';
+  });
+
+  const personSelect = document.getElementById('personCount');
+  if (!isTerre && personSelect.value > 2) {
+    personSelect.value = '2';
+  }
+}
