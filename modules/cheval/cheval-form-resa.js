@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formHTML = `
               <div class="col-md-8 mx-auto text-center col-">
                   <h2>Réservation de randonnée équestre</h2>
+                  <hr class="separator my-3">
                   <form class="reservation-form">
                       <!-- Sélection du cheval -->
                       <div class="form-group mb-3">
@@ -22,11 +23,20 @@ document.addEventListener('DOMContentLoaded', function () {
                               placeholder="Cliquez sur un cheval ci-dessous"
                           />
                       </div>
+                      
+                      <hr class="separator my-3">
 
                       <div class="form-group mb-3">
                           <label for="date">Date de la randonnée</label>
                           <input type="date" class="form-control" id="date" required />
                       </div>
+                      
+                      <!-- Intégration du composant météo -->
+                      <div class="mb-3 mt-3">
+                          <meteo-widget id="meteoComponent"></meteo-widget>
+                      </div>
+                      
+                      <hr class="separator my-3">
 
                       <div class="form-group mb-3">
                           <label for="periode">Période</label>
@@ -39,15 +49,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                       <button type="submit" class="btn btn-secondary-custom">Réserver</button>
                   </form>
-
-                  <!-- Calendrier des disponibilités -->
-
               </div>
               `;
         fullFormContainer.innerHTML = formHTML;
         console.log("Formulaire injecté avec succès");
 
-        // IMPORTANT: Initialiser les fonctionnalités du formulaire après l'avoir injecté
+        // Initialiser les fonctionnalités du formulaire après l'avoir injecté
         initFormFunctionality();
       }
     });
@@ -65,24 +72,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const reservationNumber = document.getElementById('reservation-number');
     const periodeSelect = document.getElementById('periode');
 
-    // Vérification que l'élément meteoToast existe avant de l'initialiser
-    const meteoToastElement = document.getElementById('meteoToast');
-    let meteoToast = null;
-    if (meteoToastElement) {
-      meteoToast = new bootstrap.Toast(meteoToastElement, {
-        autohide: false
-      });
-    }
-
     // Configuration de la date minimum (aujourd'hui)
     const today = new Date().toISOString().split('T')[0];
     if (dateInput) {
       dateInput.min = today;
 
-      // Écouteur d'événement pour le changement de date
+      // Ajouter un gestionnaire pour mettre à jour la météo quand la date change
       dateInput.addEventListener('change', function () {
-        if (this.value && typeof updateMeteo === 'function') {
-          updateMeteo(this.value);
+        // Déclencher manuellement la mise à jour météo
+        const meteoWidget = document.getElementById('meteoComponent');
+        if (meteoWidget) {
+          meteoWidget.setAttribute('date', this.value);
+
+          // Forcer un rafraîchissement des données météo
+          if (typeof meteoWidget.fetchMeteoData === 'function') {
+            meteoWidget.fetchMeteoData(this.value);
+          }
         }
       });
     }
@@ -131,14 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
-        // Vérification des conditions météo
-        const meteoAlert = document.querySelector('.alert-warning');
-        if (meteoAlert) {
-          if (!confirm('Les conditions météo ne sont pas optimales pour cette date. Souhaitez-vous tout de même continuer ?')) {
-            return;
-          }
-        }
-
         const reservationData = {
           reservationNumber: reservationNumber ? reservationNumber.value : "Non spécifié",
           horse: selectedHorseInput.value,
@@ -149,58 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Données de réservation:', reservationData);
         alert('Réservation enregistrée avec succès !');
       });
-    }
-  }
-
-  // Définition de la fonction updateMeteo 
-  // (Je remarque qu'elle semble incomplète dans votre code original)
-  function updateMeteo(dateStr) {
-    // Conversion de la chaîne de date en objet Date
-    const date = new Date(dateStr);
-
-    // Formater la date
-    const options = { weekday: 'long', day: 'numeric', month: 'long' };
-    const formattedDate = date.toLocaleDateString('fr-FR', options);
-
-    // Simuler différentes conditions météo
-    const conditions = [
-      { icon: '☀️', desc: 'Ensoleillé', temp: '22°C' },
-      { icon: '⛅', desc: 'Partiellement nuageux', temp: '18°C' },
-      { icon: '☁️', desc: 'Nuageux', temp: '16°C' },
-      { icon: '🌧️', desc: 'Pluvieux', temp: '14°C' },
-      { icon: '⛈️', desc: 'Orageux', temp: '15°C' }
-    ];
-
-    // Utiliser la date pour sélectionner une condition (simulation)
-    const dayIndex = date.getDate() % conditions.length;
-    const condition = conditions[dayIndex];
-
-    // Mettre à jour le contenu du toast
-    const meteoBody = document.querySelector('#meteoToast .toast-body');
-    if (meteoBody) {
-      meteoBody.innerHTML = `
-              <div class="meteo-content">
-                  <h5 class="mb-2">Prévisions pour le ${formattedDate}</h5>
-                  <div class="d-flex align-items-center">
-                      <span class="meteo-icon me-3">${condition.icon}</span>
-                      <div>
-                          <p class="mb-1">${condition.desc}</p>
-                          <p class="mb-0">Température: ${condition.temp}</p>
-                      </div>
-                  </div>
-                  ${condition.desc === 'Pluvieux' || condition.desc === 'Orageux' ?
-          '<div class="alert alert-warning mt-2 mb-0">⚠️ Conditions défavorables pour la randonnée</div>' :
-          '<div class="alert alert-success mt-2 mb-0">✅ Conditions favorables pour la randonnée</div>'}
-              </div>
-          `;
-
-      // Afficher le toast
-      const meteoToastElement = document.getElementById('meteoToast');
-      if (meteoToastElement) {
-        const meteoToast = bootstrap.Toast.getInstance(meteoToastElement) ||
-          new bootstrap.Toast(meteoToastElement, { autohide: false });
-        meteoToast.show();
-      }
     }
   }
 
