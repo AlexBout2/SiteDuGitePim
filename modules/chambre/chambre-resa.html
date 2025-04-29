@@ -15,85 +15,91 @@
 </head>
 
 <!-- Menu TOP -->
-<menu-top></menu-top>()
+<menu-top></menu-top>
 
 <body>
     <main>
         <!-- Hero Section -->
-        <section class="reservation">
-            <div class="container-fluid">
-                <h1 class="mb-5 text-center">Réserver une chambre dans notre gîte dès maintenant</h1>
-                <div class="row">
-                    <div class="col-6 mx-auto reservation-form">
-                        <div class="form-group mb-4">
-                            <h2 class="mb-5 text-center">A quelle date voulez vous réserver ?</h2>
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="date-start">Début du séjour</label>
-                                    <input type="date" class="form-control" id="date-start" required />
-                                </div>
-                                <div class="col-6">
-                                    <label for="date-end">Date fin</label>
-                                    <input type="date" class="form-control" id="date-end" required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="meteo">
-                            <meteo-widget></meteo-widget>
-                        </div>
-
-                        <!-- Ligne de séparation -->
-                        <hr class="my-4" style="opacity: 0.3;">
-
-                        <!-- Menu radio pour le choix du bungalow -->
-                        <div class="form-group mb-3">
-                            <label class="mb-3 d-block text-center">Type d'hébergement</label>
-                            <div class="d-flex justify-content-center">
-                                <div class="form-check mx-4">
-                                    <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowMer"
-                                        value="mer" checked onchange="updatePersonCount()">
-                                    <label class="form-check-label" for="bungalowMer">
-                                        Bungalow mer
-                                    </label>
-                                </div>
-                                <div class="form-check mx-4">
-                                    <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowTerre"
-                                        value="terre" onchange="updatePersonCount()">
-                                    <label class="form-check-label" for="bungalowTerre">
-                                        Bungalow Terre
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Ligne de séparation -->
-                        <hr class="my-4" style="opacity: 0.3;">
-
-                        <!-- Section nombre de personnes -->
-                        <div class="form-group mb-4">
-                            <label for="personCount" class="mb-3 d-block text-center">Nombre de personnes</label>
-                            <div class="d-flex justify-content-center">
-                                <select class="form-select w-50" id="personCount" required>
-                                    <option value="1">1 personne</option>
-                                    <option value="2" selected>2 personnes</option>
-                                    <!-- Options additionnelles pour bungalow Terre, masquées par défaut -->
-                                    <option value="3" class="terre-option" style="display:none">3 personnes</option>
-                                    <option value="4" class="terre-option" style="display:none">4 personnes</option>
-                                </select>
-                            </div>
-                        </div>
-                        <hr class="my-4" style="opacity: 0.3;">
-                        <div class="d-flex justify-content-center mb-3">
-                            <div class="btn-reservation sejour-validation">
-                                <span class="btn-text">
-                                    Confirmer votre numéro de séjour
-                                </span>
-                            </div>
-                        </div>
-                        <div class="confirm-reas"></div>
-                    </div>
+        <section class="hero-resa">
+            <div class="hero-container-resa p-5">
+                <div class="hero-text-box glass-effect col-6 m-auto">
+                    <h1 class="mb-5 text-center text-shadow">Réserver une chambre dans notre gîte dès maintenant
+                    </h1>
                 </div>
             </div>
+        </section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6 mx-auto reservation-form mt-4">
+                    <div class="form-group mb-4">
+                        <h2 class="mb-5 text-center">A quelle date voulez vous réserver ?</h2>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="date-start">Début du séjour</label>
+                                <input type="date" class="form-control" id="date-start" required />
+                            </div>
+                            <div class="col-6">
+                                <label for="date-end">Date fin</label>
+                                <input type="date" class="form-control" id="date-end" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meteo">
+                        <meteo-widget></meteo-widget>
+                    </div>
+
+                    <!-- Ligne de séparation -->
+                    <hr class="my-4" style="opacity: 0.3;">
+
+                    <!-- Menu radio pour le choix du bungalow -->
+                    <div class="form-group mb-3">
+                        <label class="mb-3 d-block text-center">Type d'hébergement</label>
+                        <div class="d-flex justify-content-center">
+                            <div class="form-check mx-4">
+                                <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowMer"
+                                    value="mer" checked onchange="updatePersonCount()">
+                                <label class="form-check-label" for="bungalowMer">
+                                    Bungalow mer
+                                </label>
+                            </div>
+                            <div class="form-check mx-4">
+                                <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowTerre"
+                                    value="terre" onchange="updatePersonCount()">
+                                <label class="form-check-label" for="bungalowTerre">
+                                    Bungalow Terre
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ligne de séparation -->
+                    <hr class="my-4" style="opacity: 0.3;">
+
+                    <!-- Section nombre de personnes -->
+                    <div class="form-group mb-4">
+                        <label for="personCount" class="mb-3 d-block text-center">Nombre de personnes</label>
+                        <div class="d-flex justify-content-center">
+                            <select class="form-select w-50" id="personCount" required>
+                                <option value="1">1 personne</option>
+                                <option value="2" selected>2 personnes</option>
+                                <!-- Options additionnelles pour bungalow Terre, masquées par défaut -->
+                                <option value="3" class="terre-option" style="display:none">3 personnes</option>
+                                <option value="4" class="terre-option" style="display:none">4 personnes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="my-4" style="opacity: 0.3;">
+                    <div class="d-flex justify-content-center mb-3">
+                        <div class="btn-reservation sejour-validation">
+                            <span class="btn-text">
+                                Confirmer votre numéro de séjour
+                            </span>
+                        </div>
+                    </div>
+                    <div class="confirm-reas"></div>
+                </div>
+            </div>
+        </div>
         </section>
     </main>
 </body>

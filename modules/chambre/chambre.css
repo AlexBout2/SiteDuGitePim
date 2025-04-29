@@ -25,3 +25,9 @@
     background-position: 50% 50%;
     height: 70vh;
 }
+
+.hero-resa .hero-container-resa {
+    background-image: url("./galerie/Hero-01.jpg");
+    background-position: 50% 70%;
+    height: 30vh;
+}
