@@ -1,3 +1,23 @@
+.hero .hero-container {
+    background: url('./photo/feu.png');
+    background-position: 50% 50%;
+    height: 70vh;
+}
+
+.resa {
+    background: url('./photo/feu.png');
+    background-position: 50% 50%;
+
+    height: 50vh;
+}
+
+.cta-footer {
+    background: url('./photo/feu.png');
+    height: 40vh;
+    background-position: 50% 40%;
+
+}
+
 .hero {
     background: url('./photo/feu.png') no-repeat center center;
     background-size: cover;

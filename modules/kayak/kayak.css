@@ -25,6 +25,13 @@ h4 {
 
 }
 
+.hero-resa .hero-container-resa {
+    background-image: url("./HeroKayak.webp");
+    background-position: 50% 60%;
+    height: 30vh;
+}
+
+
 
 /* Présentation de l'activité */
 
