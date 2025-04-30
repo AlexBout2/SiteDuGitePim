@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     <form class="reservation-form">
                         <div class="form-group mb-3">
                             <label for="NbKidGa" class="fs-4">Nombre d'enfants</label>
-                            <input class="form-control" id="NbKidGa" placeholder="2" type="number" min="1" max="15">
+                            <input class="form-control" id="NbKidGa" type="number" min="1" max="15">
                             <div class="invalid-feedback">Maximum 15 enfants autorisé</div>
                         </div>
                         

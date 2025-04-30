@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Éléments du DOM
   const confirmButton = document.querySelector('.sejour-validation');
-  const confirmationDiv = document.querySelector('.confirm-reas');
+  const confirmationDiv = document.querySelector('.confirm-resa');
   const startDateInput = document.getElementById('date-start');
   const endDateInput = document.getElementById('date-end');
   const personSelect = document.getElementById('personCount');
