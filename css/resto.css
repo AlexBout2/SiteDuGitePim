@@ -1,7 +1,5 @@
 /* RESTO CSS */
-.text-shadow {
-  text-shadow: 4px 4px 10px rgba(0, 0, 0, 1);
-}
+
 
 .hero .hero-container {
   background-image: url('../modules/repas/img-resto/pim-resto-hero.jpg');
@@ -10,12 +8,6 @@
   height: 70vh;
 }
 
-.resto-resa-hero {
-  background-image: url('../modules/repas/img-resto/resa-hero.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 70vh;
-}
 
 .resto-bar {
   background-image: url('../modules/repas/img-resto/bar.webp');
@@ -34,18 +26,6 @@
   font-size: 1rem;
   color: white;
   transition: all 0.3s ease-in-out;
-}
-
-.btn-resto:hover {
-  background-color: #09012B;
-  color: white;
-  transform: scale(1);
-
-}
-
-.image-container {
-  position: relative;
-  width: 100%;
 }
 
 .barimage {
@@ -79,6 +59,12 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .cocktail-image {
+    display: none;
+  }
+}
+
 /* Image du cocktail */
 
 /* Repas */
@@ -101,100 +87,13 @@
   height: 60vh;
 }
 
-#meteo {
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
 
-  width: 100vw;
-  height: 30vh;
 
+/* resa */
 
-  background-color: #020111;
-
-  padding-top: 40px;
-  margin-top: 0;
-}
-
-#form {
-  background-image: url('../modules/repas/img-resto/fond-resa.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-
-}
-
-/* Style pour le calendrier */
-#calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  /* 7 colonnes pour chaque jour de la semaine */
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.calendar-day {
-  padding: 10px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f8f9fa;
-  cursor: pointer;
-}
-
-.calendar-day.selected {
-  background-color: #007bff;
-  color: white;
-}
-
-.calendar-day.reserved {
-  background-color: #dc3545;
-  color: white;
-}
-
-.calendar-day:hover {
-  background-color: #e9ecef;
-}
-
-.calendar-header {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.calendar-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.service {
-  margin-top: 5px;
-  font-size: 0.8rem;
-}
-
-.service.midi {
-  background-color: #28a745;
-  color: white;
-}
-
-.service.soir {
-  background-color: #dc3545;
-  color: white;
-}
-
-.calendar-navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 1024px) {
-  .cocktail-image {
-    display: none;
-  }
+.hero-resa .hero-container-resa {
+  background-image: url("../modules/repas/img-resto/resa-hero.jpg");
+  background-position: 90% 10%;
+  height: 40vh;
 }

@@ -1,218 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="utf-8" />
     <title>Gîte Pim</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" media="screen" href="../../css/main.css" />
-    <link rel="icon" type="image/x-icon" href="../../public/logo.ico" />
+    <link rel="stylesheet" media="screen" href="../../css/resa.css" />
     <link rel="stylesheet" media="screen" href="../../css/resto.css" />
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-        crossorigin="anonymous"
-    />
-    <script src="../../js/navbar.js" type="text/javascript" defer></script>
-    <script src="../../js/footer.js" type="text/javascript" defer></script>
-    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="../../public/logo.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
 
 </head>
+
 <body>
     <menu-top></menu-top>
-    <div class="resto-resa-hero p-5 text-center bg-image rounded-3">
-        <div class="d-flex flex-column justify-content-center align-items-start h-100">
-            <div class="text-white text-start">
-                <h1 class="mb-3 text-shadow">Réservation</h1>
-                <h4 class="mb-3 text-shadow">de votre déjeuner ou de votre dîner</h4>
+    <main>
+        <section class="hero-resa">
+            <div class="hero-container-resa p-3">
+                <div class="hero-text-box glass-effect col-md-6 col-md-6 col-12 m-auto">
+                    <h1 class="mb-5 text-center text-shadow text-white">
+                        Pour réserver dans notre restaurant, c'est ici
+                    </h1>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div id="meteo">
-        <div class="commonninja_component pid-c2359403-5dd5-4e2d-a762-586b810b046a"></div>
-    </div>
-
-    <div id="form" class="container-fluid">
-        <div class="container mt-5">
-            <h2 class="text-center text-white">Réservation de Table</h2>
-
-            <form id="reservationForm">
-                <div class="mb-3">
-                    <label for="roomNumber" class="form-label text-white">Numéro de Chambre</label>
-                    <input type="text" class="form-control" id="roomNumber" required>
+        <section class="reservation">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 col-md-6 col-11 mx-auto reservation-form">
+                        <!-- Numéro de réservation -->
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" id="reservation-number"
+                                placeholder="Votre numéro de séjour" required>
+                        </div>
+                        <div class="d-flex justify-content-center mb-3">
+                            <div class="btn-reservation sejour-validation text-center">
+                                <span class="btn-text">
+                                    Confirmer votre numéro de séjour
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="calendar" class="form-label text-white">Sélectionnez une date</label>
-                    <div id="calendar"></div>
+                <div class="row">
+                    <div class="fullForm"></div>
+                    <div class="confirm-resa col-6 mx-auto"></div>
                 </div>
+            </div>
+        </section>
 
-                <div class="mb-3">
-                    <label for="service" class="form-label text-white">Choisissez le service</label>
-                    <select class="form-select" id="service" required>
-                        <option value="Midi">Midi</option>
-                        <option value="Soir">Soir</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="numPeople" class="form-label text-white">Nombre de personnes</label>
-                    <input type="number" class="form-control" id="numPeople" min="1" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Valider</button>
-            </form>
-
-            <div id="confirmationMessage" class="mt-3"></div>
-        </div>
-    </div>
+    </main>
 
     <pied-de-page></pied-de-page>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let currentWeekStartDate = new Date();
-            currentWeekStartDate.setDate(currentWeekStartDate.getDate() - currentWeekStartDate.getDay()); // set to Sunday of the current week
-
-            // Charger données depuis le JSON
-            fetch('../../data/liste-repas.json')
-                .then(response => response.json())
-                .then(data => {
-                    const reservations = processReservations(data);
-                    updateCalendar(reservations, currentWeekStartDate);
-                })
-                .catch(error => {
-                    console.error('Erreur lors du chargement du fichier JSON :', error);
-                });
-
-            function processReservations(data) {
-                const reservations = {};
-                data.forEach(reservation => {
-                    const date = reservation.Date;
-                    const service = reservation.Service;
-                    const nbPersonnes = parseInt(reservation['Nombre personnes'], 10);
-
-                    if (!reservations[date]) {
-                        reservations[date] = { "Midi": 0, "Soir": 0 };
-                    }
-
-                    reservations[date][service] += nbPersonnes;
-                });
-                return reservations;
-            }
-
-            function updateCalendar(reservations, weekStartDate) {
-                const calendarContainer = document.getElementById('calendar');
-                const weekDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-
-                calendarContainer.innerHTML = ''; 
-                const navigation = document.createElement('div');
-                navigation.classList.add('calendar-navigation');
-
-                // semaine avant
-                const prevButton = document.createElement('button');
-                prevButton.classList.add('btn', 'btn-secondary');
-                prevButton.textContent = 'Semaine précédente';
-                prevButton.addEventListener('click', () => {
-                    currentWeekStartDate.setDate(currentWeekStartDate.getDate() - 7);
-                    updateCalendar(reservations, currentWeekStartDate);
-                });
-                navigation.appendChild(prevButton);
-
-                // sem après
-                const nextButton = document.createElement('button');
-                nextButton.classList.add('btn', 'btn-secondary');
-                nextButton.textContent = 'Semaine suivante';
-                nextButton.addEventListener('click', () => {
-                    currentWeekStartDate.setDate(currentWeekStartDate.getDate() + 7);
-                    updateCalendar(reservations, currentWeekStartDate);
-                });
-                navigation.appendChild(nextButton);
-
-                calendarContainer.appendChild(navigation);
-
-                
-                const header = document.createElement('div');
-                header.classList.add('calendar-header');
-                weekDays.forEach(day => {
-                    const headerDay = document.createElement('div');
-                    headerDay.textContent = day;
-                    header.appendChild(headerDay);
-                });
-                calendarContainer.appendChild(header);
-
-                // JOURS SEMAINE
-                let currentDay = new Date(weekStartDate);
-                for (let i = 0; i < 7; i++) {
-                    const dayElement = document.createElement('div');
-                    dayElement.classList.add('calendar-column');
-                    const dateString = `${currentDay.getDate() < 10 ? '0' : ''}${currentDay.getDate()}/${currentDay.getMonth() + 1 < 10 ? '0' : ''}${currentDay.getMonth() + 1}/${currentDay.getFullYear()}`;
-
-                    const reservedForMidi = reservations[dateString]?.Midi || 0;
-                    const reservedForSoir = reservations[dateString]?.Soir || 0;
-
-                    const dayText = document.createElement('div');
-                    dayText.classList.add('calendar-day');
-                    dayText.textContent = currentDay.getDate();
-
-                    if (currentDay.toDateString() === new Date().toDateString()) {
-                        dayText.classList.add('bg-warning'); // focus
-                    }
-
-                    const midiService = document.createElement('div');
-                    midiService.classList.add('service', 'midi');
-                    midiService.textContent = `Midi: ${30 - reservedForMidi}/30`;
-
-                    const soirService = document.createElement('div');
-                    soirService.classList.add('service', 'soir');
-                    soirService.textContent = `Soir: ${30 - reservedForSoir}/30`;
-
-                    dayElement.appendChild(dayText);
-                    dayElement.appendChild(midiService);
-                    dayElement.appendChild(soirService);
-
-                    dayElement.addEventListener('click', () => {
-                        updateServiceAvailability(dateString, reservedForMidi, reservedForSoir);
-                    });
-
-                    calendarContainer.appendChild(dayElement);
-                    currentDay.setDate(currentDay.getDate() + 1); 
-                }
-            }
-
-            function updateServiceAvailability(date, reservedForMidi, reservedForSoir) {
-                const serviceSelect = document.getElementById('service');
-                const numPeopleInput = document.getElementById('numPeople');
-
-                serviceSelect.value = 'Midi';
-                numPeopleInput.value = '';
-
-                if (reservedForMidi >= 30) {
-                    alert('Service Midi complet pour cette date.');
-                } else if (reservedForSoir >= 30) {
-                    alert('Service Soir complet pour cette date.');
-                }
-            }
-
-            const reservationForm = document.getElementById('reservationForm');
-            reservationForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                const roomNumber = document.getElementById('roomNumber').value;
-                const service = document.getElementById('service').value;
-                const numPeople = document.getElementById('numPeople').value;
-
-                const confirmationMessage = document.getElementById('confirmationMessage');
-                confirmationMessage.innerHTML = `
-                    <div class="alert alert-success">
-                        Votre réservation est bien prise en compte pour la chambre ${roomNumber}.
-                        Service: ${service}, Nombre de personnes: ${numPeople}.
-                    </div>
-                `;
-            });
-        });
-    </script>
+    <script src="../../js/navbar.js" type="text/javascript" defer></script>
+    <script src="../../js/footer.js" type="text/javascript" defer></script>
+    <script src="../../js/meteo.js" type="text/javascript" defer></script>
+    <script src="./form-repas.js" type="text/javascript" defer></script>
+    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 </body>
+
 </html>
