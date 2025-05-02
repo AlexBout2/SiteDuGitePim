@@ -1,17 +1,19 @@
-// modules/repas/form-repas.js
+import { validateSejourNumber, getSejourNumber } from '../../js/utils.js';
+console.log("form-repas.js chargé");
 window.addEventListener("DOMContentLoaded", function () {
     const resaCheckButton = document.querySelector(".sejour-validation");
 
     resaCheckButton.addEventListener("click", function (event) {
         event.preventDefault();
         const fullFormContainer = document.querySelector(".fullForm");
-        const sejourNumber = document.getElementById("reservation-number").value.trim();
 
-        // Vérification du numéro de séjour (simple validation)
-        if (!sejourNumber) {
-            alert("Veuillez entrer votre numéro de séjour.");
+        // Appel sans paramètres, comme défini dans utils.js
+        if (!validateSejourNumber()) {
             return;
         }
+
+        // Utiliser getSejourNumber() pour récupérer la valeur
+        const sejourNumber = getSejourNumber();
 
         if (fullFormContainer && fullFormContainer.innerHTML.trim() === "") {
             // Formulaire pour réservation au restaurant
@@ -76,8 +78,10 @@ window.addEventListener("DOMContentLoaded", function () {
                         </div>
                         
                         <div class="d-flex justify-content-center my-4">
-                            <button type="button" id="valider-reservation" class="btn btn-primary btn-lg px-5">
-                                Réserver maintenant
+                            <button type="btn-reservation" class="btn-reservation js-valider-reservation">
+                            <span class=btn-text>
+                                Valider la réservation
+                            </span>
                             </button>
                         </div>
                     </form>
@@ -99,9 +103,10 @@ window.addEventListener("DOMContentLoaded", function () {
         const serviceSoirRadio = document.getElementById("serviceSoir");
         const midiCreneaux = document.getElementById("midi-creneaux");
         const soirCreneaux = document.getElementById("soir-creneaux");
-        const validerButton = document.getElementById("valider-reservation");
+        const validerButton = document.querySelector(".js-valider-reservation");
         const sessionWarning = document.getElementById("session-warning");
         const meteoWidget = document.querySelector("meteo-widget");
+
 
         // Définir la date minimum à aujourd'hui
         const today = new Date();
@@ -194,10 +199,9 @@ window.addEventListener("DOMContentLoaded", function () {
         validerButton.addEventListener("click", function () {
             // Valider tous les champs
             if (!validateForm()) {
-                return; // Ne pas continuer si validation échouée
+                return;
             }
 
-            // Générer un numéro de réservation
             const codeReservation = generateReservationCode();
 
             // Collecter les données du formulaire
@@ -234,7 +238,7 @@ window.addEventListener("DOMContentLoaded", function () {
         const nbPersonnes = document.getElementById("NbPersonnes").value;
         const dateReservation = document.getElementById("DateReservation").value;
         const heureArrivee = document.getElementById("HeureArrivee").value;
-        const validerButton = document.getElementById("valider-reservation");
+        const validerButton = document.querySelector(".js-valider-reservation");
 
         const isFormValid =
             nbPersonnes &&

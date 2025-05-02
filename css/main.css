@@ -164,6 +164,9 @@ header {
   padding: 15px 25px;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
+  color: white;
+  text-transform: uppercase;
+  font-size: 1rem;
 }
 
 .btn-reservation:hover {
