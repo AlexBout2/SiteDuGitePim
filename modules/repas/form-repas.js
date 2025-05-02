@@ -407,15 +407,11 @@ window.addEventListener("DOMContentLoaded", function () {
             
             <hr class="my-3">
             
-            <p class="text-center">Conservez votre code de réservation :</p>
-            <div class="code-reservation-container text-center">
-                <p class="reservation-number fs-4 bg-white p-2 rounded d-inline-block">${formData.codeReservation}</p>
-            </div>
             
-            <div class="text-center mt-4">
-                <button class="btn btn-primary" onclick="window.location.reload()">
-                    Faire une nouvelle réservation
-                </button>
+            <p class="text-center">Conservez votre code de réservation :</p>
+            <div class="row justify-content-center">
+                <p class="fw-bold col-5 fs-4 p-2">Code de réservation:</p>
+                <p class="reservation-number fs-4 bg-white p-2 rounded col-5">${formData.codeReservation}</p>
             </div>
         </div>
         `;
