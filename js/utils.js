@@ -54,5 +54,21 @@ function getSejourNumber() {
     return inputElement ? inputElement.value.trim() : '';
 }
 
-// Exporter les fonctions
-export { validateByClass, validateSejourNumber, getSejourNumber };
+
+// Fonction pour formater les dates
+function formatDate(dateString) {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('fr-FR', options);
+}
+
+// Calculer le nombre de jours
+function calculateDays(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+}
+
+
+export { validateByClass, validateSejourNumber, getSejourNumber, formatDate, calculateDays };

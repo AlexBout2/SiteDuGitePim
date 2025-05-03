@@ -1,19 +1,41 @@
+import { formatDate, calculateDays } from '../../js/utils.js';
 document.addEventListener('DOMContentLoaded', function () {
-  // Éléments du DOM
-  const confirmButton = document.querySelector('.sejour-validation');
-  const confirmationDiv = document.querySelector('.confirm-resa');
   const startDateInput = document.getElementById('date-start');
   const endDateInput = document.getElementById('date-end');
+  const confirmButton = document.querySelector('.sejour-validation');
   const personSelect = document.getElementById('personCount');
   const meteoWidget = document.querySelector('meteo-widget');
-
-  const bungalowMerContainer = document.getElementById('bungalowMerContainer');
-  const bungalowJardinContainer = document.getElementById('bungalowJardinContainer');
 
   // Définir la date minimale (aujourd'hui) pour les champs de date
   const today = new Date().toISOString().split('T')[0];
   startDateInput.min = today;
   endDateInput.min = today;
+
+  // Événement lorsqu'on change la date de début
+  startDateInput.addEventListener('change', function () {
+    const dateString = startDateInput.value;
+    endDateInput.min = dateString;
+
+    // Si la date de fin est antérieure à la date de début, on la réinitialise
+    if (endDateInput.value && endDateInput.value < startDateInput.value) {
+      endDateInput.value = startDateInput.value;
+    }
+
+    const formattedDate = formatDate(dateString);
+    const numberOfDays = calculateDays(dateString, endDateInput.value);
+    updateMeteoForecasts();
+  });
+  // Événement lorsqu'on change la date de fin
+  endDateInput.addEventListener('change', function () {
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+
+    if (startDate && endDate) {
+      const numberOfDays = calculateDays(startDate, endDate);
+    }
+    updateMeteoForecasts();
+  });
+
 
   // Fonction pour mettre à jour les prévisions météo
   function updateMeteoForecasts() {
@@ -71,26 +93,15 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePersonCount();
   }
 
-  // Événement lorsqu'on change la date de début
-  startDateInput.addEventListener('change', function () {
-    // La date de fin minimum doit être au moins égale à la date de début
-    endDateInput.min = startDateInput.value;
+  // Fonction pour générer un numéro de réservation
+  function generateReservationNumber() {
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const year = new Date(startDateInput.value).getFullYear().toString().slice(-2); // AA
+    const month = (new Date(startDateInput.value).getMonth() + 1).toString().padStart(2, '0'); // MM
+    const count = reservations.length + 1; // Incrément pour le numéro
 
-    // Si la date de fin est antérieure à la date de début, on la réinitialise
-    if (endDateInput.value && endDateInput.value < startDateInput.value) {
-      endDateInput.value = startDateInput.value;
-    }
-
-    updateMeteoForecasts();
-  });
-
-  // Événement lorsqu'on change la date de fin
-  endDateInput.addEventListener('change', function () {
-    updateMeteoForecasts();
-  });
-
-
-  //Switch des bungalow en fonction de la chambre choisie
+    return `CH${year}${month}${count.toString().padStart(3, '0')}`;
+  }
 
 
   // Événement au clic sur le bouton de confirmation
@@ -99,34 +110,54 @@ document.addEventListener('DOMContentLoaded', function () {
     const dateStart = startDateInput.value;
     const dateEnd = endDateInput.value;
     const personCount = personSelect.value;
-    const typeBungalow = document.querySelector('input[name="bungalowType"]:checked');
 
-    // Vérification des dates
-    if (!dateStart || !dateEnd) {
-      alert('Veuillez sélectionner les dates de votre séjour.');
+
+    // Vérification des bungalow **************************************
+    let bungalowSelected;
+    // Vérifiez quelle option est sélectionnée
+    if (document.getElementById('bungalowMer').checked) {
+      bungalowSelected = bungalowMerSelect.value;
+    } else if (document.getElementById('bungalowJardin').checked) {
+      bungalowSelected = bungalowJardinSelect.value;
+    }
+
+    // Vérification des champs obligatoires
+    if (!dateStart || !dateEnd || !bungalowSelected) {
+      alert('Veuillez remplir tous les champs nécessaires.');
       return;
     }
 
-    if (!typeBungalow) {
-      alert('Veuillez sélectionner un type de bungalow.');
-      return;
-    }
-    const bungalowSelected = typeBungalow.value;
-
-
-
-    // Vérification du nombre de personnes
-    if (bungalowSelected === 'mer' && personCount > 2) {
-      alert('Le nombre de personnes ne peut pas dépasser 2 pour les bungalows mer.');
-      return;
-    } else if (bungalowSelected === 'jardin' && personCount > 4) {
-      alert('Le nombre de personnes ne peut pas dépasser 4 pour les bungalows jardin.');
+    // Vérification de la capacité
+    if ((bungalowSelected.startsWith('ME') && personCount > 2) ||
+      (bungalowSelected.startsWith('JA') && personCount > 4)) {
+      alert('Le nombre de personnes ne peut pas dépasser la limite pour ce type de bungalow.');
       return;
     }
 
+    // Vérifier si le bungalow a déjà été réservé dans les dates données
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const overlap = reservations.some(reservation => {
+      return reservation.bungalowId === bungalowSelected &&
+        ((new Date(dateStart) <= new Date(reservation.endDate)) &&
+          (new Date(dateEnd) >= new Date(reservation.startDate)));
+    });
+    if (overlap) {
+      alert('Ce bungalow est déjà réservé pour les dates sélectionnées. Veuillez choisir d\'autres dates ou un autre bungalow.');
+      return;
+    }
 
+    let typeBungalow = '';
+    if (document.getElementById('bungalowMer').checked) {
+      typeBungalow = 'mer';
+    } else if (document.getElementById('bungalowJardin').checked) {
+      typeBungalow = 'jardin';
+    }
+
+    // Vérification des bungalow end **************************************
+    const reservationNumber = generateReservationNumber();
 
     // Afficher la confirmation
+    const confirmationDiv = document.querySelector('.confirm-resa');
     confirmationDiv.innerHTML = `
       <div class="reservation-confirmation p-4 my-3 text-center border rounded">
         <h1 class="mb-3">Réservation confirmée !</h1>
@@ -144,9 +175,17 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     `;
 
-    // Scroller vers la confirmation
+    reservations.push({
+      reservationNumber,
+      bungalowId: bungalowSelected,
+      startDate: dateStart,
+      endDate: dateEnd
+    });
+    localStorage.setItem('reservations', JSON.stringify(reservations));
     confirmationDiv.scrollIntoView({ behavior: 'smooth' });
+
   });
+
 
   // Initialiser l'état d'affichage
   updateBungalowOptions();
@@ -154,21 +193,5 @@ document.addEventListener('DOMContentLoaded', function () {
     input.addEventListener('change', updateBungalowOptions);
     updatePersonCount();
   });
-
-  // Fonction pour formater les dates
-  function formatDate(dateString) {
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('fr-FR', options);
-  }
-
-  // Calculer le nombre de jours
-  function calculateDays(startDate, endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
 
 });
