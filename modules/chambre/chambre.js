@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const personSelect = document.getElementById('personCount');
   const meteoWidget = document.querySelector('meteo-widget');
 
+  const bungalowMerContainer = document.getElementById('bungalowMerContainer');
+  const bungalowJardinContainer = document.getElementById('bungalowJardinContainer');
+
   // Définir la date minimale (aujourd'hui) pour les champs de date
   const today = new Date().toISOString().split('T')[0];
   startDateInput.min = today;
@@ -33,6 +36,41 @@ document.addEventListener('DOMContentLoaded', function () {
     meteoWidget.setAttribute('end-date', endDateInput.value);
   }
 
+  // Fonction pour l'affichage dynamique du nombre de personnes
+  function updatePersonCount() {
+    const isTerre = document.getElementById('bungalowJardin').checked;
+    const terreOptions = document.querySelectorAll('.terre-option');
+
+    terreOptions.forEach(option => {
+      option.style.display = isTerre ? 'block' : 'none';
+    });
+
+    const personSelect = document.getElementById('personCount');
+    if (!isTerre && personSelect.value > 2) {
+      personSelect.value = '2';
+    }
+  }
+
+  function updateBungalowOptions() {
+    const bungalowMer = document.getElementById('bungalowMer');
+    const bungalowJardin = document.getElementById('bungalowJardin');
+
+    const bungalowMerContainer = document.getElementById('bungalowMerContainer');
+    const bungalowJardinContainer = document.getElementById('bungalowJardinContainer');
+
+    if (bungalowMer.checked) {
+      bungalowMerContainer.classList.remove('d-none');
+      bungalowJardinContainer.classList.add('d-none');
+    } else if (bungalowJardin.checked) {
+      bungalowMerContainer.classList.add('d-none');
+      bungalowJardinContainer.classList.remove('d-none');
+    } else {
+      bungalowMerContainer.classList.add('d-none');
+      bungalowJardinContainer.classList.add('d-none');
+    }
+    updatePersonCount();
+  }
+
   // Événement lorsqu'on change la date de début
   startDateInput.addEventListener('change', function () {
     // La date de fin minimum doit être au moins égale à la date de début
@@ -51,13 +89,17 @@ document.addEventListener('DOMContentLoaded', function () {
     updateMeteoForecasts();
   });
 
+
+  //Switch des bungalow en fonction de la chambre choisie
+
+
   // Événement au clic sur le bouton de confirmation
   confirmButton.addEventListener('click', function () {
     // Récupération des données
     const dateStart = startDateInput.value;
     const dateEnd = endDateInput.value;
     const personCount = personSelect.value;
-    const typeBungalow = document.querySelector('input[name="typeBungalow"]:checked').value;
+    const typeBungalow = document.querySelector('input[name="bungalowType"]:checked');
 
     // Vérification des dates
     if (!dateStart || !dateEnd) {
@@ -65,10 +107,24 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Création d'un numéro de réservation simplifié
-    const typePart = typeBungalow === 'mer' ? 'M' : 'T';
-    const randomPart = Math.floor(1000 + Math.random() * 9000); // Nombre à 4 chiffres (1000-9999)
-    const reservationNumber = `PIM-${typePart}${randomPart}`;
+    if (!typeBungalow) {
+      alert('Veuillez sélectionner un type de bungalow.');
+      return;
+    }
+    const bungalowSelected = typeBungalow.value;
+
+
+
+    // Vérification du nombre de personnes
+    if (bungalowSelected === 'mer' && personCount > 2) {
+      alert('Le nombre de personnes ne peut pas dépasser 2 pour les bungalows mer.');
+      return;
+    } else if (bungalowSelected === 'jardin' && personCount > 4) {
+      alert('Le nombre de personnes ne peut pas dépasser 4 pour les bungalows jardin.');
+      return;
+    }
+
+
 
     // Afficher la confirmation
     confirmationDiv.innerHTML = `
@@ -93,35 +149,26 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Initialiser l'état d'affichage
-  updatePersonCount();
-});
-
-// Fonction pour formater les dates
-function formatDate(dateString) {
-  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-  return new Date(dateString).toLocaleDateString('fr-FR', options);
-}
-
-// Calculer le nombre de jours
-function calculateDays(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const diffTime = Math.abs(end - start);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays;
-}
-
-// Fonction pour l'affichage dynamique du nombre de personnes
-function updatePersonCount() {
-  const isTerre = document.getElementById('bungalowTerre').checked;
-  const terreOptions = document.querySelectorAll('.terre-option');
-
-  terreOptions.forEach(option => {
-    option.style.display = isTerre ? 'block' : 'none';
+  updateBungalowOptions();
+  document.querySelectorAll('input[name="bungalowType"]').forEach(input => {
+    input.addEventListener('change', updateBungalowOptions);
+    updatePersonCount();
   });
 
-  const personSelect = document.getElementById('personCount');
-  if (!isTerre && personSelect.value > 2) {
-    personSelect.value = '2';
+  // Fonction pour formater les dates
+  function formatDate(dateString) {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('fr-FR', options);
   }
-}
+
+  // Calculer le nombre de jours
+  function calculateDays(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+
+});

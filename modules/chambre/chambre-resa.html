@@ -49,31 +49,60 @@
                     </div>
 
                     <!-- Ligne de séparation -->
-                    <hr class="my-4" style="opacity: 0.3;">
 
+                    <hr class="my-4" style="opacity: 0.3;">
                     <!-- Menu radio pour le choix du bungalow -->
-                    <div class="form-group mb-3">
-                        <label class="mb-3 d-block text-center">Type d'hébergement</label>
-                        <div class="d-flex justify-content-center">
-                            <div class="form-check mx-4">
-                                <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowMer"
-                                    value="mer" checked onchange="updatePersonCount()">
-                                <label class="form-check-label" for="bungalowMer">
-                                    Bungalow mer
-                                </label>
+                    <div class="form-group mb-3 text-center">
+                        <label for="bungalowType" class="mb-3 text-center">Choisissez votre d’hébergement
+                        </label>
+                        <div class="d-flex justify-content-evenly text-center px-5 mt-2">
+                            <div class="form-check text-center">
+                                <input type="radio" id="bungalowMer" name="bungalowType" value="mer"
+                                    onchange="updateBungalowOptions()">
+                                <label for="bungalowMer">Bungalows Mer</label>
                             </div>
-                            <div class="form-check mx-4">
-                                <input class="form-check-input" type="radio" name="typeBungalow" id="bungalowTerre"
-                                    value="terre" onchange="updatePersonCount()">
-                                <label class="form-check-label" for="bungalowTerre">
-                                    Bungalow Terre
-                                </label>
+                            <div class="form-check text-center">
+                                <input type="radio" id="bungalowJardin" name="bungalowType" value="jardin"
+                                    onchange="updateBungalowOptions()">
+                                <label for="bungalowJardin">Bungalows Jardin</label>
                             </div>
+
+
                         </div>
                     </div>
 
-                    <!-- Ligne de séparation -->
+                    <!-- Menu déroulant pour les bungalows de mer -->
+                    <div class="form-group mb-3 d-flex justify-content-evenly d-none" id="bungalowMerContainer">
+                        <select id="bungalowMerSelect" class="form-select w-50">
+                            <option value="" disabled selected>Choisissez un bungalow Mer</option>
+                            <option value="ME01">Bungalow Mer 01</option>
+                            <option value="ME02">Bungalow Mer 02</option>
+                            <option value="ME03">Bungalow Mer 03</option>
+                            <option value="ME04">Bungalow Mer 04</option>
+                            <option value="ME05">Bungalow Mer 05</option>
+                        </select>
+                    </div>
+
+                    <!-- Menu déroulant pour les bungalows de jardin -->
+                    <div class="d-flex justify-content-evenly form-group mb-3 d-none'" id="bungalowJardinContainer"
+                        style="display: none;">
+                        <select id="bungalowJardinSelect" class="form-select w-50">
+                            <option value="" disabled selected>Choisissez un bungalow Jardin</option>
+                            <option value="JA01">Bungalow Jardin 01</option>
+                            <option value="JA02">Bungalow Jardin 02</option>
+                            <option value="JA03">Bungalow Jardin 03</option>
+                            <option value="JA04">Bungalow Jardin 04</option>
+                            <option value="JA05">Bungalow Jardin 05</option>
+                            <option value="JA06">Bungalow Jardin 06</option>
+                            <option value="JA07">Bungalow Jardin 07</option>
+                            <option value="JA08">Bungalow Jardin 08</option>
+                            <option value="JA09">Bungalow Jardin 09</option>
+                            <option value="JA10">Bungalow Jardin 10</option>
+                        </select>
+                    </div>
+
                     <hr class="my-4" style="opacity: 0.3;">
+
 
                     <!-- Section nombre de personnes -->
                     <div class="form-group mb-4">
@@ -88,6 +117,7 @@
                             </select>
                         </div>
                     </div>
+
                     <hr class="my-4" style="opacity: 0.3;">
                     <div class="d-flex justify-content-center mb-3">
                         <div class="btn-reservation sejour-validation">
@@ -100,6 +130,7 @@
                 </div>
             </div>
         </div>
+        </div>
         </section>
     </main>
 </body>
@@ -111,7 +142,7 @@
 <script src="../../js/navbar.js" type="text/javascript" defer></script>
 <script src="../../js/footer.js" type="text/javascript" defer></script>
 <script src="../../js/meteo.js" type="text/javascript" defer></script>
-<script src="chambre.js"></script>
+<script src="./chambre.js" type="text/javascript" defer></script>
 </body>
 
 </html>
