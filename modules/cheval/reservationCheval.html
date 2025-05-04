@@ -29,100 +29,101 @@
         </section>
 
         <section class="reservation">
-
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 col-md-6 col-11 mx-auto reservation-form">
-                        <!-- Numéro de réservation -->
-                        <div class="form-group mb-3">
-                            <input type="text" class="form-control" id="reservation-number"
-                                placeholder="Votre numéro de séjour" required>
+                <div class="row justify-content-center">
+                    <div class="col-md-5 col-md-5 col-11 mx-auto reservation-form">
+                        <div class="initial-form text-center">
+                            <div class="form-group mb-3 position-relative">
+                                <input type="text" class="form-control sejour-resa-input"
+                                    placeholder="Votre numéro de séjour" required>
+                                <div class="invalid-feedback sejour-valid">Veuillez entrer votre numéro de séjour.</div>
+                            </div>
+                            <div class="d-flex justify-content-center mb-3">
+                                <div class="btn-reservation sejour-validation text-center">
+                                    <span class="btn-text">
+                                        Confirmer votre numéro de séjour
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-center mb-3">
-                            <div class="btn-reservation sejour-validation text-center">
-                                <span class="btn-text">
-                                    Confirmer votre numéro de séjour
-                                </span>
+                        <div class="fullForm d-none"></div>
+                    </div>
+
+                    <div class="col-md-5 col-12 horse-selection d-none">
+                        <h1 class="text-center fs-5">Sélectionnez votre compagnon de route</h1>
+                        <div class="horses-grid col-sm-10 col-md-10 col-11 mx-auto">
+                            <div class="horse-card">
+                                <img src="./media/Apache.jpg" alt="Apache">
+                                <p>Apache</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Mustang.jpg" alt="Mustang">
+                                <p>Mustang</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Sahara.jpg" alt="Sahara">
+                                <p>Sahara</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Comete.jpg" alt="Comète">
+                                <p>Comète</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Eclair.jpg" alt="Eclair">
+                                <p>Eclair</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Paillette.jpg" alt="Paillette">
+                                <p>Paillette</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Kone.jpg" alt="Koné">
+                                <p>Koné</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Confiture.jpg" alt="Confiture">
+                                <p>Confiture</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Foster.jpg" alt="Foster">
+                                <p>Foster</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Iananoui.jpg" alt="Inanouï">
+                                <p>Inanouï</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Prince.jpg" alt="Prince">
+                                <p>Prince</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Buster.jpg" alt="Buster">
+                                <p>Buster</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Charly.jpg" alt="Charly">
+                                <p>Charly</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Sao.jpg" alt="Sao">
+                                <p>Sao</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Tim.jpg" alt="Tim">
+                                <p>Tim</p>
+                            </div>
+                            <div class="horse-card">
+                                <img src="./media/Tam.jpg" alt="Tam">
+                                <p>Tam</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="fullForm"></div>
-                    <div class="confirm-resa col-11 col-sm-6 col-md-6 mx-auto"></div>
-                </div>
             </div>
+        </section>
 
-            <!-- Section chevaux -->
-            <h1 class="text-center fs-3">Sélectionnez votre compagnon de route</h1>
-            <div class="horses-grid col-7 mx-auto">
-                <div class="horse-card">
-                    <img src="./media/Apache.jpg" alt="Apache">
-                    <p>Apache</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Mustang.jpg" alt="Mustang">
-                    <p>Mustang</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Sahara.jpg" alt="Sahara">
-                    <p>Sahara</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Comete.jpg" alt="Comète">
-                    <p>Comète</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Eclair.jpg" alt="Eclair">
-                    <p>Eclair</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Paillette.jpg" alt="Paillette">
-                    <p>Paillette</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Kone.jpg" alt="Koné">
-                    <p>Koné</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Confiture.jpg" alt="Confiture">
-                    <p>Confiture</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Foster.jpg" alt="Foster">
-                    <p>Foster</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Iananoui.jpg" alt="Inanouï">
-                    <p>Inanouï</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Prince.jpg" alt="Prince">
-                    <p>Prince</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Buster.jpg" alt="Buster">
-                    <p>Buster</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Charly.jpg" alt="Charly">
-                    <p>Charly</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Sao.jpg" alt="Sao">
-                    <p>Sao</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Tim.jpg" alt="Tim">
-                    <p>Tim</p>
-                </div>
-                <div class="horse-card">
-                    <img src="./media/Tam.jpg" alt="Tam">
-                    <p>Tam</p>
-                </div>
-            </div>
-
-
+        <section class="confirmation-de-réservation">
+            <div class="confirm-resa col-11 col-sm-6 col-md-6 mx-auto"></div>
         </section>
     </main>
     <pied-de-page></pied-de-page>
@@ -132,7 +133,8 @@
     <script src="../../js/navbar.js" type="text/javascript" defer></script>
     <script src="../../js/footer.js" type="text/javascript" defer></script>
     <script src="../../js/meteo.js" type="text/javascript" defer></script>
-    <script src="./cheval-form-resa.js"></script>
+    <script src="../../js/utils.js" type="module" defer></script>
+    <script src="./cheval-form-resa.js" type="module" defer></script>
 </body>
 
 </html>
