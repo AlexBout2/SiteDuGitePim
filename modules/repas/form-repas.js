@@ -1,5 +1,4 @@
-import { validateSejourNumber, getSejourNumber } from '../../js/utils.js';
-console.log("form-repas.js chargé");
+import { validateSejourNumber, getSejourNumber, formatDate } from '../../js/utils.js';
 window.addEventListener("DOMContentLoaded", function () {
     const resaCheckButton = document.querySelector(".sejour-validation");
 
@@ -11,7 +10,6 @@ window.addEventListener("DOMContentLoaded", function () {
         if (!validateSejourNumber()) {
             return;
         }
-
         // Utiliser getSejourNumber() pour récupérer la valeur
         const sejourNumber = getSejourNumber();
 
@@ -399,10 +397,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
         // Afficher la confirmation
         confirmationDiv.innerHTML = `
-        <div class="confirmation-box p-4 my-4 border rounded bg-light">
-            <h2 class="text-center mb-3">Réservation confirmée !</h2>
+        <div class="reservation-confirmation p-4 my-3 text-center border rounded">
+            <h1 class="mb-3">Réservation confirmée !</h1>
             
-            <div class="details-resa">
+            <div class="details-resa" text-start bg-light p-3 rounded mx-auto" style="max-width: 400px;">
                 <p><strong>Date de réservation :</strong> ${formatDate(formData.dateReservation)}</p>
                 <p><strong>Service :</strong> ${formData.service === "midi" ? "Déjeuner" : "Dîner"}</p>
                 <p><strong>Nombre de personnes :</strong> ${formData.nbPersonnes}</p>
@@ -411,11 +409,10 @@ window.addEventListener("DOMContentLoaded", function () {
             
             <hr class="my-3">
             
-            
-            <p class="text-center">Conservez votre code de réservation :</p>
+            <p class="mt-3 fs-3 fw-semibold">Conservez votre code de réservation :</p>
             <div class="row justify-content-center">
                 <p class="fw-bold col-5 fs-4 p-2">Code de réservation:</p>
-                <p class="reservation-number fs-4 bg-white p-2 rounded col-5">${formData.codeReservation}</p>
+                <p class="reservation-number fs-4 bg-light p-2 rounded col-5">${formData.codeReservation}</p>
             </div>
         </div>
         `;
@@ -427,9 +424,4 @@ window.addEventListener("DOMContentLoaded", function () {
         }, 100);
     }
 
-    // Fonction pour formater les dates
-    function formatDate(dateString) {
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        return new Date(dateString).toLocaleDateString('fr-FR', options);
-    }
 });

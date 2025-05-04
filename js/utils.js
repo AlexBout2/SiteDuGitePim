@@ -34,16 +34,36 @@ function validateByClass(inputClass, feedbackClass, validationFn) {
 }
 
 /**
- * Valide spécifiquement le numéro de séjour
- * @returns {boolean} - true si le numéro de séjour est fourni
+ * Valide spécifiquement le numéro de séjour en vérifiant sa présence et son existence dans les réservations
+ * @param {string} customMessage - Message d'erreur personnalisé (optionnel)
+ * @returns {boolean} - true si le numéro de séjour est valide et existe
  */
-function validateSejourNumber() {
+function validateSejourNumber(customMessage) {
     return validateByClass(
         'sejour-resa-input',
-        'invalid-feedback',
-        value => value !== ''
+        'sejour-valid',
+        value => {
+            if (value === '') {
+                return false;
+            }
+
+            // Récupérer les réservations du localStorage
+            const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            const reservation = reservations.find(r => r.reservationNumber === value);
+
+            if (!reservation) {
+                const feedbackElement = document.querySelector('.sejour-valid');
+                if (feedbackElement) {
+                    feedbackElement.textContent = customMessage || 'Ce numéro de séjour n\'existe pas.';
+                }
+                return false;
+            }
+
+            return true;
+        }
     );
 }
+
 
 /**
  * Récupère la valeur du numéro de séjour

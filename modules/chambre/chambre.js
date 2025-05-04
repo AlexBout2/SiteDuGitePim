@@ -5,18 +5,111 @@ document.addEventListener('DOMContentLoaded', function () {
   const confirmButton = document.querySelector('.sejour-validation');
   const personSelect = document.getElementById('personCount');
   const meteoWidget = document.querySelector('meteo-widget');
+  updateBungalowAvailability();
 
   // Définir la date minimale (aujourd'hui) pour les champs de date
   const today = new Date().toISOString().split('T')[0];
   startDateInput.min = today;
   endDateInput.min = today;
 
-  // Événement lorsqu'on change la date de début
+  function updateBungalowAvailability() {
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+
+    if (!startDate || !endDate) return;
+
+    // Récupérer les réservations existantes
+    const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+    // Pour les bungalows Mer
+    const merOptions = document.querySelectorAll('#bungalowMerSelect option:not([disabled="disabled"])');
+    merOptions.forEach(option => {
+      if (option.value === '') return; // Ignorer l'option par défaut
+
+      const isBooked = reservations.some(reservation => {
+        return reservation.bungalowId === option.value &&
+          ((new Date(startDate) <= new Date(reservation.endDate)) &&
+            (new Date(endDate) >= new Date(reservation.startDate)));
+      });
+
+      if (isBooked) {
+        option.disabled = true;
+        if (!option.textContent.includes('(Non disponible)')) {
+          option.textContent = `${option.textContent} (Non disponible)`;
+        }
+      } else {
+        option.disabled = false;
+        // Rétablir le texte d'origine sans "(Non disponible)"
+        option.textContent = option.textContent.replace(' (Non disponible)', '');
+      }
+    });
+
+    // Pour les bungalows Jardin
+    const jardinOptions = document.querySelectorAll('#bungalowJardinSelect option:not([disabled="disabled"])');
+    jardinOptions.forEach(option => {
+      if (option.value === '') return; // Ignorer l'option par défaut
+
+      const isBooked = reservations.some(reservation => {
+        return reservation.bungalowId === option.value &&
+          ((new Date(startDate) <= new Date(reservation.endDate)) &&
+            (new Date(endDate) >= new Date(reservation.startDate)));
+      });
+
+      if (isBooked) {
+        option.disabled = true;
+        if (!option.textContent.includes('(Non disponible)')) {
+          option.textContent = `${option.textContent} (Non disponible)`;
+        }
+      } else {
+        option.disabled = false;
+        // Rétablir le texte d'origine sans "(Non disponible)"
+        option.textContent = option.textContent.replace(' (Non disponible)', '');
+      }
+    });
+
+    // Vérification si tous les bungalows sont indisponibles
+    const merAvailable = Array.from(merOptions).some(option => !option.disabled && option.value !== '');
+    const jardinAvailable = Array.from(jardinOptions).some(option => !option.disabled && option.value !== '');
+
+    // Éléments pour afficher les messages de disponibilité
+    let merMessageElement = document.getElementById('mer-availability-message');
+    if (!merMessageElement) {
+      merMessageElement = document.createElement('p');
+      merMessageElement.id = 'mer-availability-message';
+      merMessageElement.className = 'text-danger mt-2 text-center';
+      document.getElementById('bungalowMerContainer').appendChild(merMessageElement);
+    }
+
+    let jardinMessageElement = document.getElementById('jardin-availability-message');
+    if (!jardinMessageElement) {
+      jardinMessageElement = document.createElement('p');
+      jardinMessageElement.id = 'jardin-availability-message';
+      jardinMessageElement.className = 'text-danger mt-2 text-center';
+      document.getElementById('bungalowJardinContainer').appendChild(jardinMessageElement);
+    }
+
+    // Mettre à jour les messages
+    merMessageElement.textContent = !merAvailable ? 'Aucun bungalow Mer disponible pour ces dates.' : '';
+    jardinMessageElement.textContent = !jardinAvailable ? 'Aucun bungalow Jardin disponible pour ces dates.' : '';
+
+    // Réinitialiser les sélections si l'option sélectionnée est maintenant désactivée
+    const merSelect = document.getElementById('bungalowMerSelect');
+    const jardinSelect = document.getElementById('bungalowJardinSelect');
+
+    if (merSelect.selectedIndex > 0 && merSelect.options[merSelect.selectedIndex].disabled) {
+      merSelect.selectedIndex = 0;
+    }
+
+    if (jardinSelect.selectedIndex > 0 && jardinSelect.options[jardinSelect.selectedIndex].disabled) {
+      jardinSelect.selectedIndex = 0;
+    }
+  }
+
+  // Modifiez vos écouteurs d'événements existants pour inclure l'appel à updateBungalowAvailability
   startDateInput.addEventListener('change', function () {
     const dateString = startDateInput.value;
     endDateInput.min = dateString;
 
-    // Si la date de fin est antérieure à la date de début, on la réinitialise
     if (endDateInput.value && endDateInput.value < startDateInput.value) {
       endDateInput.value = startDateInput.value;
     }
@@ -24,8 +117,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const formattedDate = formatDate(dateString);
     const numberOfDays = calculateDays(dateString, endDateInput.value);
     updateMeteoForecasts();
+    updateBungalowAvailability(); // Ajout de cette ligne
   });
-  // Événement lorsqu'on change la date de fin
+
   endDateInput.addEventListener('change', function () {
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
@@ -34,7 +128,20 @@ document.addEventListener('DOMContentLoaded', function () {
       const numberOfDays = calculateDays(startDate, endDate);
     }
     updateMeteoForecasts();
+    updateBungalowAvailability(); // Ajout de cette ligne
   });
+
+  // Dans votre initialisation
+  document.querySelectorAll('input[name="bungalowType"]').forEach(input => {
+    input.addEventListener('change', function () {
+      updateBungalowOptions();
+      updatePersonCount();
+      updateBungalowAvailability(); // Ajout de cette ligne
+    });
+  });
+
+  // Appel initial pour initialiser les disponibilités
+  updateBungalowAvailability();
 
 
   // Fonction pour mettre à jour les prévisions météo
@@ -104,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  // Événement au clic sur le bouton de confirmation
+
   confirmButton.addEventListener('click', function () {
     // Récupération des données
     const dateStart = startDateInput.value;
@@ -192,6 +299,9 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('input[name="bungalowType"]').forEach(input => {
     input.addEventListener('change', updateBungalowOptions);
     updatePersonCount();
+    updateBungalowOptions();
+    updateBungalowAvailability();
   });
-
 });
+
+updateBungalowAvailability();
