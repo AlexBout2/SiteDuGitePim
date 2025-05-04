@@ -33,8 +33,9 @@
                     <div class="col-md-6 col-md-6 col-11 mx-auto reservation-form">
                         <!-- Numéro de réservation -->
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" id="reservation-number"
+                            <input type="text" class="form-control sejour-resa-input"
                                 placeholder="Votre numéro de séjour" required>
+                            <div class="invalid-feedback sejour-valid">Veuillez entrer votre numéro de séjour.</div>
                         </div>
                         <div class="d-flex justify-content-center mb-3">
                             <div class="btn-reservation sejour-validation text-center">
@@ -59,7 +60,8 @@
     <script src="../../js/navbar.js" defer></script>
     <script src="../../js/footer.js" type="text/javascript" defer></script>
     <script src="../../js/meteo.js" type="text/javascript" defer></script>
-    <script src="./form-bagne.js" type="text/javascript" defer></script>
+    <script src="../../js/utils.js" type="module" defer></script>
+    <script src="./form-bagne.js" type="module" defer></script>
 </body>
 
 </html>
