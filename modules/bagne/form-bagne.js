@@ -198,6 +198,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
         // Masquer le formulaire et afficher la confirmation
         fullFormContainer.style.display = "none";
+        fullFormContainer.innerHTML = "";
+        document.querySelector(".sejour-resa-input").value = "";
 
         displayConfirmation(formData);
     }
