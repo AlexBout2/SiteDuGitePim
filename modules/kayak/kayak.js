@@ -7,9 +7,17 @@ window.addEventListener("DOMContentLoaded", function () {
 		event.preventDefault();
 		const fullFormContainer = document.querySelector(".fullForm");
 
+		//Vider les réservation précédentes 
+		const confirmationDiv = document.querySelector(".confirm-resa");
+		if (confirmationDiv) {
+			confirmationDiv.innerHTML = "";
+		}
+
+
 		if (!validateSejourNumber()) {
 			return;
 		}
+
 		const sejourNumber = getSejourNumber();
 
 		if (fullFormContainer && fullFormContainer.innerHTML.trim() === "") {
@@ -22,6 +30,7 @@ window.addEventListener("DOMContentLoaded", function () {
                             <input class="form-control" id="NbPersonnes" type="number" min="1" max="8" value="1">
                             <div class="invalid-feedback" id="nbpersonnes-feedback">Nombre de personnes invalide</div>
                         </div>
+
                         <hr class="separator my-3">
                         
                         <div class="form-group mb-3">
@@ -29,29 +38,10 @@ window.addEventListener("DOMContentLoaded", function () {
                             <input type="date" class="form-control" id="DateLocation" required>
                             <div class="invalid-feedback" id="date-feedback">Veuillez sélectionner une date</div>
                         </div>
-                        
-                        <div class="form-group mb-3">
-                            <label class="fs-4">Type de kayak</label>
-                            <div class="d-flex justify-content-between px-5 mt-2">
-                                <div class="form-check text-center">
-                                    <input class="form-check-input" type="radio" name="typeKayak" id="simpleKayak" value="simple" checked>
-                                    <label class="form-check-label" for="simpleKayak">
-                                        Kayak simple
-                                    </label>
-                                    <p class="form-text d-block fs-5 mt-2" id="simples-dispo">2 disponibles</p>
-                                </div>
-                                <div class="form-check text-center">
-                                    <input class="form-check-input" type="radio" name="typeKayak" id="doubleKayak" value="double">
-                                    <label class="form-check-label" for="doubleKayak">
-                                        Kayak double
-                                    </label>
-                                    <p class="form-text d-block fs-5 mt-2" id="doubles-dispo">3 disponibles</p>
-                                </div>
-                            </div>
-                            <div class="invalid-feedback" id="type-kayak-feedback">Le kayak double nécessite au moins 2 personnes</div>
-                        </div>
 
-                        <div class="form-group mb-3">
+						<hr class="separator my-3">
+
+						 <div class="form-group mb-3">
                             <label class="fs-4">Sessions (1h chacune, de 9h à 16h)</label>
                             <div class="row mt-2">
                                 <div class="col-md-6 mb-3 mx-auto">
@@ -68,9 +58,34 @@ window.addEventListener("DOMContentLoaded", function () {
                                     </select>
                                 </div>
                             </div>
-                            <div class="invalid-feedback" id="sessions-feedback">Veuillez sélectionner une heure de début</div>
-                            <div id="session-warning" class="text-danger" style="display: none;">Attention: la durée choisie dépasse la plage horaire disponible (9h-16h)</div>
+							<div class="invalid-feedback" id="sessions-feedback">Veuillez sélectionner une heure de début</div>
+                            <div id="session-warning" class="text-danger" style="display: none;"></div>
                         </div>
+
+                        <hr class="separator my-3">
+                        <div class="form-group mb-3">
+                            <label class="fs-4">Sélection des kayaks</label>
+                            <div class="row px-3 mt-2">
+                                <div class="col-md-6 text-center">
+                                    <label for="nbKayakSimple" class="form-label">Kayaks simples</label>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <input type="number" class="form-control w-50 mx-2" id="nbKayakSimple" min="0" max="2" value="0">
+                                    </div>
+                                    <p class="form-text d-block mt-2" id="simples-dispo">2 disponibles</p>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <label for="nbKayakDouble" class="form-label">Kayaks doubles</label>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <input type="number" class="form-control w-50 mx-2" id="nbKayakDouble" min="0" max="3" value="0">
+                                    </div>
+                                    <p class="form-text d-block mt-2" id="doubles-dispo">3 disponibles</p>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback" id="kayak-distribution-feedback">La répartition des kayaks ne correspond pas au nombre de personnes</div>
+                            <div class="alert alert-info mt-2" id="kayak-suggestion" style="display:none;"></div>
+                        </div>
+
+                       
                         
                         <div class="mb-3 mt-3">
                             <meteo-widget></meteo-widget>
@@ -98,15 +113,16 @@ window.addEventListener("DOMContentLoaded", function () {
 		const nbPersonnesInput = document.getElementById("NbPersonnes");
 		const dateLocationInput = document.getElementById("DateLocation");
 		const debutSessionSelect = document.getElementById("debut-session");
-		const simpleKayakRadio = document.getElementById("simpleKayak");
-		const doubleKayakRadio = document.getElementById("doubleKayak");
+		const nbKayakSimpleInput = document.getElementById("nbKayakSimple");
+		const nbKayakDoubleInput = document.getElementById("nbKayakDouble");
 		const validerButton = document.getElementById("valider-kayak");
 		const sessionWarning = document.getElementById("session-warning");
+		const kayakDistributionFeedback = document.getElementById("kayak-distribution-feedback");
 		const meteoWidget = document.querySelector("meteo-widget");
 
 		// Vérifier que tous les éléments sont disponibles
-		if (!nbPersonnesInput || !dateLocationInput || !debutSessionSelect || !simpleKayakRadio ||
-			!doubleKayakRadio || !validerButton || !sessionWarning) {
+		if (!nbPersonnesInput || !dateLocationInput || !debutSessionSelect ||
+			!nbKayakSimpleInput || !nbKayakDoubleInput || !validerButton || !sessionWarning) {
 			console.error("Certains éléments du formulaire sont manquants");
 			return;
 		}
@@ -118,20 +134,46 @@ window.addEventListener("DOMContentLoaded", function () {
 		const dd = String(today.getDate()).padStart(2, '0');
 		dateLocationInput.min = `${yyyy}-${mm}-${dd}`;
 
-		// Fonction de validation du type de kayak
-		function updateKayakTypeValidation() {
-			const nbpersonnes = parseInt(nbPersonnesInput.value);
-			const typeFeedback = document.getElementById("type-kayak-feedback");
 
-			// Si kayak double sélectionné avec une seule personne
-			if (doubleKayakRadio.checked && nbpersonnes < 2) {
-				typeFeedback.style.display = "block";
+		function validateKayakDistribution() {
+			const nbPersonnes = parseInt(nbPersonnesInput.value);
+			const nbKayakSimple = parseInt(nbKayakSimpleInput.value);
+			const nbKayakDouble = parseInt(nbKayakDoubleInput.value);
+
+			// Capacité totale des kayaks sélectionnés
+			const capaciteSimple = nbKayakSimple * 1;  // 1 personne par kayak simple
+			const capaciteDouble = nbKayakDouble * 2;  // 2 personnes par kayak double
+			const capaciteTotale = capaciteSimple + capaciteDouble;
+
+			// Aucun kayak sélectionné
+			if (nbKayakSimple === 0 && nbKayakDouble === 0) {
+				kayakDistributionFeedback.textContent = "Veuillez sélectionner au moins un kayak";
+				kayakDistributionFeedback.style.display = "block";
 				return false;
-			} else {
-				typeFeedback.style.display = "none";
-				return true;
 			}
+
+			// Vérifier si la capacité correspond au nombre de personnes
+			if (capaciteTotale < nbPersonnes) {
+				kayakDistributionFeedback.textContent = `Les kayaks sélectionnés ne peuvent accueillir que ${capaciteTotale} personnes`;
+				kayakDistributionFeedback.style.display = "block";
+				return false;
+			}
+
+			// Vérifier s'il y a des places vides dans les kayaks doubles
+			if (capaciteTotale > nbPersonnes && nbKayakDouble > 0) {
+				const placesVides = capaciteTotale - nbPersonnes;
+				// Si on a plus de places vides que de kayaks doubles, c'est inefficace
+				if (placesVides > 0 && placesVides >= nbKayakDouble) {
+					kayakDistributionFeedback.textContent = "Distribution inefficace: des kayaks doubles sont sous-utilisés";
+					kayakDistributionFeedback.style.display = "block";
+					return false;
+				}
+			}
+
+			kayakDistributionFeedback.style.display = "none";
+			return true;
 		}
+
 
 		// Vérification de la plage horaire
 		function checkSessionHours() {
@@ -160,7 +202,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		// Mise à jour des disponibilités
 		function updateAvailability() {
 			// Vérifier que tous les éléments sont présents
-			if (!dateLocationInput.value || !debutSessionSelect.value || isNaN(parseInt(nbPersonnesInput.value))) {
+			if (!dateLocationInput.value || !debutSessionSelect.value) {
 				return null;
 			}
 
@@ -184,31 +226,37 @@ window.addEventListener("DOMContentLoaded", function () {
 				double: 0
 			};
 
+
 			// Compter les réservations existantes pour ce créneau spécifique
 			reservationsForDate.forEach(reservation => {
 				const debut = parseInt(reservation.heureDebut);
 
 				// Vérifier si la réservation occupe le même créneau horaire
 				if (debut === heureDebut) {
-					if (reservation.typeKayak === 'simple') {
-						kayaksReserves.simple++;
-					} else {
-						kayaksReserves.double++;
+					// Si l'ancienne version utilisait un seul kayak par réservation
+					if (reservation.hasOwnProperty('typeKayak')) {
+						if (reservation.typeKayak === 'simple') {
+							kayaksReserves.simple++;
+						} else {
+							kayaksReserves.double++;
+						}
 					}
+					// Si la nouvelle version utilise plusieurs kayaks par réservation
+					else if (reservation.hasOwnProperty('kayaks')) {
+						kayaksReserves.simple += reservation.kayaks.simple || 0;
+						kayaksReserves.double += reservation.kayaks.double || 0;
+					}
+
 					personnesAuCreneau += parseInt(reservation.nbPersonnes);
 				}
 			});
-
 			// Vérifier la disponibilité pour le créneau sélectionné
-			const isSimpleAvailable = kayaksReserves.simple < kayakLimits.simple;
-			const isDoubleAvailable = kayaksReserves.double < kayakLimits.double;
+			const simplesDisponibles = Math.max(0, kayakLimits.simple - kayaksReserves.simple);
+			const doublesDisponibles = Math.max(0, kayakLimits.double - kayaksReserves.double);
 
-			// Calculer le nombre potentiel de personnes si cette réservation est ajoutée
-			const personnesPotentielles = personnesAuCreneau + nbPersonnes;
-
-			// Vérifier si le nombre total de personnes dépasse la capacité maximale (8)
-			const maxPersonnesCreneau = 8;
-			const isPersonnesLimitExceeded = personnesPotentielles > maxPersonnesCreneau;
+			// Mise à jour des valeurs max des sélecteurs de kayak
+			nbKayakSimpleInput.max = simplesDisponibles;
+			nbKayakDoubleInput.max = doublesDisponibles;
 
 			// Mise à jour des affichages de disponibilité
 			const simplesDispoText = document.getElementById('simples-dispo');
@@ -217,59 +265,58 @@ window.addEventListener("DOMContentLoaded", function () {
 
 			// Mettre à jour les compteurs visuels pour chaque type
 			if (simplesDispoText && doublesDispoText) {
-				const simplesDisponibles = kayakLimits.simple - kayaksReserves.simple;
-				const doublesDisponibles = kayakLimits.double - kayaksReserves.double;
-
-				simplesDispoText.textContent = `${Math.max(0, simplesDisponibles)} disponible${simplesDisponibles !== 1 ? 's' : ''}`;
-				doublesDispoText.textContent = `${Math.max(0, doublesDisponibles)} disponible${doublesDisponibles !== 1 ? 's' : ''}`;
+				simplesDispoText.textContent = `${simplesDisponibles} disponible${simplesDisponibles !== 1 ? 's' : ''}`;
+				doublesDispoText.textContent = `${doublesDisponibles} disponible${doublesDisponibles !== 1 ? 's' : ''}`;
 			}
 
-			// Si les deux types sont indisponibles ou le nombre max de personnes est atteint
-			if ((!isSimpleAvailable && !isDoubleAvailable) || isPersonnesLimitExceeded) {
-				// Mettre à jour le message d'erreur
-				if (isPersonnesLimitExceeded && dateFeedback) {
-					dateFeedback.textContent = `Désolé, nous ne pouvons pas accueillir plus de ${maxPersonnesCreneau} personnes sur ce créneau horaire.`;
-					dateLocationInput.classList.add('is-invalid');
-				} else if (!isSimpleAvailable && !isDoubleAvailable && dateFeedback) {
+			// Si tous les kayaks sont réservés pour ce créneau
+			if (simplesDisponibles === 0 && doublesDisponibles === 0) {
+				if (dateFeedback) {
 					dateFeedback.textContent = "Aucun kayak disponible pour ce créneau horaire.";
 					dateLocationInput.classList.add('is-invalid');
 				}
 
 				// Désactiver le bouton de validation
 				validerButton.disabled = true;
-			} else {
-				// Tout est disponible
-				dateLocationInput.classList.remove('is-invalid');
-
-				// Réactiver le bouton de validation
-				validerButton.disabled = false;
+				return null;
 			}
 
-			// Désactiver les options de kayak non disponibles
-			simpleKayakRadio.disabled = !isSimpleAvailable;
-			doubleKayakRadio.disabled = !isDoubleAvailable;
+			// Vérifier si le nombre total de personnes dépasse la capacité maximale (8)
+			const maxPersonnesCreneau = 8;
+			const personnesPotentielles = personnesAuCreneau + nbPersonnes;
 
-			// Si le type de kayak actuellement sélectionné n'est pas disponible,
-			// sélectionner l'autre type s'il est disponible
-			if (simpleKayakRadio.checked && !isSimpleAvailable && isDoubleAvailable) {
-				doubleKayakRadio.checked = true;
-			} else if (doubleKayakRadio.checked && !isDoubleAvailable && isSimpleAvailable) {
-				simpleKayakRadio.checked = true;
+			if (personnesPotentielles > maxPersonnesCreneau) {
+				if (dateFeedback) {
+					dateFeedback.textContent = `Désolé, nous ne pouvons pas accueillir plus de ${maxPersonnesCreneau} personnes sur ce créneau horaire.`;
+					dateLocationInput.classList.add('is-invalid');
+				}
+
+				// Désactiver le bouton de validation
+				validerButton.disabled = true;
+				return null;
 			}
 
-			// Forcer la mise à jour de la validation du type de kayak
-			updateKayakTypeValidation();
+			// Tout est disponible
+			dateLocationInput.classList.remove('is-invalid');
+
+			// Réactiver le bouton de validation si la distribution des kayaks est valide
+			validerButton.disabled = !validateKayakDistribution();
 
 			return {
-				isSimpleAvailable,
-				isDoubleAvailable,
-				isPersonnesLimitExceeded
+				simplesDisponibles,
+				doublesDisponibles,
+				personnesMaxRestantes: maxPersonnesCreneau - personnesAuCreneau
 			};
 		}
 
 		// Ajout des écouteurs d'événements
 		dateLocationInput.addEventListener('change', function () {
+			// Réinitialiser les sélections de kayaks
+			nbKayakSimpleInput.value = 0;
+			nbKayakDoubleInput.value = 0;
+
 			updateAvailability();
+
 			// Mise à jour du widget météo
 			if (meteoWidget) {
 				meteoWidget.setAttribute('date', dateLocationInput.value);
@@ -277,17 +324,27 @@ window.addEventListener("DOMContentLoaded", function () {
 		});
 
 		debutSessionSelect.addEventListener('change', function () {
+			// Réinitialiser les sélections de kayaks
+			nbKayakSimpleInput.value = 0;
+			nbKayakDoubleInput.value = 0;
+
 			checkSessionHours();
 			updateAvailability();
 		});
 
 		nbPersonnesInput.addEventListener('input', function () {
-			updateKayakTypeValidation();
 			updateAvailability();
 		});
 
-		doubleKayakRadio.addEventListener('change', updateKayakTypeValidation);
-		simpleKayakRadio.addEventListener('change', updateKayakTypeValidation);
+		nbKayakSimpleInput.addEventListener('input', function () {
+			validateKayakDistribution();
+			updateAvailability();
+		});
+
+		nbKayakDoubleInput.addEventListener('input', function () {
+			validateKayakDistribution();
+			updateAvailability();
+		});
 
 		// Validation finale et soumission
 		validerButton.addEventListener("click", function () {
@@ -302,22 +359,22 @@ window.addEventListener("DOMContentLoaded", function () {
 				return;
 			}
 
-			// Vérifier les disponibilités avant de soumettre
-			const availabilityStatus = updateAvailability();
-			const isKayakTypeValid = updateKayakTypeValidation();
-			const isSessionValid = checkSessionHours();
-
-			if (!isKayakTypeValid || !isSessionValid) {
-				return; // Ne pas continuer si validation échouée
+			// Vérifier la validité de la distribution de kayaks
+			if (!validateKayakDistribution()) {
+				alert("Veuillez corriger la distribution des kayaks");
+				return;
 			}
 
-			if (!availabilityStatus ||
-				availabilityStatus.isPersonnesLimitExceeded ||
-				(!availabilityStatus.isSimpleAvailable && !availabilityStatus.isDoubleAvailable)) {
-				// Afficher une alerte si la réservation est impossible
+			// Vérifier les disponibilités avant de soumettre
+			const availabilityStatus = updateAvailability();
+			if (!availabilityStatus) {
 				alert("Désolé, cette réservation n'est pas possible à cause des disponibilités.");
 				return;
 			}
+
+			const nbKayakSimple = parseInt(nbKayakSimpleInput.value);
+			const nbKayakDouble = parseInt(nbKayakDoubleInput.value);
+			const nbPersonnes = parseInt(nbPersonnesInput.value);
 
 			// Générer un numéro de réservation
 			const codeReservation = generateReservationCode(dateLocationInput.value);
@@ -325,9 +382,12 @@ window.addEventListener("DOMContentLoaded", function () {
 			// Collecter les données du formulaire
 			const formData = {
 				sejourNumber: sejourNumber,
-				nbPersonnes: nbPersonnesInput.value,
+				nbPersonnes: nbPersonnes,
 				dateLocation: dateLocationInput.value,
-				typeKayak: doubleKayakRadio.checked ? "double" : "simple",
+				kayaks: {
+					simple: nbKayakSimple,
+					double: nbKayakDouble
+				},
 				heureDebut: debutSessionSelect.value,
 				duree: "1", // Durée fixe de 1 heure
 				codeReservation: codeReservation,
@@ -342,7 +402,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		});
 
 		// Appeler updateAvailability initialement si les champs sont déjà remplis
-		if (dateLocationInput.value && debutSessionSelect.value && nbPersonnesInput.value) {
+		if (dateLocationInput.value && debutSessionSelect.value) {
 			updateAvailability();
 		}
 	}
@@ -399,6 +459,16 @@ window.addEventListener("DOMContentLoaded", function () {
 		const heureDebut = parseInt(formData.heureDebut);
 		const heureFin = heureDebut + parseInt(formData.duree);
 
+		// Détails des kayaks
+		const kayakDetails = [];
+		if (formData.kayaks.simple > 0) {
+			kayakDetails.push(`${formData.kayaks.simple} kayak${formData.kayaks.simple > 1 ? 's' : ''} simple${formData.kayaks.simple > 1 ? 's' : ''}`);
+		}
+		if (formData.kayaks.double > 0) {
+			kayakDetails.push(`${formData.kayaks.double} kayak${formData.kayaks.double > 1 ? 's' : ''} double${formData.kayaks.double > 1 ? 's' : ''}`);
+		}
+		const kayakDetailsText = kayakDetails.join(' et ');
+
 		// Cacher le formulaire
 		fullFormContainer.innerHTML = "";
 
@@ -407,9 +477,9 @@ window.addEventListener("DOMContentLoaded", function () {
             <div class="confirmation-box p-4 my-4 border rounded bg-light w-100">
                 <h2 class="text-center mb-3">Réservation confirmée !</h2>
                 
-                <div class="details-resa">
+               <div class="details-resa">
                     <p><strong>Date de location:</strong> ${formatDate(formData.dateLocation)}</p>
-                    <p><strong>Type de kayak:</strong> ${formData.typeKayak === "double" ? "Kayak double" : "Kayak simple"}</p>
+                    <p><strong>Kayaks réservés:</strong> ${kayakDetailsText}</p>
                     <p><strong>Nombre de personnes:</strong> ${formData.nbPersonnes}</p>
                     <p><strong>Horaire:</strong> ${heureDebut}h à ${heureFin}h</p>
                     <p><strong>Durée totale:</strong> ${formData.duree} heure(s)</p>

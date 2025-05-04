@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // Fonction principale de validation du numéro de réservation
   function handleReservationValidation() {
 
+    //Vider les réservation précédentes 
+    const confirmationDiv = document.querySelector(".confirm-resa");
+    if (confirmationDiv) {
+      confirmationDiv.innerHTML = "";
+    }
+
     if (!validateSejourNumber()) {
       return false;
     }

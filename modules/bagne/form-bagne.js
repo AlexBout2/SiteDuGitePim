@@ -2,6 +2,10 @@
 window.addEventListener("DOMContentLoaded", function () {
     const resaCheckButton = document.querySelector(".sejour-validation");
 
+    const confirmationDiv = document.querySelector(".confirm-resa");
+    if (confirmationDiv) {
+        confirmationDiv.innerHTML = "";
+    }
     resaCheckButton.addEventListener("click", function (event) {
         event.preventDefault();
         const fullFormContainer = document.querySelector(".fullForm");

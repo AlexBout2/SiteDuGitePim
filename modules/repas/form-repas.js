@@ -6,6 +6,12 @@ window.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         const fullFormContainer = document.querySelector(".fullForm");
 
+        //Vider les réservation précédentes 
+        const confirmationDiv = document.querySelector(".confirm-resa");
+        if (confirmationDiv) {
+            confirmationDiv.innerHTML = "";
+        }
+
         // Appel sans paramètres, comme défini dans utils.js
         if (!validateSejourNumber()) {
             return;
