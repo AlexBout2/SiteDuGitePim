@@ -1,4 +1,4 @@
-'import { validateSejourNumber, getSejourNumber } from '../../ js / utils.js';
+import { validateSejourNumber, getSejourNumber } from '../../js/utils.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Sélection des éléments principaux
@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const horseSelection = document.querySelector('.horse-selection');
   const validateButton = document.querySelector('.sejour-validation');
   const fullForm = document.querySelector('.fullForm');
+  const confirmationDiv = document.querySelector(".confirm-resa");
 
   // Fonction principale de validation du numéro de réservation
   function handleReservationValidation() {
@@ -57,14 +58,71 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Permettre la validation avec la touche Entré
   // Initialiser le comportement des cartes de chevaux
   function initHorseSelection() {
     const horseCards = document.querySelectorAll('.horse-card');
     const selectedHorseInput = document.getElementById('selected-horse');
+    const dateInput = document.getElementById('date');
+    const periodeSelect = document.getElementById('periode');
+
+    // Désactiver les chevaux déjà réservés pour la date sélectionnée
+    function updateHorseAvailability() {
+      const selectedDate = dateInput.value;
+      const selectedPeriode = periodeSelect.value;
+
+      if (!selectedDate) return;
+
+      // Obtenir toutes les réservations existantes
+      const reservations = getHorseReservations();
+
+      // Réinitialiser tous les chevaux comme disponibles
+      horseCards.forEach(card => {
+        card.classList.remove('unavailable');
+        // Supprimer le message de réservation s'il existe
+        const existingMsg = card.querySelector('.reservation-message');
+        if (existingMsg) {
+          existingMsg.remove();
+        }
+      });
+
+      // Marquer les chevaux qui sont déjà réservés pour cette date et période
+      reservations.forEach(reservation => {
+        if (reservation.date === selectedDate && reservation.periode === selectedPeriode) {
+          const horseName = reservation.horse;
+          const reservedHorseCard = Array.from(horseCards).find(
+            card => card.querySelector('p').textContent === horseName
+          );
+
+          if (reservedHorseCard) {
+            reservedHorseCard.classList.add('unavailable');
+
+            // Ajouter un message indiquant que le cheval est déjà réservé
+            const reservationMsg = document.createElement('div');
+            reservationMsg.classList.add('reservation-message');
+            reservationMsg.textContent = 'Déjà réservé';
+            reservedHorseCard.appendChild(reservationMsg);
+          }
+        }
+      });
+    }
+
+    // Mettre à jour la disponibilité des chevaux lorsque la date ou la période change
+    if (dateInput) {
+      dateInput.addEventListener('change', updateHorseAvailability);
+    }
+
+    if (periodeSelect) {
+      periodeSelect.addEventListener('change', updateHorseAvailability);
+    }
 
     horseCards.forEach(card => {
       card.addEventListener('click', function () {
+        // Vérifier si le cheval est disponible
+        if (this.classList.contains('unavailable')) {
+          alert('Ce cheval est déjà réservé pour cette date et période');
+          return;
+        }
+
         document.querySelector('.horse-card.selected')?.classList.remove('selected');
         this.classList.add('selected');
 
@@ -80,6 +138,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     });
+
+    // Actualiser l'état des chevaux au chargement
+    if (dateInput.value && periodeSelect.value) {
+      updateHorseAvailability();
+    }
   }
 
   // Observer l'apparition de la sélection de chevaux
@@ -117,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       class="form-control"
                       id="selected-horse"
                       readonly
-                      placeholder="Sélectionniez votre compagnon à droite"
+                      placeholder="Sélectionniez votre cheval en cliquant sur sa photo"
                   />
               </div>
               
@@ -169,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('date');
     const meteoWarning = document.getElementById('meteo-warning');
     const submitButton = document.querySelector('.submit-reservation');
+    const periodeSelect = document.getElementById('periode');
 
     // Configuration de la date minimum (aujourd'hui)
     const today = new Date().toISOString().split('T')[0];
@@ -192,9 +256,14 @@ document.addEventListener('DOMContentLoaded', function () {
             meteoWidget.fetchMeteoData(this.value);
           }
         }
+
+        // Mettre à jour la disponibilité des chevaux
+        const event = new Event('change');
+        if (periodeSelect) {
+          periodeSelect.dispatchEvent(event);
+        }
       });
     }
-
 
     observeMeteoChanges();
 
@@ -271,6 +340,117 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Fonctions pour gérer les réservations dans le localStorage
+
+  // Générer un code de réservation unique
+  function generateReservationCode() {
+    const date = new Date();
+    const year = date.getFullYear().toString().slice(-2); // Derniers 2 chiffres de l'année
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
+    // Récupérer le numéro incrémental depuis les réservations existantes
+    const reservations = getHorseReservations();
+
+    // Filtrer les réservations du mois en cours
+    const currentMonthReservations = reservations.filter(r => {
+      return r.codeReservation &&
+        r.codeReservation.startsWith(`RA${year}${month}`);
+    });
+
+    // Déterminer le numéro incrémental
+    const nextNumber = currentMonthReservations.length + 1;
+
+    // Formatter le numéro incrémental avec des zéros devant
+    const formattedNumber = nextNumber.toString().padStart(4, '0');
+
+    return `RA${year}${month}${formattedNumber}`;
+  }
+
+  // Récupérer les réservations existantes
+  function getHorseReservations() {
+    const reservationsJSON = localStorage.getItem('horseReservations');
+    return reservationsJSON ? JSON.parse(reservationsJSON) : [];
+  }
+
+  // Enregistrer une réservation
+  function saveHorseReservation(reservation) {
+    // Récupérer les réservations existantes
+    const reservations = getHorseReservations();
+
+    // Ajouter la nouvelle réservation
+    reservations.push(reservation);
+
+    // Enregistrer dans le localStorage
+    localStorage.setItem('horseReservations', JSON.stringify(reservations));
+  }
+
+  // Vérifier si un cheval est disponible pour une date et période donnée
+  function isHorseAvailable(horseName, date, periode) {
+    const reservations = getHorseReservations();
+
+    return !reservations.some(reservation =>
+      reservation.horse === horseName &&
+      reservation.date === date &&
+      reservation.periode === periode
+    );
+  }
+
+  // Formatage de la date pour l'affichage
+  function formatDate(dateString) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', options);
+  }
+
+  // Afficher la confirmation de réservation
+  function displayConfirmation(formData) {
+    // Cacher le formulaire et la section de sélection des chevaux
+    if (fullForm) {
+      fullForm.innerHTML = "";
+    }
+
+    if (horseSelection) {
+      horseSelection.classList.add('d-none');
+    }
+
+    // Formater la période pour l'affichage
+    let periodeFormatee = formData.periode === "matin" ?
+      "Matin (9h à 11h avec Emma)" :
+      "Après-midi (14h à 16h avec Lucas)";
+
+    // Afficher la confirmation
+    if (confirmationDiv) {
+      confirmationDiv.innerHTML = `
+        <div class="reservation-confirmation p-4 my-3 text-center border rounded w-100">
+            <h1 class="mb-3">Réservation confirmée !</h1>
+            
+            <div class="details-resa text-start bg-light p-3 rounded mx-auto" style="max-width: 400px;">
+                <p><strong>Date de la randonnée :</strong> ${formatDate(formData.date)}</p>
+                <p><strong>Période :</strong> ${periodeFormatee}</p>
+                <p><strong>Cheval réservé :</strong> ${formData.horse}</p>
+                <p><strong>Numéro de chambre :</strong> ${formData.reservationNumber}</p>
+            </div>
+            
+            <hr class="my-3">
+            
+            <p class="mt-3 fs-3 fw-semibold">Conservez votre code de réservation :</p>
+            <div class="row justify-content-center">
+                <p class="fw-bold col-5 fs-4 p-2">Code de la randonnée</p>
+                <p class="reservation-number fs-4 bg-light p-2 rounded col-5">${formData.codeReservation}</p>
+            </div>
+        </div>
+      `;
+
+      // Rendre la section de confirmation visible
+      confirmationDiv.style.display = "block";
+
+      // Faire défiler la page vers la confirmation
+      setTimeout(() => {
+        confirmationDiv.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }
+
   // Validation du formulaire de réservation
   function validateReservationForm() {
     const selectedHorseInput = document.getElementById('selected-horse');
@@ -302,17 +482,35 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    // Vérifier si le cheval est disponible pour la date et période sélectionnées
+    const horseName = selectedHorseInput.value;
+    const date = dateInput.value;
+    const periode = periodeSelect.value;
+
+    if (!isHorseAvailable(horseName, date, periode)) {
+      alert(`Désolé, ${horseName} est déjà réservé pour cette date et période.`);
+      return;
+    }
+
     // Récupérer le numéro de séjour
     const sejour = document.querySelector('.sejour-resa-input')?.value || "Non spécifié";
 
+    // Générer un code de réservation unique
+    const codeReservation = generateReservationCode();
+
     const reservationData = {
       reservationNumber: sejour,
-      horse: selectedHorseInput.value,
-      date: dateInput.value,
-      periode: periodeSelect.value
+      horse: horseName,
+      date: date,
+      periode: periode,
+      codeReservation: codeReservation,
+      timestamp: new Date().toISOString()
     };
 
-    console.log('Données de réservation:', reservationData);
-    alert('Réservation enregistrée avec succès !');
+    // Enregistrer la réservation dans le localStorage
+    saveHorseReservation(reservationData);
+
+    // Afficher la confirmation
+    displayConfirmation(reservationData);
   }
 });

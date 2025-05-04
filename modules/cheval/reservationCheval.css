@@ -11,28 +11,27 @@ body {
     background-color: #f8f9fa;
 }
 
-
+/* Hero section */
 .hero-resa .hero-container-resa {
     background-image: url("./media/herofooter2.png");
     background-position: 50% 70%;
     height: 30vh;
 }
 
-/* Style pour le champ de cheval sélectionné */
+/* Formulaire de réservation */
 #selected-horse {
     background-color: #f8f9fa;
     cursor: default;
 }
 
-/* Style pour le numéro de réservation */
 #reservation-number {
     font-family: monospace;
     letter-spacing: 1px;
 }
 
-/* Bouton */
+/* Boutons */
 .btn-secondary-custom {
-    background-color: #FE8A24 !important;
+    background-color: var(--event) !important;
     color: white !important;
     border: none;
     padding: 10px 30px;
@@ -47,23 +46,11 @@ body {
     box-shadow: 0 5px 15px rgba(254, 138, 36, 0.3);
 }
 
-/* Calendrier */
-.calendar-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(9, 1, 43, 0.1);
-}
-
-
-/* Transition form page chevaux */
-
-/* État initial: formulaire centré */
+/* Animations et transitions */
 .reservation-form {
     transition: all 0.5s ease-in-out;
 }
 
-/* Animation de transition pour le déplacement du formulaire */
 .slide-right {
     animation: slideRight 0.5s forwards;
 }
@@ -85,39 +72,16 @@ body {
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: translateY(10px);
     }
 
     to {
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-
-    /* Désactiver l'animation sur mobile */
-    .slide-right {
-        animation: none;
-        transform: translateX(0);
-    }
-
-    /* Réorganiser la disposition pour que les chevaux soient en dessous */
-    .horse-selection {
-        margin-top: 2rem;
-    }
-
-    /* Remettre le formulaire à sa position normale */
-    .reservation-form {
-        transform: translateX(0) !important;
-    }
-
-    /* Assurez-vous que tous les éléments sont visibles */
-    .d-none {
-        display: block !important;
-    }
-}
-
-/* Section chevaux */
+/* Sélection des chevaux */
 .horses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -142,6 +106,8 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(9, 1, 43, 0.1);
     transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
 }
 
 .horse-card p {
@@ -150,7 +116,7 @@ body {
     color: var(--primary);
 }
 
-/* Style pour la carte sélectionnée */
+/* État sélectionné */
 .horse-card.selected {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(254, 138, 36, 0.3);
@@ -176,43 +142,48 @@ body {
     font-weight: bold;
 }
 
-/* Responsive */
-
-@media (max-width: 576px) {
-    .horses-grid {
-        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-        gap: 0.5rem;
-    }
-
-    .horse-card img {
-        height: 100px;
-    }
-
-    .reservation-form,
-    .calendar-container {
-        padding: 0.2rem;
-    }
+/* État indisponible */
+.horse-card.unavailable {
+    opacity: 0.6;
+    position: relative;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
-/* Animation pour le chargement des images */
-.horse-card img {
-    opacity: 0;
-    animation: fadeIn 0.5s ease forwards;
+.reservation-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Section de confirmation */
+.reservation-confirmation {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Styles pour la météo */
+.details-resa {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.reservation-number {
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+/* Météo */
 .meteo-content {
     padding: 10px;
 }
@@ -236,4 +207,36 @@ body {
     background-color: rgba(40, 167, 69, 0.1);
     border-color: rgba(40, 167, 69, 0.2);
     color: #155724;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .slide-right {
+        animation: none;
+        transform: translateX(0);
+    }
+
+    .horse-selection {
+        margin-top: 2rem;
+    }
+
+    .reservation-form {
+        transform: translateX(0) !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .horses-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .horse-card img {
+        height: 100px;
+    }
+
+    .reservation-form,
+    .calendar-container {
+        padding: 0.2rem;
+    }
 }
