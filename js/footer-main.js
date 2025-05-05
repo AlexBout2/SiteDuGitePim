@@ -5,13 +5,13 @@ class Footer extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <footer class="footer py-5">
+            <footer class="footer py-5" aria-label="Footer" role="contentinfo">
                 <div class="container">
                     <div class="row">
                         <!-- Colonne 1 : Logo et description -->
                         <div class="col-6 col-sm-6 col-md-4">
                         <a href="#" id="backToTop" aria-label="Retour en haut de page">
-                            <img src="./public/logo-gite-BLANC.png" alt="Logo Gîte Pim" 
+                            <img src="./public/logo-gite-BLANC.webp" alt="Logo Gîte Pim" 
                             class="img-fluid mb-3 align-self-start" style="max-width: 50%;">
                         </a>
                             <h6 class="text-uppercase fw-bold text-white mb-3">Contact</h6>
@@ -41,9 +41,9 @@ class Footer extends HTMLElement {
                         <img src="./public/cartepim.png" alt="lieux Gîte Pim" width="300" class="mb-3">
                         <h6 class="text-uppercase fw-bold text-white mt-4">Suivez-nous</h6>
                         <div>
-                            <a href="#" class="text-white"><img src="./public/facebook.png" alt="Facebook" width="24"></a>
-                            <a href="#" class="text-white"><img src="./public/instagram.png" alt="Instagram" width="24"></a>
-                            <a href="#" class="text-white"><img src="./public/twitter.png" alt="Twitter" width="24"></a>
+                            <a href="#" class="text-white"><img src="./public/facebook.png" alt="Facebook" aria-hidden="true"  tabindex="-1"  width="24"></a>
+                            <a href="#" class="text-white"><img src="./public/instagram.webp" alt="Instagram" aria-hidden="true"   tabindex="-1"  width="24"></a>
+                            <a href="#" class="text-white"><img src="./public/twitter.webp" alt="Twitter" aria-hidden="true"   tabindex="-1" width="24"></a>
                         </div>
                         </div>
                     </div>

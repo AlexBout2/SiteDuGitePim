@@ -1,4 +1,21 @@
 /* Hero sections */
+
+html,
+body,
+main {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+.container-fluid {
+    width: 100%;
+    max-width: 100vw;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
 .hero .hero-container {
     background-image: url('./media/hero001-8894.jpg');
     background-position: 100% 60%;

@@ -2,11 +2,11 @@ class NavBar extends HTMLElement {
   constructor() { super(); }
   connectedCallback() {
     this.innerHTML = `
-<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark" aria-label="Navigation principale" role="navigation">
   <div class="container-fluid">
     <a class="navbar-brand" href="./index.html">
       <img
-        src="../public/logo-gite-BLANC.png"
+        src="../public/logo-gite-BLANC.webp"
         alt="Accueil"
         width="160"
         height="60"
