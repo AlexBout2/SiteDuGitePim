@@ -5,14 +5,58 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gîte Pim</title>
+
+  <!-- Préconnexions -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdn.bootstrap.com">
+
+  <!-- Compatibilité navigateurs et sécurité -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https://cdn.jsdelivr.net https://cdn.bootstrap.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.bootstrap.com; script-src 'self' https://cdn.jsdelivr.net https://cdn.bootstrap.com;">
+
+  <!-- Métadonnées SEO -->
+  <meta name="description"
+    content="Découvrez le Gîte Pim de Poum, avec ses bungalows vue mer ou jardin, son restaurant et ses activités: randonnée équestre, kayak et visites guidées">
+  <meta name="author" content="Gîte Pim">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords"
+    content="gîte, Poum, Nouvelle-Calédonie, bungalows, randonnée équestre, kayak, Vanuatu, hébergement">
+  <meta name="geo.region" content="NC">
+  <meta name="geo.placename" content="Poum">
+
+  <!-- Open Graph pour partage réseaux sociaux -->
+  <meta property="og:title" content="Gîte Pim - Hébergement et activités à Poum">
+  <meta property="og:description"
+    content="Séjournez dans nos bungalows confortables et profitez de nos activités: kayak, randonnées équestres et plus encore.">
+  <meta property="og:image" content="https://votresite.com/public/logo-gite-BLANC.png">
+  <meta property="og:url" content="https://votresite.com">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Gîte Pim">
+
+  <!-- Twitter Card (si pertinent) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gîte Pim - Hébergement et activités à Poum">
+  <meta name="twitter:description"
+    content="Séjournez dans nos bungalows confortables et profitez de nos activités: kayak, randonnées équestres et plus encore.">
+  <meta name="twitter:image" content="https://votresite.com/public/logo-gite-BLANC.png">
+
+  <link rel="icon" type="image/x-icon" href="./public/logo.ico">
+
+  <!-- Feuilles de style -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="./css/main.css">
-  <link rel="icon" type="image/x-icon" href="./public/logo.ico">
+
+  <!-- Canonical URL (importante pour éviter le contenu dupliqué) -->
+  <link rel="canonical" href="https://votresite.com/page-actuelle">
 </head>
 
+
 <body>
-  <nav><menu-top></menu-top></nav>
+  <nav aria-label="Navigation principale"><menu-top></menu-top></nav>
   <main>
     <!-- Contenu principal -->
     <section class="hero">
@@ -81,7 +125,8 @@
             <h1>Nos activités</h1>
           </div>
           <div class="row mx-auto d-none d-sm-block">
-            <div id="carouselActivite" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel">
+            <div id="carouselActivite" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel"
+              aria-labelledby="activites-desktop-label">
               <div class="carousel-inner">
 
                 <!-- Groupe de carte 1 Carousel desk/tab -->
@@ -91,7 +136,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Visite du bagne" src="public/carou-bagne.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Visite du bagne</h4>
+                          <h3 class="card-title">Visite du bagne</h3>
                           <p class="card-text flex-grow-1">Replongez avec notre guide dans l'histoire du pays sur l'île
                             de
                             Pam.</p>
@@ -107,7 +152,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Randonnée équestre" src="public/carou-cheval.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Randonnée équestre</h4>
+                          <h3 class="card-title">Randonnée équestre</h3>
                           <p class="card-text flex-grow-1">De belles balades dans la nature avec notre guide. À ne pas
                             manquer !</p>
                           <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
@@ -122,7 +167,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Notre garderie" src="public/carou-gard.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Notre garderie</h4>
+                          <h3 class="card-title">Notre garderie</h3>
                           <p class="card-text flex-grow-1">Nous garderons vos enfants si ils sont trop petits pour
                             certaines activités.</p>
                           <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
@@ -142,7 +187,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Sortie kayak" src="public/carou-kayak.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Sortie kayak</h4>
+                          <h3 class="card-title">Sortie kayak</h3>
                           <p class="card-text flex-grow-1">Balades détente ou sportive en kayak sur le lagon. Vivez
                             notre
                             lagon!</p>
@@ -158,7 +203,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Restaurant Pim" src="public/carou-repas.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Restaurant Pim</h4>
+                          <h3 class="card-title">Restaurant Pim</h3>
                           <p class="card-text flex-grow-1">Pour les gourmets et les gourmands, notre carte saura vous
                             ravir
                             !</p>
@@ -174,7 +219,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Nos bungalows" src="public/carou-bung.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Nos bungalows</h4>
+                          <h3 class="card-title">Nos bungalows</h3>
                           <p class="card-text flex-grow-1">Jardin ou vue mer, choisissez votre bungalow idéal pour votre
                             séjour.</p>
                           <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
@@ -202,7 +247,8 @@
 
           <!-- Carousel Mobile -->
           <div class="row mx-auto d-sm-none">
-            <div id="carouselActiviteMobile" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel">
+            <div id="carouselActiviteMobile" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel"
+              aria-labelledby="activites-mobile-label">
               <div class="carousel-inner">
 
                 <div class="carousel-item active d-sm-none">
@@ -211,7 +257,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Visite du bagne" src="public/carou-bagne.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Visite du bagne</h4>
+                          <h3 class="card-title">Visite du bagne</h3>
                           <p class="card-text flex-grow-1">Replongez avec notre guide dans l'histoire du pays sur l'île
                             de
                             Pam.</p>
@@ -231,7 +277,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Randonnée équestre" src="public/carou-cheval.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Randonnée équestre</h4>
+                          <h3 class="card-title">Randonnée équestre</h3>
                           <p class="card-text flex-grow-1">De belles balades dans la nature avec notre guide. À ne pas
                             manquer !</p>
                           <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
@@ -250,7 +296,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Sortie kayak" src="public/carou-kayak.jpg" />
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Sortie kayak</h4>
+                          <h3 class="card-title">Sortie kayak</h3>
                           <p class="card-text flex-grow-1">Balades détente ou sportive en kayak sur le lagon. Vivez
                             notre
                             lagon!</p>
@@ -270,7 +316,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Notre garderie" src="public/carou-gard.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Notre garderie</h4>
+                          <h3 class="card-title">Notre garderie</h3>
                           <p class="card-text flex-grow-1">Vous souhaitez réaliser les activités entre adultes,
                             confiez-nous
                             vos trésors.</p>
@@ -290,7 +336,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Restaurant Pim" src="public/carou-repas.jpg" />
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Restaurant Pim</h4>
+                          <h3 class="card-title">Restaurant Pim</h3>
                           <p class="card-text flex-grow-1">Pour les gourmets et les gourmands, notre carte saura vous
                             ravir
                             !</p>
@@ -310,7 +356,7 @@
                       <div class="card h-100 shadow-sm">
                         <img class="img-fluid" alt="Nos bungalows" src="public/carou-bung.jpg">
                         <div class="card-body d-flex flex-column">
-                          <h4 class="card-title">Nos bungalows</h4>
+                          <h3 class="card-title">Nos bungalows</h3>
                           <p class="card-text flex-grow-1">Jardin ou vue mer, choisissez votre bungalow idéal pour votre
                             séjour.</p>
                           <button type="button" class="btn-main-small btn-lg fs-6 mt-auto"
@@ -339,20 +385,18 @@
           </div>
         </div>
       </div>
-
-
     </section>
 
 
     <!-- Séparation-->
-    <div class="sep-main bg-image my-5">
+    <div class="sep-main bg-image my-5" role="seprateur">
       <div class="d-flex flex-column justify-content-center align-items-center h-100">
-        <div class="text-white text-center text-shadow fs-1">Venez vivre une aventure unique</div>
+        <p class="text-white text-center text-shadow fs-1">Venez vivre une aventure unique</p>
       </div>
     </div>
 
     <!-- témoignages-->
-    <section class="testimonial py-5 bg-light">
+    <section class="testimonial py-5 bg-light" aria-labelledby="testimonials-heading">
       <div class="container-fluid">
         <h2 class="text-center mb-5">Nos clients ont adoré</h2>
         <div class="row">
