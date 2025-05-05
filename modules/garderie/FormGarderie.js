@@ -73,16 +73,15 @@ window.addEventListener("DOMContentLoaded", function () {
                         </div>
                     </div>
                     <hr class="separator my-3">
-
+                    <meteo-widget date=""></meteo-widget>
+                    <hr class="separator my-3">
                     <div class="form-group mb-3">
                         <label for="ReasonGa" class="fs-4">Raison de la garde</label>
                         <textarea class="form-control" id="ReasonGa" rows="3" placeholder="Indiquez la raison de votre demande de garde" required></textarea>
                         <div class="invalid-feedback">Veuillez indiquer une raison pour la garde</div>
                     </div>
 
-                    <hr class="separator my-3">
-                    
-                        <meteo-widget date=""></meteo-widget>
+
 
                     <hr class="separator my-3">
                     <button type="button" class="btn-reservation btn-lg mt-3 submit-reservation-btn">

@@ -68,4 +68,4 @@ class Footer extends HTMLElement {
     }
 }
 
-customElements.define('pied-de-page', Footer);
+customElements.define('footer', Footer);
