@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded", function () {
     function generateFormHTML() {
         return `
             <div class="col-md-8 mx-auto text-center">
-                <form class="reservation-form">
+                <form class="reservation-form" aria-live="polite" aria-atomic="true">
                     <div class="form-group mb-3">
                         <label for="NbVisiteurs" class="fs-4">Nombre de visiteurs</label>
                         <input class="form-control" id="NbVisiteurs" type="number" min="1" max="10">

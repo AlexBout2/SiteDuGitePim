@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", function () {
             // Formulaire pour réservation au restaurant
             const formHTML = `
                 <div class="col-md-8 mx-auto text-center">
-                    <form class="reservation-form">
+                    <form class="reservation-form" aria-live="polite" aria-atomic="true">
                         <div class="form-group mb-3">
                             <label for="NbPersonnes" class="fs-4">Nombre de personnes</label>
                             <input class="form-control" id="NbPersonnes" type="number" min="1" max="8">

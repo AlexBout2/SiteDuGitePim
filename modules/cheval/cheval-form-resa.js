@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function injectFormHTML(container, sejourNumber) {
     const formHTML = `
       <div class="col-md-8 mx-auto text-center">
-          <form class="horse-reservation-form">
+          <form class="horse-reservation-form" aria-live="polite" aria-atomic="true">
               <!-- Numéro de séjour (caché, préservé de l'input original) -->
               <input type="hidden" id="reservation-number" value="${sejourNumber || ''}">
               

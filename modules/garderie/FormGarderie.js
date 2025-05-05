@@ -44,8 +44,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
         // Afficher le formulaire
         fullFormContainer.innerHTML = `
-            <div class="col-md-8 mx-auto text-center">
-                <form class="reservation-form">
+            <div class="col-md-8 mx-auto text-center" aria-live="polite" aria-atomic="true">
+                <form class="reservation-form"  aria-live="polite" aria-atomic="true">
                     <div class="form-group mb-3">
                         <label for="NbKidGa" class="fs-4">Nombre d'enfants</label>
                         <input class="form-control" id="NbKidGa" type="number" min="1" max="${MAX_CAPACITY}" required>
