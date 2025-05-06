@@ -5,6 +5,8 @@
   background-image: url('../modules/repas/img-resto/pim-resto-hero.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
   height: 70vh;
 }
 
@@ -13,6 +15,8 @@
   background-image: url('../modules/repas/img-resto/bar.webp');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
   height: 70vh;
 }
 

@@ -2,6 +2,9 @@
     background-image: url('../../public/children-1547261_1920.jpg');
     background-position: 50% 50%;
     height: 70vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
 }
 
 /* activite *****/
