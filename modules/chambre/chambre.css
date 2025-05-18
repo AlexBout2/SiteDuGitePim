@@ -29,5 +29,8 @@
 .hero-resa .hero-container-resa {
     background-image: url("./galerie/Hero-01.jpg");
     background-position: 50% 70%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
     height: 30vh;
 }
