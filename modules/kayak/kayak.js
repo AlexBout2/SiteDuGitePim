@@ -1,4 +1,4 @@
-import { validateSejourNumber, getSejourNumber, formatDate } from '../../js/utils.js';
+import { validateSejourNumber, getSejourNumber, formatDate, setupDateInputForSejour, isDateInSejourPeriod } from '../../js/utils.js';
 
 window.addEventListener("DOMContentLoaded", function () {
 	const resaCheckButton = document.querySelector(".sejour-validation");
@@ -13,7 +13,6 @@ window.addEventListener("DOMContentLoaded", function () {
 			confirmationDiv.innerHTML = "";
 		}
 
-
 		if (!validateSejourNumber()) {
 			return;
 		}
@@ -23,7 +22,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		if (fullFormContainer && fullFormContainer.innerHTML.trim() === "") {
 			// Formulaire pour réservation de kayak
 			const formHTML = `
- 				<div class="col-md-8 mx-auto text-center">
+                 <div class="col-md-8 mx-auto text-center">
                     <form class="reservation-form">
                         <div class="form-group mb-3">
                             <label for="NbPersonnes" class="fs-4">Nombre de personnes</label>
@@ -39,9 +38,9 @@ window.addEventListener("DOMContentLoaded", function () {
                             <div class="invalid-feedback" id="date-feedback">Veuillez sélectionner une date</div>
                         </div>
 
-						<hr class="separator my-3">
+                        <hr class="separator my-3">
 
-						 <div class="form-group mb-3">
+                         <div class="form-group mb-3">
                             <label class="fs-4">Sessions (1h chacune, de 9h à 16h)</label>
                             <div class="row mt-2">
                                 <div class="col-md-6 mb-3 mx-auto">
@@ -58,7 +57,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                     </select>
                                 </div>
                             </div>
-							<div class="invalid-feedback" id="sessions-feedback">Veuillez sélectionner une heure de début</div>
+                            <div class="invalid-feedback" id="sessions-feedback">Veuillez sélectionner une heure de début</div>
                             <div id="session-warning" class="text-danger" style="display: none;"></div>
                         </div>
 
@@ -92,11 +91,11 @@ window.addEventListener("DOMContentLoaded", function () {
                         </div>
 
                         <div class="d-flex justify-content-center my-4">
-						<button type="btn-reservation" class="btn-reservation js-valider-reservation" id="valider-kayak">
+                        <button type="btn-reservation" class="btn-reservation js-valider-reservation" id="valider-kayak">
                             <span class=btn-text>
-							Réserver mon kayak
-							</span>
-						</button>
+                            Réserver mon kayak
+                            </span>
+                        </button>
                         </div>
                     </form>
                 </div>
@@ -119,6 +118,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		const sessionWarning = document.getElementById("session-warning");
 		const kayakDistributionFeedback = document.getElementById("kayak-distribution-feedback");
 		const meteoWidget = document.querySelector("meteo-widget");
+		const dateFeedback = document.getElementById('date-feedback');
 
 		// Vérifier que tous les éléments sont disponibles
 		if (!nbPersonnesInput || !dateLocationInput || !debutSessionSelect ||
@@ -127,13 +127,31 @@ window.addEventListener("DOMContentLoaded", function () {
 			return;
 		}
 
-		// Définir la date minimum à aujourd'hui
-		const today = new Date();
-		const yyyy = today.getFullYear();
-		const mm = String(today.getMonth() + 1).padStart(2, '0');
-		const dd = String(today.getDate()).padStart(2, '0');
-		dateLocationInput.min = `${yyyy}-${mm}-${dd}`;
+		// Configurer le champ de date en fonction du séjour
+		setupDateInputForSejour(dateLocationInput, sejourNumber);
 
+		// Écouteur d'événement pour vérifier si la date est dans la période du séjour
+		dateLocationInput.addEventListener('change', function () {
+			if (!isDateInSejourPeriod(this.value, sejourNumber)) {
+				dateFeedback.textContent = "La date sélectionnée doit être pendant votre séjour";
+				this.classList.add('is-invalid');
+				dateFeedback.style.display = "block";
+			} else {
+				this.classList.remove('is-invalid');
+				dateFeedback.style.display = "none";
+
+				// Réinitialiser les sélections de kayaks
+				nbKayakSimpleInput.value = 0;
+				nbKayakDoubleInput.value = 0;
+
+				updateAvailability();
+
+				// Mise à jour du widget météo
+				if (meteoWidget) {
+					meteoWidget.setAttribute('date', dateLocationInput.value);
+				}
+			}
+		});
 
 		function validateKayakDistribution() {
 			const nbPersonnes = parseInt(nbPersonnesInput.value);
@@ -164,7 +182,7 @@ window.addEventListener("DOMContentLoaded", function () {
 				const placesVides = capaciteTotale - nbPersonnes;
 				// Si on a plus de places vides que de kayaks doubles, c'est inefficace
 				if (placesVides > 0 && placesVides >= nbKayakDouble) {
-					kayakDistributionFeedback.textContent = "Distribution inefficace: des kayaks doubles sont sous-utilisés";
+					kayakDistributionFeedback.textContent = "Attention vous ne pouvez pas utilisez un kayak double seul";
 					kayakDistributionFeedback.style.display = "block";
 					return false;
 				}
@@ -310,19 +328,6 @@ window.addEventListener("DOMContentLoaded", function () {
 		}
 
 		// Ajout des écouteurs d'événements
-		dateLocationInput.addEventListener('change', function () {
-			// Réinitialiser les sélections de kayaks
-			nbKayakSimpleInput.value = 0;
-			nbKayakDoubleInput.value = 0;
-
-			updateAvailability();
-
-			// Mise à jour du widget météo
-			if (meteoWidget) {
-				meteoWidget.setAttribute('date', dateLocationInput.value);
-			}
-		});
-
 		debutSessionSelect.addEventListener('change', function () {
 			// Réinitialiser les sélections de kayaks
 			nbKayakSimpleInput.value = 0;
@@ -351,6 +356,17 @@ window.addEventListener("DOMContentLoaded", function () {
 			// Valider tous les champs
 			if (!dateLocationInput.value) {
 				alert("Veuillez sélectionner une date");
+				return;
+			}
+
+			// Vérifier que la date est dans la période du séjour
+			if (!isDateInSejourPeriod(dateLocationInput.value, sejourNumber)) {
+				if (dateFeedback) {
+					dateFeedback.textContent = "La date sélectionnée doit être pendant votre séjour";
+					dateLocationInput.classList.add('is-invalid');
+				} else {
+					alert("La date sélectionnée doit être pendant votre séjour");
+				}
 				return;
 			}
 
@@ -413,28 +429,40 @@ window.addEventListener("DOMContentLoaded", function () {
 		return reservations.filter(reservation => reservation.dateLocation === date);
 	}
 
-	// Génère un code de réservation au format KAAAMM000x
+	// Génère un code de réservation au format KAYYMMXXXX
 	function generateReservationCode(dateStr) {
+		// Récupérer la date actuelle
 		const date = new Date(dateStr);
-		const year = date.getFullYear().toString().slice(2); // Derniers deux chiffres de l'année
+		const year = date.getFullYear().toString().slice(-2); // Derniers deux chiffres de l'année
 		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mois avec leading zero
 
-		// Récupérer le dernier numéro pour ce mois/année depuis localStorage
-		const storageKey = `kayak_counter_${year}${month}`;
-		let counter = localStorage.getItem(storageKey);
+		// Récupérer toutes les réservations existantes pour déterminer le prochain numéro
+		const existingReservations = JSON.parse(localStorage.getItem('kayakReservations')) || [];
 
-		if (!counter) {
-			counter = 0;
-		}
+		// Filtrer les réservations du mois en cours
+		const currentMonthPrefix = `KA${year}${month}`;
+		const currentMonthReservations = existingReservations.filter(
+			res => res.codeReservation && res.codeReservation.startsWith(currentMonthPrefix)
+		);
 
-		// Incrémenter le compteur
-		counter = parseInt(counter) + 1;
-		localStorage.setItem(storageKey, counter);
+		// Trouver le nombre le plus élevé et incrémenter
+		let maxNumber = 0;
 
-		// Formater le numéro à 4 chiffres avec des zéros devant
-		const formattedCounter = counter.toString().padStart(4, '0');
+		currentMonthReservations.forEach(res => {
+			// Extraire le numéro séquentiel (les 4 derniers chiffres)
+			const sequenceStr = res.codeReservation.slice(-4);
+			const sequence = parseInt(sequenceStr, 10);
 
-		return `KA${year}${month}${formattedCounter}`;
+			if (!isNaN(sequence) && sequence > maxNumber) {
+				maxNumber = sequence;
+			}
+		});
+
+		// Incrémenter et formater avec des zéros à gauche
+		const nextNumber = (maxNumber + 1).toString().padStart(4, '0');
+
+		// Construire le code de réservation complet
+		return `KA${year}${month}${nextNumber}`;
 	}
 
 	function saveReservation(reservationData) {
