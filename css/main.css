@@ -277,3 +277,12 @@ header {
   background-size: cover;
   background-position: center;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+/* Style des dates non disponibles - support navigateurs récents */
+input[type="date"]:invalid {
+  border-color: #dc3545;
+}

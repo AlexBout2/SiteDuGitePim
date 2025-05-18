@@ -1,5 +1,9 @@
-import { validateSejourNumber, getSejourNumber, formatDate } from '../../js/utils.js';
+import {
+    validateSejourNumber, getSejourNumber, formatDate, setupDateInputForSejour, isDateInSejourPeriod,
+} from '../../js/utils.js';
+
 window.addEventListener("DOMContentLoaded", function () {
+    window.formSejourNumber = null;
     const resaCheckButton = document.querySelector(".sejour-validation");
 
     resaCheckButton.addEventListener("click", function (event) {
@@ -16,10 +20,16 @@ window.addEventListener("DOMContentLoaded", function () {
         if (!validateSejourNumber()) {
             return;
         }
+
         // Utiliser getSejourNumber() pour récupérer la valeur
-        const sejourNumber = getSejourNumber();
+        window.formSejourNumber = getSejourNumber();
+
+        let sejourNumber = getSejourNumber();
 
         if (fullFormContainer && fullFormContainer.innerHTML.trim() === "") {
+
+
+
             // Formulaire pour réservation au restaurant
             const formHTML = `
                 <div class="col-md-8 mx-auto text-center">
@@ -34,7 +44,7 @@ window.addEventListener("DOMContentLoaded", function () {
                         
                         <div class="form-group mb-3">
                             <label for="DateReservation" class="fs-4">Date de réservation</label>
-                            <input type="date" class="form-control" id="DateReservation" required>
+                            <input type="date" class="form-control date-reservation" id="DateReservation" required>
                             <div class="invalid-feedback" id="date-feedback">Veuillez sélectionner une date</div>
                         </div>
                         
@@ -95,7 +105,7 @@ window.addEventListener("DOMContentLoaded", function () {
             fullFormContainer.innerHTML = formHTML;
 
             // Gestion des validations et événements après injection du formulaire
-            setupFormValidation(sejourNumber);
+            setupFormValidation(window.formSejourNumber);
         }
     });
 
@@ -110,6 +120,7 @@ window.addEventListener("DOMContentLoaded", function () {
         const validerButton = document.querySelector(".js-valider-reservation");
         const sessionWarning = document.getElementById("session-warning");
         const meteoWidget = document.querySelector("meteo-widget");
+        setupDateInputForSejour(dateReservationInput, sejourNumber);
 
 
         // Définir la date minimum à aujourd'hui
@@ -202,7 +213,7 @@ window.addEventListener("DOMContentLoaded", function () {
         // Validation finale et soumission
         validerButton.addEventListener("click", function () {
             // Valider tous les champs
-            if (!validateForm()) {
+            if (!validateForm(sejourNumber)) { // Passez sejourNumber en paramètre
                 return;
             }
 
@@ -237,6 +248,13 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("session-warning").classList.add("d-none");
     }
 
+    const dateInputs = document.getElementsByClassName("date-reservation");
+    if (dateInputs && dateInputs.length > 0) {
+        for (let i = 0; i < dateInputs.length; i++) {
+            setupDateInputForSejour(dateInputs[i], sejourNumber);
+        }
+    }
+
     // Vérifier et mettre à jour l'état de validité du formulaire
     function updateFormValidState() {
         const nbPersonnes = document.getElementById("NbPersonnes").value;
@@ -244,24 +262,79 @@ window.addEventListener("DOMContentLoaded", function () {
         const heureArrivee = document.getElementById("HeureArrivee").value;
         const validerButton = document.querySelector(".js-valider-reservation");
 
-        const isFormValid =
-            nbPersonnes &&
-            parseInt(nbPersonnes) >= 1 &&
-            parseInt(nbPersonnes) <= 8 &&
-            dateReservation &&
-            heureArrivee;
+        if (validerButton) {
+            const originalClickHandler = validerButton.onclick;
 
-        validerButton.disabled = !isFormValid;
+            validerButton.onclick = function (e) {
+                e.preventDefault();
 
-        // Mise à jour visuelle des états de validation
-        document.getElementById("NbPersonnes").classList.toggle("is-invalid",
-            nbPersonnes && (parseInt(nbPersonnes) < 1 || parseInt(nbPersonnes) > 8));
 
-        document.getElementById("DateReservation").classList.toggle("is-invalid", !dateReservation);
+                let isValid = true;
+
+                // Vérifier toutes les dates du formulaire
+                const dateFields = document.getElementsByClassName("date-reservation");
+                if (dateFields && dateFields.length > 0) {
+                    for (let i = 0; i < dateFields.length; i++) {
+                        const dateField = dateFields[i];
+                        const dateValue = dateField.value;
+
+                        // Chercher l'élément de feedback le plus proche
+                        const feedbackElement = dateField.nextElementSibling?.classList.contains("invalid-feedback")
+                            ? dateField.nextElementSibling
+                            : document.querySelector(`[data-for="${dateField.id}"]`);
+
+                        if (!dateValue) {
+                            if (feedbackElement) {
+                                dateField.classList.add("is-invalid");
+                                feedbackElement.textContent = "Veuillez sélectionner une date";
+                                feedbackElement.style.display = "block";
+                            }
+                            isValid = false;
+                            continue;
+                        }
+
+                        if (!isDateInSejourPeriod(dateValue, sejourNumber)) {
+                            if (feedbackElement) {
+                                dateField.classList.add("is-invalid");
+                                feedbackElement.textContent = "La date doit être pendant votre séjour";
+                                feedbackElement.style.display = "block";
+                            }
+                            isValid = false;
+                            continue;
+                        }
+
+                        // Si la date est valide, retirer la classe d'erreur
+                        dateField.classList.remove("is-invalid");
+                    }
+                }
+
+                // Si toutes les dates sont valides et qu'il y avait un gestionnaire d'origine
+                if (isValid && typeof originalClickHandler === 'function') {
+                    return originalClickHandler.call(this, e);
+                }
+
+                return isValid;
+            };
+
+            const isFormValid =
+                nbPersonnes &&
+                parseInt(nbPersonnes) >= 1 &&
+                parseInt(nbPersonnes) <= 8 &&
+                dateReservation &&
+                heureArrivee;
+
+            validerButton.disabled = !isFormValid;
+
+            // Mise à jour visuelle des états de validation
+            document.getElementById("NbPersonnes").classList.toggle("is-invalid",
+                nbPersonnes && (parseInt(nbPersonnes) < 1 || parseInt(nbPersonnes) > 8));
+
+            document.getElementById("DateReservation").classList.toggle("is-invalid", !dateReservation);
+        }
     }
 
     // Validation complète du formulaire avant soumission
-    function validateForm() {
+    function validateForm(sejourNumber) {
         let isValid = true;
 
         // Valider le nombre de personnes
@@ -275,15 +348,24 @@ window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("nbpersonnes-feedback").style.display = "none";
         }
 
-        // Valider la date
+        // Valider la date avec le sejourNumber passé en paramètre
         const dateField = document.getElementById("DateReservation");
-        if (!dateField.value) {
+        const dateValue = dateField.value;
+        const dateFeedback = document.getElementById("date-feedback");
+
+        if (!dateValue) {
             dateField.classList.add("is-invalid");
-            document.getElementById("date-feedback").style.display = "block";
+            dateFeedback.textContent = "Veuillez sélectionner une date";
+            dateFeedback.style.display = "block";
+            isValid = false;
+        } else if (!isDateInSejourPeriod(dateValue, sejourNumber)) {
+            dateField.classList.add("is-invalid");
+            dateFeedback.textContent = "La date doit être pendant votre séjour";
+            dateFeedback.style.display = "block";
             isValid = false;
         } else {
             dateField.classList.remove("is-invalid");
-            document.getElementById("date-feedback").style.display = "none";
+            dateFeedback.style.display = "none";
         }
 
         // Valider l'heure
@@ -296,9 +378,9 @@ window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("creneauxContainer").classList.remove("is-invalid");
             document.getElementById("heure-feedback").style.display = "none";
         }
-
         return isValid;
     }
+
 
     // Vérifier les disponibilités des créneaux
     function checkAvailability(date, service) {
@@ -391,6 +473,8 @@ window.addEventListener("DOMContentLoaded", function () {
         // Enregistrer dans le localStorage
         localStorage.setItem('restaurantReservations', JSON.stringify(reservations));
     }
+
+
 
     // Afficher la confirmation de réservation
     function displayConfirmation(formData) {

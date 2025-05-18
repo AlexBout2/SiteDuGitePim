@@ -1,4 +1,10 @@
-import { validateSejourNumber, getSejourNumber } from '../../js/utils.js';
+import {
+  validateSejourNumber,
+  getSejourNumber,
+  setupDateInputForSejour,
+  isDateInSejourPeriod,
+  formatDate
+} from '../../js/utils.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Sélection des éléments principaux
@@ -10,9 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Fonction principale de validation du numéro de réservation
   function handleReservationValidation() {
-
     //Vider les réservation précédentes 
-    const confirmationDiv = document.querySelector(".confirm-resa");
     if (confirmationDiv) {
       confirmationDiv.innerHTML = "";
     }
@@ -64,348 +68,326 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Fonction pour injecter le HTML du formulaire
+  function injectFormHTML(container, sejourNumber) {
+    container.innerHTML = `
+      <form class="cheval-reservation-form mt-4">
+        <div class="form-group mb-3">
+          <label for="date" class="form-label">Date de la randonnée</label>
+          <input type="date" class="form-control" id="date" required>
+          <div class="invalid-feedback" id="date-feedback">Veuillez sélectionner une date pendant votre séjour</div>
+        </div>
+        
+        <div class="form-group mb-3">
+          <label for="periode" class="form-label">Période</label>
+          <select class="form-control" id="periode" required>
+            <option value="">Choisissez une période</option>
+            <option value="matin">Matin (9h à 11h avec Emma)</option>
+            <option value="apres-midi">Après-midi (14h à 16h avec Lucas)</option>
+          </select>
+          <div class="invalid-feedback">Veuillez sélectionner une période</div>
+        </div>
+        
+        <div class="weather-container mb-3">
+          <meteo-widget id="meteoComponent"></meteo-widget>
+          <div id="meteo-warning" class="alert alert-danger d-none mt-2">
+            <i class="fas fa-exclamation-triangle"></i> Attention: Les randonnées sont annulées en cas de pluie ou d'orage
+          </div>
+        </div>
+        
+        <input type="hidden" id="selected-horse" value="">
+        <input type="hidden" id="reservation-number" value="${sejourNumber}">
+        
+        <button type="submit" class="btn btn-primary mt-3 submit-reservation">
+          Réserver cette randonnée
+        </button>
+      </form>
+    `;
+
+    // Initialiser le champ de date en fonction du séjour
+    const dateInput = document.getElementById('date');
+    if (dateInput && sejourNumber) {
+      setupDateInputForSejour(dateInput, sejourNumber);
+    }
+
+    // Initialiser la sélection des chevaux
+    initHorseSelection();
+
+    // Initialiser les écouteurs d'événements pour le formulaire
+    initFormEvents(sejourNumber);
+  }
+
+  // Initialiser les comportements du formulaire
+  function initFormEvents(sejourNumber) {
+    const dateInput = document.getElementById('date');
+    const periodeSelect = document.getElementById('periode');
+    const submitButton = document.querySelector('.submit-reservation');
+    const meteoWidget = document.getElementById('meteoComponent');
+
+    // Observer les changements météo
+    observeMeteoChanges();
+
+    // Gestionnaire de changement de date
+    if (dateInput) {
+      dateInput.addEventListener('change', function () {
+        // Mettre à jour le widget météo
+        if (meteoWidget) {
+          meteoWidget.setAttribute('date', this.value);
+        }
+
+        // Mettre à jour les disponibilités des chevaux
+        updateHorseAvailability();
+      });
+    }
+
+    // Gestionnaire de changement de période
+    if (periodeSelect) {
+      periodeSelect.addEventListener('change', function () {
+        updateHorseAvailability();
+      });
+    }
+
+    // Validation finale et soumission
+    if (submitButton) {
+      submitButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        validateReservationForm(sejourNumber);
+      });
+    }
+  }
+
+  // Validation du formulaire de réservation
+  function validateReservationForm(sejourNumber) {
+    const selectedHorseInput = document.getElementById('selected-horse');
+    const dateInput = document.getElementById('date');
+    const periodeSelect = document.getElementById('periode');
+    const meteoWarning = document.getElementById('meteo-warning');
+
+    // Vérifier d'abord les conditions météo
+    if (meteoWarning && !meteoWarning.classList.contains('d-none')) {
+      alert('Désolé, les randonnées équestres ne sont pas autorisées en cas de pluie ou d\'orage par mesure de sécurité.');
+      return;
+    }
+
+    // Validation des champs
+    if (!selectedHorseInput || !selectedHorseInput.value) {
+      alert('Veuillez sélectionner un cheval');
+      return;
+    }
+
+    if (!dateInput || !dateInput.value) {
+      dateInput.classList.add('is-invalid');
+      return;
+    }
+
+    // Vérifier si la date est dans la période du séjour
+    if (!isDateInSejourPeriod(dateInput.value, sejourNumber)) {
+      dateInput.classList.add('is-invalid');
+      const feedback = document.getElementById('date-feedback');
+      if (feedback) {
+        feedback.textContent = 'La date doit être pendant votre séjour';
+        feedback.style.display = 'block';
+      }
+      return;
+    }
+
+    if (!periodeSelect || !periodeSelect.value) {
+      periodeSelect.classList.add('is-invalid');
+      return;
+    }
+
+    // Vérifier si le cheval est disponible pour la date et période sélectionnées
+    const horseName = selectedHorseInput.value;
+    const date = dateInput.value;
+    const periode = periodeSelect.value;
+
+    if (!isHorseAvailable(horseName, date, periode)) {
+      alert(`Désolé, ${horseName} est déjà réservé pour cette date et période.`);
+      return;
+    }
+
+    // Générer un code de réservation unique
+    const codeReservation = generateReservationCode();
+
+    const reservationData = {
+      reservationNumber: sejourNumber,
+      horse: horseName,
+      date: date,
+      periode: periode,
+      codeReservation: codeReservation,
+      timestamp: new Date().toISOString()
+    };
+
+    // Enregistrer la réservation dans le localStorage
+    saveHorseReservation(reservationData);
+
+    // Afficher la confirmation
+    displayConfirmation(reservationData);
+  }
+
   // Initialiser le comportement des cartes de chevaux
   function initHorseSelection() {
     const horseCards = document.querySelectorAll('.horse-card');
     const selectedHorseInput = document.getElementById('selected-horse');
-    const dateInput = document.getElementById('date');
-    const periodeSelect = document.getElementById('periode');
-
-    // Désactiver les chevaux déjà réservés pour la date sélectionnée
-    function updateHorseAvailability() {
-      const selectedDate = dateInput.value;
-      const selectedPeriode = periodeSelect.value;
-
-      if (!selectedDate) return;
-
-      // Obtenir toutes les réservations existantes
-      const reservations = getHorseReservations();
-
-      // Réinitialiser tous les chevaux comme disponibles
-      horseCards.forEach(card => {
-        card.classList.remove('unavailable');
-        // Supprimer le message de réservation s'il existe
-        const existingMsg = card.querySelector('.reservation-message');
-        if (existingMsg) {
-          existingMsg.remove();
-        }
-      });
-
-      // Marquer les chevaux qui sont déjà réservés pour cette date et période
-      reservations.forEach(reservation => {
-        if (reservation.date === selectedDate && reservation.periode === selectedPeriode) {
-          const horseName = reservation.horse;
-          const reservedHorseCard = Array.from(horseCards).find(
-            card => card.querySelector('p').textContent === horseName
-          );
-
-          if (reservedHorseCard) {
-            reservedHorseCard.classList.add('unavailable');
-
-            // Ajouter un message indiquant que le cheval est déjà réservé
-            const reservationMsg = document.createElement('div');
-            reservationMsg.classList.add('reservation-message');
-            reservationMsg.textContent = 'Déjà réservé';
-            reservedHorseCard.appendChild(reservationMsg);
-          }
-        }
-      });
-    }
-
-    // Mettre à jour la disponibilité des chevaux lorsque la date ou la période change
-    if (dateInput) {
-      dateInput.addEventListener('change', updateHorseAvailability);
-    }
-
-    if (periodeSelect) {
-      periodeSelect.addEventListener('change', updateHorseAvailability);
-    }
 
     horseCards.forEach(card => {
       card.addEventListener('click', function () {
-        // Vérifier si le cheval est disponible
+        // Ne pas sélectionner les chevaux indisponibles
         if (this.classList.contains('unavailable')) {
-          alert('Ce cheval est déjà réservé pour cette date et période');
           return;
         }
 
-        document.querySelector('.horse-card.selected')?.classList.remove('selected');
+        // Désélectionner tous les chevaux
+        horseCards.forEach(c => c.classList.remove('selected'));
+
+        // Sélectionner ce cheval
         this.classList.add('selected');
 
+        // Stocker le nom du cheval sélectionné
+        const horseName = this.querySelector('p').textContent;
         if (selectedHorseInput) {
-          const horseName = this.querySelector('p').textContent;
           selectedHorseInput.value = horseName;
-
-          // Faire défiler vers le formulaire si nécessaire
-          reservationForm.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-          });
         }
       });
     });
 
-    // Actualiser l'état des chevaux au chargement
-    if (dateInput.value && periodeSelect.value) {
-      updateHorseAvailability();
-    }
+    // Initialiser la mise à jour des disponibilités
+    updateHorseAvailability();
   }
 
-  // Observer l'apparition de la sélection de chevaux
-  const observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-      if (mutation.target.classList.contains('fade-in') &&
-        !mutation.target.classList.contains('d-none')) {
-        initHorseSelection();
-        observer.disconnect(); // Arrêter d'observer une fois initialisé
-      }
-    });
-  });
-
-  // Observer les changements de classe sur le conteneur de sélection de chevaux
-  if (horseSelection) {
-    observer.observe(horseSelection, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-  }
-
-  // Fonction pour injecter le HTML du formulaire
-  function injectFormHTML(container, sejourNumber) {
-    const formHTML = `
-      <div class="col-md-8 mx-auto text-center">
-          <form class="horse-reservation-form" aria-live="polite" aria-atomic="true">
-              <!-- Numéro de séjour (caché, préservé de l'input original) -->
-              <input type="hidden" id="reservation-number" value="${sejourNumber || ''}">
-              
-              <!-- Sélection du cheval -->
-              <div class="form-group mb-3">
-                  <label for="selected-horse" class="fs-4">Cheval sélectionné</label>
-                  <input
-                      type="text"
-                      class="form-control"
-                      id="selected-horse"
-                      readonly
-                      placeholder="Sélectionniez votre cheval en cliquant sur sa photo"
-                  />
-              </div>
-              
-              <hr class="separator my-3">
-
-              <div class="form-group mb-3">
-                  <label for="date" class="fs-4">Date de la randonnée</label>
-                  <input type="date" class="form-control" id="date" required />
-              </div>
-              
-              <!-- Intégration du composant météo -->
-              <div class="mb-3 mt-3">
-                  <meteo-widget id="meteoComponent"></meteo-widget>
-              </div>
-
-              <!-- Message d'alerte pour conditions météo -->
-              <div id="meteo-warning" class="alert alert-danger d-none">
-                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                  <span>Les randonnées équestres ne sont pas autorisées en cas de pluie ou d'orage par mesure de sécurité.</span>
-              </div>
-              
-              <hr class="separator my-3">
-
-              <div class="form-group mb-3">
-                  <label for="periode" class="fs-4">Matinée ou Après-midi</label>
-                  <select class="form-control" id="periode" required>
-                      <option value="matin">Matin de 9h à 11h avec Emma</option>
-                      <option value="aprem">Après-midi de 14h à 16h avec Lucas</option>
-                  </select>
-              </div>
-              <div class="d-flex justify-content-center mb-3">
-                    <div class="btn-reservation submit-reservation">
-                        <span class="btn-text">
-                            Réserver
-                        </span>
-                    </div>
-                </div>
-          </form>
-      </div>
-    `;
-
-    container.innerHTML = formHTML;
-    console.log("Formulaire injecté avec succès");
-    initFormDetails();
-  }
-
-  // Fonction pour initialiser les détails spécifiques du formulaire
-  function initFormDetails() {
-    const dateInput = document.getElementById('date');
-    const meteoWarning = document.getElementById('meteo-warning');
-    const submitButton = document.querySelector('.submit-reservation');
-    const periodeSelect = document.getElementById('periode');
-
-    // Configuration de la date minimum (aujourd'hui)
-    const today = new Date().toISOString().split('T')[0];
-    if (dateInput) {
-      dateInput.min = today;
-
-      // Ajouter un gestionnaire pour mettre à jour la météo quand la date change
-      dateInput.addEventListener('change', function () {
-        // Réinitialiser l'alerte météo à chaque changement de date
-        if (meteoWarning) {
-          meteoWarning.classList.add('d-none');
-        }
-
-        // Déclencher manuellement la mise à jour météo
-        const meteoWidget = document.getElementById('meteoComponent');
-        if (meteoWidget) {
-          meteoWidget.setAttribute('date', this.value);
-
-          // Forcer un rafraîchissement des données météo
-          if (typeof meteoWidget.fetchMeteoData === 'function') {
-            meteoWidget.fetchMeteoData(this.value);
-          }
-        }
-
-        // Mettre à jour la disponibilité des chevaux
-        const event = new Event('change');
-        if (periodeSelect) {
-          periodeSelect.dispatchEvent(event);
-        }
-      });
-    }
-
-    observeMeteoChanges();
-
-    // Validation du formulaire
-    if (submitButton) {
-      submitButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        validateReservationForm();
-      });
-    }
-  }
-
-  // Observer les changements météo
-  function observeMeteoChanges() {
-    const observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        if (mutation.type === 'childList') {
-          checkWeatherConditions();
-        }
-      });
-    });
-
-    const meteoWidget = document.getElementById('meteoComponent');
-    if (meteoWidget) {
-      observer.observe(meteoWidget, { childList: true, subtree: true });
-    }
-  }
-
-  // Vérifier les conditions météo
-  function checkWeatherConditions() {
-    const meteoWidget = document.getElementById('meteoComponent');
-    if (!meteoWidget) return;
-
-    // Chercher le texte de description météo
-    const descriptionElement = meteoWidget.querySelector('.card-text');
-    if (!descriptionElement) return;
-
-    const weatherDescription = descriptionElement.textContent.toLowerCase();
-
-    // Liste des conditions météo défavorables
-    const badWeatherConditions = [
-      'pluie', 'pluvieux', 'averse',
-      'orage', 'orageux',
-      'grêle', 'grêlons',
-      'neige', 'neigeux',
-      'tempête'
-    ];
-
-    // Vérifier si une des conditions défavorables est présente
-    const isWeatherSafe = !badWeatherConditions.some(condition =>
-      weatherDescription.includes(condition)
-    );
-
-    // Afficher l'alerte si les conditions sont mauvaises
-    const meteoWarning = document.getElementById('meteo-warning');
-    const submitButton = document.querySelector('.submit-reservation');
-
-    if (!isWeatherSafe) {
-      if (meteoWarning) {
-        meteoWarning.classList.remove('d-none');
-      }
-      if (submitButton) {
-        submitButton.classList.add('disabled');
-        submitButton.title = "Réservation impossible en raison des conditions météorologiques";
-      }
-    } else {
-      if (meteoWarning) {
-        meteoWarning.classList.add('d-none');
-      }
-      if (submitButton) {
-        submitButton.classList.remove('disabled');
-        submitButton.title = "";
-      }
-    }
-  }
-
-  // Fonctions pour gérer les réservations dans le localStorage
-
-  // Générer un code de réservation unique
-  function generateReservationCode() {
-    const date = new Date();
-    const year = date.getFullYear().toString().slice(-2); // Derniers 2 chiffres de l'année
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-
-    // Récupérer le numéro incrémental depuis les réservations existantes
+  // Fonction pour vérifier si un cheval est disponible
+  function isHorseAvailable(horseName, date, periode) {
     const reservations = getHorseReservations();
-
-    // Filtrer les réservations du mois en cours
-    const currentMonthReservations = reservations.filter(r => {
-      return r.codeReservation &&
-        r.codeReservation.startsWith(`RA${year}${month}`);
-    });
-
-    // Déterminer le numéro incrémental
-    const nextNumber = currentMonthReservations.length + 1;
-
-    // Formatter le numéro incrémental avec des zéros devant
-    const formattedNumber = nextNumber.toString().padStart(4, '0');
-
-    return `RA${year}${month}${formattedNumber}`;
+    return !reservations.some(r =>
+      r.horse === horseName &&
+      r.date === date &&
+      r.periode === periode
+    );
   }
 
-  // Récupérer les réservations existantes
-  function getHorseReservations() {
-    const reservationsJSON = localStorage.getItem('horseReservations');
-    return reservationsJSON ? JSON.parse(reservationsJSON) : [];
-  }
+  // Mettre à jour l'affichage des chevaux disponibles
+  function updateHorseAvailability() {
+    const dateInput = document.getElementById('date');
+    const periodeSelect = document.getElementById('periode');
+    const horseCards = document.querySelectorAll('.horse-card');
 
-  // Enregistrer une réservation
-  function saveHorseReservation(reservation) {
+    if (!dateInput || !dateInput.value || !periodeSelect || !periodeSelect.value) {
+      return;
+    }
+
+    const selectedDate = dateInput.value;
+    const selectedPeriode = periodeSelect.value;
+
     // Récupérer les réservations existantes
     const reservations = getHorseReservations();
 
-    // Ajouter la nouvelle réservation
-    reservations.push(reservation);
+    // Réinitialiser tous les chevaux
+    horseCards.forEach(card => {
+      card.classList.remove('unavailable', 'selected');
+      const existingMsg = card.querySelector('.reservation-message');
+      if (existingMsg) existingMsg.remove();
+    });
 
-    // Enregistrer dans le localStorage
-    localStorage.setItem('horseReservations', JSON.stringify(reservations));
+    // Marquer les chevaux déjà réservés
+    reservations.forEach(reservation => {
+      if (reservation.date === selectedDate && reservation.periode === selectedPeriode) {
+        const reservedHorse = reservation.horse;
+        const reservedCard = Array.from(horseCards).find(
+          card => card.querySelector('p').textContent === reservedHorse
+        );
+
+        if (reservedCard) {
+          reservedCard.classList.add('unavailable');
+
+          // Ajouter un message
+          const reservationMsg = document.createElement('div');
+          reservationMsg.classList.add('reservation-message');
+          reservationMsg.textContent = 'Déjà réservé';
+          reservedCard.appendChild(reservationMsg);
+        }
+      }
+    });
+
+    // Réinitialiser le cheval sélectionné
+    document.getElementById('selected-horse').value = '';
   }
 
-  // Vérifier si un cheval est disponible pour une date et période donnée
-  function isHorseAvailable(horseName, date, periode) {
-    const reservations = getHorseReservations();
+  // Observer les changements dans le widget météo
+  function observeMeteoChanges() {
+    // Utiliser MutationObserver pour détecter les changements dans le widget météo
+    const targetNode = document.getElementById('meteoComponent');
+    const warningElement = document.getElementById('meteo-warning');
 
-    return !reservations.some(reservation =>
-      reservation.horse === horseName &&
-      reservation.date === date &&
-      reservation.periode === periode
+    if (targetNode && warningElement) {
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'weather-condition') {
+            const condition = targetNode.getAttribute('weather-condition');
+
+            // Afficher l'alerte si le temps est mauvais
+            if (condition === 'Rain' || condition === 'Thunderstorm') {
+              warningElement.classList.remove('d-none');
+            } else {
+              warningElement.classList.add('d-none');
+            }
+          }
+        });
+      });
+
+      observer.observe(targetNode, { attributes: true });
+    }
+  }
+
+  // Générer un code de réservation unique
+  /**
+ * Génère un code de réservation unique pour les randonnées équestres au format RAYYMMXXXX
+ * @returns {string} Le code de réservation formaté
+ */
+  function generateReservationCode() {
+    // Récupérer la date actuelle
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2); // Récupère seulement les 2 derniers chiffres
+    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // +1 car les mois commencent à 0
+
+    // Récupérer toutes les réservations existantes pour déterminer le prochain numéro
+    const existingReservations = getHorseReservations();
+
+    // Filtrer les réservations du mois en cours
+    const currentMonthPrefix = `RA${year}${month}`;
+    const currentMonthReservations = existingReservations.filter(
+      res => res.codeReservation && res.codeReservation.startsWith(currentMonthPrefix)
     );
+
+    // Trouver le nombre le plus élevé et incrémenter
+    let maxNumber = 0;
+
+    currentMonthReservations.forEach(res => {
+      // Extraire le numéro séquentiel (les 4 derniers chiffres)
+      const sequenceStr = res.codeReservation.slice(-4);
+      const sequence = parseInt(sequenceStr, 10);
+
+      if (!isNaN(sequence) && sequence > maxNumber) {
+        maxNumber = sequence;
+      }
+    });
+
+    // Incrémenter et formater avec des zéros à gauche
+    const nextNumber = (maxNumber + 1).toString().padStart(4, '0');
+
+    // Construire le code de réservation complet
+    return `RA${year}${month}${nextNumber}`;
   }
 
-  // Formatage de la date pour l'affichage
-  function formatDate(dateString) {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', options);
+  // Récupérer les réservations de chevaux
+  function getHorseReservations() {
+    return JSON.parse(localStorage.getItem('horseReservations') || '[]');
+  }
+
+  // Sauvegarder une réservation
+  function saveHorseReservation(data) {
+    const reservations = getHorseReservations();
+    reservations.push(data);
+    localStorage.setItem('horseReservations', JSON.stringify(reservations));
   }
 
   // Afficher la confirmation de réservation
@@ -455,68 +437,5 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmationDiv.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     }
-  }
-
-  // Validation du formulaire de réservation
-  function validateReservationForm() {
-    const selectedHorseInput = document.getElementById('selected-horse');
-    const dateInput = document.getElementById('date');
-    const periodeSelect = document.getElementById('periode');
-    const meteoWarning = document.getElementById('meteo-warning');
-
-    // Vérifier d'abord les conditions météo
-    if (meteoWarning && !meteoWarning.classList.contains('d-none')) {
-      alert('Désolé, les randonnées équestres ne sont pas autorisées en cas de pluie ou d\'orage par mesure de sécurité.');
-      return;
-    }
-
-    // Validation des champs
-    if (!selectedHorseInput || !selectedHorseInput.value) {
-      alert('Veuillez sélectionner un cheval');
-      return;
-    }
-
-    if (!dateInput || !dateInput.value) {
-      alert('Veuillez sélectionner une date');
-      dateInput.focus();
-      return;
-    }
-
-    if (!periodeSelect || !periodeSelect.value) {
-      alert('Veuillez sélectionner une période');
-      periodeSelect.focus();
-      return;
-    }
-
-    // Vérifier si le cheval est disponible pour la date et période sélectionnées
-    const horseName = selectedHorseInput.value;
-    const date = dateInput.value;
-    const periode = periodeSelect.value;
-
-    if (!isHorseAvailable(horseName, date, periode)) {
-      alert(`Désolé, ${horseName} est déjà réservé pour cette date et période.`);
-      return;
-    }
-
-    // Récupérer le numéro de séjour
-    const sejour = document.querySelector('.sejour-resa-input')?.value || "Non spécifié";
-
-    // Générer un code de réservation unique
-    const codeReservation = generateReservationCode();
-
-    const reservationData = {
-      reservationNumber: sejour,
-      horse: horseName,
-      date: date,
-      periode: periode,
-      codeReservation: codeReservation,
-      timestamp: new Date().toISOString()
-    };
-
-    // Enregistrer la réservation dans le localStorage
-    saveHorseReservation(reservationData);
-
-    // Afficher la confirmation
-    displayConfirmation(reservationData);
   }
 });

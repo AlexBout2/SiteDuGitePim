@@ -91,4 +91,109 @@ function calculateDays(startDate, endDate) {
 }
 
 
-export { validateByClass, validateSejourNumber, getSejourNumber, formatDate, calculateDays };
+/**
+ * Vérifie si une date est comprise dans la période de séjour
+ * @param {string} dateValue - La date à vérifier (format YYYY-MM-DD)
+ * @param {string} sejourNumber - Le numéro de séjour
+ * @returns {boolean} - true si la date est dans la période du séjour, false sinon
+ */
+function isDateInSejourPeriod(dateValue, sejourNumber) {
+    if (!dateValue || !sejourNumber) return false;
+
+    // Récupérer les réservations du localStorage
+    const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const reservation = reservations.find(r => r.reservationNumber === sejourNumber);
+
+    if (!reservation) return false;
+
+    // Convertir les dates en objets Date pour la comparaison
+    const selectedDate = new Date(dateValue);
+    const startDate = new Date(reservation.startDate);
+    const endDate = new Date(reservation.endDate);
+
+    // Normaliser les dates (sans heures, minutes, etc.)
+    selectedDate.setHours(0, 0, 0, 0);
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+
+    // Vérifier strictement si la date est comprise dans la période de séjour (inclusif)
+    return selectedDate >= startDate && selectedDate <= endDate;
+}
+
+/**
+ * Configure un champ de date pour restreindre les dates à la période du séjour
+ * @param {HTMLElement} dateInputElement - L'élément input de type date
+ * @param {string} sejourNumber - Numéro de séjour
+ */
+function setupDateInputForSejour(dateInputElement, sejourNumber) {
+    if (!dateInputElement || !sejourNumber) return;
+
+    // Récupérer les réservations du localStorage
+    const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const reservation = reservations.find(r => r.reservationNumber === sejourNumber);
+
+    if (!reservation) return;
+
+    // Définir les dates min et max pour l'input
+    dateInputElement.min = reservation.startDate;
+    dateInputElement.max = reservation.endDate;
+
+    // Désactiver les dates en dehors de la période via JavaScript
+    dateInputElement.addEventListener('input', function (e) {
+        const selectedDate = new Date(this.value);
+        const startDate = new Date(reservation.startDate);
+        const endDate = new Date(reservation.endDate);
+
+        // Normaliser les dates (sans heures, minutes, etc.)
+        selectedDate.setHours(0, 0, 0, 0);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
+
+        // Si la date est en dehors de la période, réinitialiser
+        if (selectedDate < startDate || selectedDate > endDate) {
+            // Empêcher la sélection en réinitialisant à une date valide
+            this.value = "";
+
+            // Afficher le message d'erreur
+            this.classList.add("is-invalid");
+            const feedbackElement = document.getElementById("date-feedback") ||
+                this.nextElementSibling;
+            if (feedbackElement) {
+                feedbackElement.textContent = "La date doit être pendant votre séjour";
+                feedbackElement.style.display = "block";
+            }
+
+            // Empêcher propagation de l'événement pour prévenir toute validation supplémentaire
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        } else {
+            this.classList.remove("is-invalid");
+            const feedbackElement = document.getElementById("date-feedback") ||
+                this.nextElementSibling;
+            if (feedbackElement) {
+                feedbackElement.style.display = "none";
+            }
+        }
+    });
+
+    // Ajouter une vérification sur le changement
+    dateInputElement.addEventListener('change', function () {
+        if (!isDateInSejourPeriod(this.value, sejourNumber)) {
+            this.value = "";  // Réinitialiser la date
+            this.classList.add("is-invalid");
+            const feedbackElement = document.getElementById("date-feedback") ||
+                this.nextElementSibling;
+            if (feedbackElement) {
+                feedbackElement.textContent = "La date doit être pendant votre séjour";
+                feedbackElement.style.display = "block";
+            }
+        }
+    });
+}
+
+
+
+
+
+export { validateByClass, validateSejourNumber, getSejourNumber, formatDate, calculateDays, setupDateInputForSejour, isDateInSejourPeriod };
