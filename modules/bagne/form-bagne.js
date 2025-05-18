@@ -1,4 +1,4 @@
-import { validateSejourNumber, getSejourNumber, formatDate } from '../../js/utils.js';
+import { validateSejourNumber, getSejourNumber, formatDate, setupDateInputForSejour, isDateInSejourPeriod } from '../../js/utils.js';
 
 window.addEventListener("DOMContentLoaded", function () {
     const resaCheckButton = document.querySelector(".sejour-validation");
@@ -100,8 +100,11 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         };
 
+        // Configurer le champ de date en fonction du séjour
+        setupDateInputForSejour(formElements.date, sejourNumber);
+
         // Initialiser les valeurs par défaut
-        setDefaultValues(formElements);
+        setDefaultValues(formElements, sejourNumber);
 
         // Mettre à jour les places disponibles pour la date par défaut
         updatePlacesDisponibles(formElements.date.value, formElements);
@@ -114,31 +117,70 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     // Configuration des valeurs par défaut
-    function setDefaultValues(elements) {
+    function setDefaultValues(elements, sejourNumber) {
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
 
         elements.nbVisiteurs.value = 1;
-        elements.date.min = tomorrow.toISOString().split('T')[0];
 
-        // Trouver le prochain weekend
+        // Trouver le prochain weekend dans la période du séjour
         let nextDate = new Date(tomorrow);
-        while (!isWeekend(nextDate.toISOString().split('T')[0])) {
+        let dateStr = nextDate.toISOString().split('T')[0];
+
+        // Avancer jour par jour jusqu'à trouver un weekend valide dans la période du séjour
+        while (!isWeekend(dateStr) || !isDateInSejourPeriod(dateStr, sejourNumber)) {
             nextDate.setDate(nextDate.getDate() + 1);
+            dateStr = nextDate.toISOString().split('T')[0];
+
+            // Éviter une boucle infinie si aucun weekend n'est disponible dans la période du séjour
+            if (nextDate > new Date(elements.date.max)) {
+                break;
+            }
         }
-        elements.date.value = nextDate.toISOString().split('T')[0];
+
+        // Si on a trouvé une date valide, l'utiliser
+        if (isDateInSejourPeriod(dateStr, sejourNumber) && isWeekend(dateStr)) {
+            elements.date.value = dateStr;
+        } else {
+            // Sinon utiliser la première date disponible même si ce n'est pas un weekend
+            elements.date.value = elements.date.min;
+            // Et afficher un message
+            elements.feedbacks.date.textContent = "Aucun weekend disponible dans votre période de séjour";
+            elements.date.classList.add("is-invalid");
+            elements.feedbacks.date.style.display = "block";
+        }
     }
 
     // Attache tous les écouteurs d'événements nécessaires
     function attachEventListeners(elements, sejourNumber) {
         // Écouteur pour le changement de date
         elements.date.addEventListener("change", function () {
-            if (checkDate(elements)) {
-                updateMeteoWidget(this.value);
-                updatePlacesDisponibles(this.value, elements);
-                updateNbVisiteursMaximum(this.value, elements);
+            // Réinitialiser le message d'erreur
+            elements.feedbacks.date.textContent = "Réservations uniquement les weekends";
+
+            // Vérifier si la date est dans la période du séjour
+            if (!isDateInSejourPeriod(this.value, sejourNumber)) {
+                elements.date.classList.add("is-invalid");
+                elements.feedbacks.date.textContent = "La date doit être pendant votre séjour";
+                elements.feedbacks.date.style.display = "block";
+                return;
             }
+
+            // Vérifier si c'est un weekend
+            if (!isWeekend(this.value)) {
+                elements.date.classList.add("is-invalid");
+                elements.feedbacks.date.style.display = "block";
+                return;
+            }
+
+            // Si tout est OK
+            elements.date.classList.remove("is-invalid");
+            elements.feedbacks.date.style.display = "none";
+
+            updateMeteoWidget(this.value);
+            updatePlacesDisponibles(this.value, elements);
+            updateNbVisiteursMaximum(this.value, elements);
         });
 
         // Écouteurs pour les créneaux
@@ -173,16 +215,12 @@ window.addEventListener("DOMContentLoaded", function () {
         const creneauSelectionne = elements.matinRadio.checked ? 'matin' : 'midi';
 
         // Validations
-        if (!validateReservation(elements, nbVisiteurs, creneauSelectionne)) {
+        if (!validateReservation(elements, nbVisiteurs, creneauSelectionne, sejourNumber)) {
             return;
         }
 
         // Générer le code de réservation
-        const selectedDate = new Date(elements.date.value);
-        const year = selectedDate.getFullYear().toString().slice(-2);
-        const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
-        const increment = getNextReservationNumber(elements.date.value);
-        const codeReservation = `BA${year}${month}${increment}`;
+        const codeReservation = generateReservationCode(elements.date.value);
 
         // Préparer les données
         const formData = {
@@ -205,7 +243,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     // Validation de la réservation
-    function validateReservation(elements, nbVisiteurs, creneauSelectionne) {
+    function validateReservation(elements, nbVisiteurs, creneauSelectionne, sejourNumber) {
         // Vérifier le nombre de visiteurs
         if (nbVisiteurs < 1 || nbVisiteurs > parseInt(elements.nbVisiteurs.max)) {
             elements.nbVisiteurs.classList.add("is-invalid");
@@ -216,9 +254,23 @@ window.addEventListener("DOMContentLoaded", function () {
             elements.feedbacks.nbVisiteurs.style.display = "none";
         }
 
-        // Vérifier la date (weekend)
-        if (!checkDate(elements)) {
+        // Vérifier si la date est dans la période du séjour
+        if (!isDateInSejourPeriod(elements.date.value, sejourNumber)) {
+            elements.date.classList.add("is-invalid");
+            elements.feedbacks.date.textContent = "La date doit être pendant votre séjour";
+            elements.feedbacks.date.style.display = "block";
             return false;
+        }
+
+        // Vérifier la date (weekend)
+        if (!isWeekend(elements.date.value)) {
+            elements.date.classList.add("is-invalid");
+            elements.feedbacks.date.textContent = "Réservations uniquement les weekends";
+            elements.feedbacks.date.style.display = "block";
+            return false;
+        } else {
+            elements.date.classList.remove("is-invalid");
+            elements.feedbacks.date.style.display = "none";
         }
 
         // Vérifier la disponibilité du créneau
@@ -269,15 +321,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // Vérification de la date (weekend)
     function checkDate(elements) {
-        if (!isWeekend(elements.date.value)) {
-            elements.date.classList.add("is-invalid");
-            elements.feedbacks.date.style.display = "block";
-            return false;
-        } else {
-            elements.date.classList.remove("is-invalid");
-            elements.feedbacks.date.style.display = "none";
-            return true;
-        }
+        return isWeekend(elements.date.value);
     }
 
     // Fonction pour vérifier si une date est un weekend
@@ -386,18 +430,56 @@ window.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Numéro de réservation incrémental
-    function getNextReservationNumber(dateStr) {
+    // Génère un code de réservation pour le bagne (format: BAYYMMXXXX)
+    function generateReservationCode(dateStr) {
+        const date = new Date(dateStr);
+        const year = date.getFullYear().toString().slice(-2); // Derniers deux chiffres de l'année
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mois avec leading zero
+
+        // Récupérer toutes les réservations existantes du bagne
+        const reservations = JSON.parse(localStorage.getItem('bagneReservations')) || {};
+
+        // Convertir les réservations en tableau plat pour faciliter le filtrage
+        const allReservations = [];
+        for (const [date, creneaux] of Object.entries(reservations)) {
+            for (const [creneau, places] of Object.entries(creneaux)) {
+                allReservations.push({ date, creneau, places });
+            }
+        }
+
+        // Récupérer les compteurs de réservation existants
         const reservationCounts = JSON.parse(localStorage.getItem('bagneReservationCounts')) || {};
 
+        // Filtrer pour obtenir toutes les réservations du mois actuel
+        const currentMonthPrefix = `BA${year}${month}`;
+
+        // Trouver le dernier numéro utilisé pour ce mois/année
+        let maxNumber = 0;
+
+        // Parcourir les compteurs existants pour trouver le maximum
+        for (const [dateKey, count] of Object.entries(reservationCounts)) {
+            const resDate = new Date(dateKey);
+            const resYear = resDate.getFullYear().toString().slice(-2);
+            const resMonth = (resDate.getMonth() + 1).toString().padStart(2, '0');
+
+            if (resYear === year && resMonth === month && count > maxNumber) {
+                maxNumber = count;
+            }
+        }
+
+        // Incrémenter le compteur
+        const nextNumber = maxNumber + 1;
+
+        // Sauvegarder le compteur mis à jour
         if (!reservationCounts[dateStr]) {
             reservationCounts[dateStr] = 0;
         }
-
-        reservationCounts[dateStr]++;
+        reservationCounts[dateStr] = nextNumber;
         localStorage.setItem('bagneReservationCounts', JSON.stringify(reservationCounts));
 
-        // Numéro formaté avec zéros à gauche
-        return reservationCounts[dateStr].toString().padStart(3, '0');
+        // Formater le numéro à 4 chiffres avec des zéros devant
+        const formattedNumber = nextNumber.toString().padStart(4, '0');
+
+        return `BA${year}${month}${formattedNumber}`;
     }
 });

@@ -1,4 +1,4 @@
-import { validateSejourNumber, getSejourNumber, formatDate } from '../../js/utils.js';
+import { validateSejourNumber, getSejourNumber, formatDate, setupDateInputForSejour, isDateInSejourPeriod } from '../../js/utils.js';
 
 window.addEventListener("DOMContentLoaded", function () {
     const resaCheckButton = document.querySelector(".sejour-validation");
@@ -55,6 +55,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     <div class="form-group mb-3">
                         <label for="DateGa" class="fs-4">Date de la garderie</label>
                         <input type="date" class="form-control" id="DateGa" required>
+                        <div class="invalid-feedback" id="date-feedback">Veuillez sélectionner une date pendant votre séjour</div>
                         <div class="availability-info mt-2 text-info" id="date-availability-info"></div>
                     </div>
                     <div class="row">
@@ -81,8 +82,6 @@ window.addEventListener("DOMContentLoaded", function () {
                         <div class="invalid-feedback">Veuillez indiquer une raison pour la garde</div>
                     </div>
 
-
-
                     <hr class="separator my-3">
                     <button type="button" class="btn-reservation btn-lg mt-3 submit-reservation-btn">
                      <span class="btn-text">Réserver la garderie</span>
@@ -96,42 +95,70 @@ window.addEventListener("DOMContentLoaded", function () {
     });
 
     function initializeForm(reservationNumber) {
-        // Configurer les dates par défaut
-        const today = new Date();
+        // Récupérer les éléments du formulaire
         const dateInput = document.getElementById("DateGa");
-        if (dateInput) {
-            dateInput.min = today.toISOString().split('T')[0];
-            dateInput.value = today.toISOString().split('T')[0];
+        const startTimeInput = document.getElementById("StartTimeGa");
+        const endTimeInput = document.getElementById("EndTimeGa");
+        const nbKidsInput = document.getElementById("NbKidGa");
+        const dateFeedback = document.getElementById("date-feedback");
 
-            // Ajouter l'écouteur d'événements pour la date et vérifier disponibilité
-            dateInput.addEventListener('change', function () {
-                // Mise à jour du widget météo
-                const meteoWidget = document.querySelector("meteo-widget");
-                if (meteoWidget) {
-                    meteoWidget.setAttribute("date", this.value);
-                }
-
-                // Vérifier la disponibilité pour cette date
-                updateAvailabilityInfo();
-            });
-
-            // Vérifier disponibilité initiale
-            updateAvailabilityInfo();
-        } else {
+        if (!dateInput) {
             console.error("Champ de date non trouvé!");
+            return;
         }
+
+        // Configurer les limites du champ de date selon la période du séjour
+        setupDateInputForSejour(dateInput, reservationNumber);
+
+        // Définir la valeur par défaut à aujourd'hui si dans la période du séjour
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+
+        if (isDateInSejourPeriod(todayStr, reservationNumber)) {
+            dateInput.value = todayStr;
+        } else {
+            // Si aujourd'hui n'est pas dans la période du séjour, utiliser la date de début du séjour
+            dateInput.value = dateInput.min;
+        }
+
+        // Ajouter l'écouteur d'événements pour la date et vérifier disponibilité
+        dateInput.addEventListener('change', function () {
+            // Vérifier si la date est dans la période du séjour
+            if (!isDateInSejourPeriod(this.value, reservationNumber)) {
+                this.classList.add("is-invalid");
+                if (dateFeedback) {
+                    dateFeedback.style.display = "block";
+                }
+                return;
+            } else {
+                this.classList.remove("is-invalid");
+                if (dateFeedback) {
+                    dateFeedback.style.display = "none";
+                }
+            }
+
+            // Mise à jour du widget météo
+            const meteoWidget = document.querySelector("meteo-widget");
+            if (meteoWidget) {
+                meteoWidget.setAttribute("date", this.value);
+            }
+
+            // Vérifier la disponibilité pour cette date
+            updateAvailabilityInfo();
+        });
+
+        // Vérifier disponibilité initiale
+        updateAvailabilityInfo();
 
         // Initialiser le widget météo
         const meteoWidget = document.querySelector("meteo-widget");
         if (meteoWidget) {
-            meteoWidget.setAttribute("date", today.toISOString().split('T')[0]);
+            meteoWidget.setAttribute("date", dateInput.value);
         } else {
             console.error("Widget météo non trouvé!");
         }
 
         // Initialiser les heures par défaut
-        const startTimeInput = document.getElementById("StartTimeGa");
-        const endTimeInput = document.getElementById("EndTimeGa");
         if (startTimeInput) startTimeInput.value = "09:00";
         if (endTimeInput) endTimeInput.value = "12:00";
 
@@ -147,7 +174,6 @@ window.addEventListener("DOMContentLoaded", function () {
         }
 
         // Écouteur pour le champ de nombre d'enfants
-        const nbKidsInput = document.getElementById("NbKidGa");
         if (nbKidsInput) {
             nbKidsInput.addEventListener('input', function () {
                 updateAvailabilityInfo();
@@ -291,6 +317,15 @@ window.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Valider que la date est dans la période du séjour
+        if (!isDateInSejourPeriod(dateInput.value, reservationNumber)) {
+            dateInput.classList.add("is-invalid");
+            document.getElementById("date-feedback").style.display = "block";
+            return;
+        } else {
+            dateInput.classList.remove("is-invalid");
+        }
+
         // Valider le nombre d'enfants
         if (!nbKids.value || nbKids.value < 1 || nbKids.value > MAX_CAPACITY) {
             nbKids.classList.add("is-invalid");
@@ -355,10 +390,7 @@ window.addEventListener("DOMContentLoaded", function () {
         }
 
         // Créer le code de réservation
-        const codePrefix = "GA";
-        const dateCode = dateInput.value.replace(/-/g, "").substring(2); // YYMMDD
-        const codeSequence = getNextGarderieCodeSequence(dateInput.value);
-        const codeReservation = `${codePrefix}${dateCode}${codeSequence}`;
+        const codeReservation = generateReservationCode(dateInput.value);
 
         // Créer l'objet de réservation
         const reservation = {
@@ -378,18 +410,46 @@ window.addEventListener("DOMContentLoaded", function () {
         showConfirmation(reservation);
     }
 
-    function getNextGarderieCodeSequence(dateStr) {
+    // Génère un code de réservation au format GAYYMMXXXX
+    function generateReservationCode(dateStr) {
+        const date = new Date(dateStr);
+        const year = date.getFullYear().toString().slice(-2);
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
+        // Récupérer les compteurs de réservation existants
         const reservationCounts = JSON.parse(localStorage.getItem('garderieReservationCounts')) || {};
 
+        // Filtrer pour obtenir toutes les réservations du mois actuel
+        const currentMonthPrefix = `GA${year}${month}`;
+
+        // Parcourir toutes les dates pour trouver des réservations du même mois/année
+        let maxNumber = 0;
+        for (const [dateKey, count] of Object.entries(reservationCounts)) {
+            // Extraire année et mois de la date de chaque réservation
+            const resDate = new Date(dateKey);
+            const resYear = resDate.getFullYear().toString().slice(-2);
+            const resMonth = (resDate.getMonth() + 1).toString().padStart(2, '0');
+
+            // Si même année et même mois, comparer le compteur
+            if (resYear === year && resMonth === month && count > maxNumber) {
+                maxNumber = count;
+            }
+        }
+
+        // Incrémenter le compteur pour ce mois
+        const nextNumber = maxNumber + 1;
+
+        // Stocker le nouveau compteur
         if (!reservationCounts[dateStr]) {
             reservationCounts[dateStr] = 0;
         }
-
-        reservationCounts[dateStr]++;
+        reservationCounts[dateStr] = nextNumber;
         localStorage.setItem('garderieReservationCounts', JSON.stringify(reservationCounts));
 
-        // Numéro formaté avec zéros à gauche
-        return reservationCounts[dateStr].toString().padStart(3, '0');
+        // Formater le numéro à 4 chiffres
+        const formattedNumber = nextNumber.toString().padStart(4, '0');
+
+        return `GA${year}${month}${formattedNumber}`;
     }
 
     function saveGarderieReservation(reservation) {
